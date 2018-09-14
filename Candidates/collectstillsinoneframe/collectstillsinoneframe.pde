@@ -1,4 +1,4 @@
-// P_4_2_2_01.pde
+// Edited by george - Not finished
 // 
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -17,8 +17,10 @@
 // limitations under the License.
 
 /**
- * simple overview of a video file.
- * 
+ * Generates an image based on combined screenshots of a movie file. 
+ * Time steps in the move file are based on the X and Y resolution, with smaller
+ * resolution resulting in more pictures.
+ *
  * KEYS
  * s                  : save png
  */
@@ -40,14 +42,17 @@ int gridY = 0;
 
 
 void setup() {
-  //size(1024, 1024);
   fullScreen();
+  
+  // Used for drawing geometry with antialiasing 
+  // (Hard to tell if this does anything on high resolution monitors)
   smooth();
+  
+  //Start the sketh with a black background
   background(0); 
 
-  // specify a path or use selectInput() to load a video
-  // or simply put it into the data folder
-
+  // Specify a path or use selectInput() to load a video or 
+  // simply put it into the data folder
   movie = new Movie(this, "2.mov");
   movie.play();
 
@@ -57,16 +62,22 @@ void setup() {
 
 
 void draw() {
-  float posX = tileWidth*gridX;
-  float posY = tileHeight*gridY;
 
-  // calculate the current time in movieclip
+  // Calculate the current time in movieclip
   float moviePos = map(currentImage, 0,imageCount, 0,movie.duration());
+  
+  // Jump to frame of movie and read it
   movie.jump(moviePos);
   movie.read();
+  
+  // Location of tiles
+  float posX = tileWidth*gridX;
+  float posY = tileHeight*gridY;
+  
+  // Draw image on canvas
   image(movie, posX, posY, tileWidth, tileHeight);
 
-  // new grid position
+  // Move grid position to next tile
   gridX++;
   if (gridX >= tileCountX) {
     gridX = 0;
@@ -77,13 +88,11 @@ void draw() {
   if (currentImage >= imageCount) noLoop();
 }
 
-
 void keyReleased() {
+  //Save screenshot
   if (key == 's' || key == 'S') saveFrame(timestamp()+"article" + "_####.tiff");
 }
 
-
-// timestamp
 String timestamp() {
   Calendar now = Calendar.getInstance();
   return String.format("%1$ty%1$tm%1$td_%1$tH%1$tM%1$tS", now);

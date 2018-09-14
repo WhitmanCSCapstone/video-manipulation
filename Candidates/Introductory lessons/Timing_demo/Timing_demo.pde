@@ -1,3 +1,8 @@
+/*
+  This sketch demonstrates simple timing techniques using frameCount and text displays. 
+  Keys can be pressed to show another dialog.
+*/
+
 boolean blinker;
 int timer = -3000;
  

@@ -10,8 +10,8 @@ void setup() {
   shader = loadShader("pixelate.glsl");
 
  // String[] cameras = Capture.list();
- cam = new Capture(this, width, height, 30);
-cam.start();
+  cam = new Capture(this, width, height, 30);
+  cam.start();
   song = new SoundFile(this, "9.wav");
   song.loop();
   amp = new Amplitude(this);

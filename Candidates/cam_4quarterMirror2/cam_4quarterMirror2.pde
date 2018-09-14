@@ -6,6 +6,12 @@ void setup() {
   //size(1280, 800, P2D);
   fullScreen(P2D);
   cam = new Capture(this, 640,480);
+  if (cam.available() == true) { 
+  println("camera available");
+ }
+ else {
+   println("camera not available");
+}
   cam.start();
   noStroke();
 }
