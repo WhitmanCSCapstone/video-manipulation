@@ -15,7 +15,7 @@ PVector [][] globe;
 void setup(){
   size(1280,800,P3D);
    MidiBus.list();  // Shows controllers in the console
-  myBus = new MidiBus(this, "SLIDER/KNOB","CTRL");  // input and output
+  myBus = new MidiBus(this, "nanoKONTROL2","CTRL");  // input and output g:-- Changed from SLIDER/KNOB for windows
   
   for (int i = 16; i < 24; i++) {  // Sets only the knobs (16-23) to be max @ start
     cc[i] = 127;
@@ -42,6 +42,7 @@ float supershape(float theta, float m, float n1, float n2, float n3){
   return r;
 }
 void draw(){
+  //g: for all sketches, save cc to variables for clarity before doing stuff on them
   l = map(cc[19],0,127,1,127);
   m = map(sin(mchange),-1,1,0,l);
   sm = map(cc[18],0,127,0.0, 0.009);
