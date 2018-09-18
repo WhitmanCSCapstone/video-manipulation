@@ -6,13 +6,13 @@ SoundFile song;
 Amplitude amp;
 
 void setup() {
-  size(1280, 800, P2D);
+  size(1920, 1080, P2D);
   shader = loadShader("pixelate.glsl");
 
  // String[] cameras = Capture.list();
-  cam = new Capture(this, width, height, 30);
-  cam.start();
-  song = new SoundFile(this, "9.wav");
+  cam = new Capture(this);
+  cam.start(); //g: REQUESTED resolution not supported by capture device -- deleted resolution and framerate
+  song = new SoundFile(this, "STE-000.mp3"); // g:sounds not working, I think it is device specific
   song.loop();
   amp = new Amplitude(this);
   amp.input(song);
