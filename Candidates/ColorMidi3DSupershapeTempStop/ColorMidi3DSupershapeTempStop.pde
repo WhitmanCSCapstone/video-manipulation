@@ -4,6 +4,7 @@
   Visualization is done with peasycam. 
   There is a lot of room for optimizing and fine tuning.
   Ask Justin where he got this code. It would be cool for sliders to control camera.
+  https://www.youtube.com/watch?v=akM4wMZIBWg
 */
 import themidibus.*;
 float cc[] = new float[256];
