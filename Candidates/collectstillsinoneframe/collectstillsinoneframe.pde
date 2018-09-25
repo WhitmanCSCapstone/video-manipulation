@@ -1,5 +1,8 @@
-// Edited by george - Not finished
-// 
+/*
+  collectstillsinoneframe: Builds an image out of stills in a video file.
+  Can save the generated picture with the 's' key. 
+  Resolution can be changed in the code.
+*/
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
 // Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni

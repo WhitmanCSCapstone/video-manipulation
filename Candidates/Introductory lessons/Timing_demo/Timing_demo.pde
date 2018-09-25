@@ -1,5 +1,5 @@
 /*
-  This sketch demonstrates simple timing techniques using frameCount and text displays. 
+  Timing_demo: This sketch demonstrates simple timing techniques using frameCount and text displays. 
   Keys can be pressed to show another dialog.
 */
 
