@@ -1,3 +1,7 @@
+/*
+  keeptryingrotatingslats: First four midi knobs control the speed of rotating slats.
+  They correspond top to bottom, first to last knob.
+*/
 import themidibus.*;
 float cc[] = new float[256];
 MidiBus myBus;
@@ -14,11 +18,11 @@ Movie cam;
 void setup() {
   //size(1280, 800, P2D);
   fullScreen(P3D);
-    MidiBus.list();  // Shows controllers in the console
-  myBus = new MidiBus(this, "SLIDER/KNOB","CTRL");  // input and output
+  MidiBus.list();  // Shows controllers in the console
+  myBus = new MidiBus(this, "nanoKONTROL2","CTRL");  // input and output
   
   for (int i = 16; i < 24; i++) {  // Sets only the knobs (16-23) to be max @ start
-    cc[i] = 127;
+    cc[i] = 127/2;
   }
   cam = new Movie(this,"xxx.mov");
   cam.loop();
@@ -28,18 +32,13 @@ void draw() {
   if (cam.available() == true) {
     cam.read();
   }
-
- // float xx = mouseX;
-  //float yy = mouseY;
-  // left top
   pushMatrix();
   translate(0,height *.1,0);
   float ma = map(cc[16], 0,127,.0,.1);
-   rotateX (rx1);
+  rotateX (rx1);
   rx1 = rx1 + ma;
   beginShape();
   texture(cam);
-  // text(x, y, tx, ty);
   vertex(0, 0, 0, 0);
   vertex(width, 0, cam.width,0);
   vertex(width, height*.2, cam.width, cam.height*.2);
@@ -47,27 +46,26 @@ void draw() {
   endShape();
   popMatrix();
   
-  
   pushMatrix();
   translate(0,height *.3,0);
- float na = map(cc[17], 0,127,.0,.1);
-   rotateX (rx2);
+  float na = map(cc[17], 0,127,.0,.1);
+  rotateX (rx2);
   rx2 = rx2 + na;
   beginShape();
   texture(cam);
-   vertex(0, height*.2, 0, cam.height *.2);
+  vertex(0, height*.2, 0, cam.height *.2);
   vertex(width, height *.2,cam.width, cam.height * .2);
   vertex(width, height * .4, cam.width, cam.height *.4);
   vertex(0, height * .4, 0, cam.height *.4);
   endShape();
   popMatrix();
   
-pushMatrix();
+  pushMatrix();
   translate(0,height *.5,0);
- float oa = map(cc[18], 0,127,.0,.1);
-   rotateX (rx3);
+  float oa = map(cc[18], 0,127,.0,.1);
+  rotateX (rx3);
   rx3 = rx3 + oa;
-   beginShape();
+  beginShape();
   texture(cam);
   vertex(0, height * .4,0, cam.height *.4);
   vertex(width, height * .4, cam.width, cam.height *.4);
@@ -76,12 +74,11 @@ pushMatrix();
   endShape();
   popMatrix();
   
-  //fourth
   pushMatrix();
   translate(0,height *.7,0);
- float pa = map(cc[19], 0,127,.0,.1);
-   rotateX (rx4);
-   rx4 =rx4 +pa;
+  float pa = map(cc[19], 0,127,.0,.1);
+  rotateX (rx4);
+  rx4 =rx4 +pa;
   beginShape();
   texture(cam);
   vertex(0, height *.6, 0, cam.height * .6);
@@ -91,11 +88,11 @@ pushMatrix();
   endShape();
   popMatrix();
   
-    pushMatrix();
+  pushMatrix();
   translate(0,height *.9,0);
- float qa = map(cc[20], 0,127,.0,.1);
-   rotateX (rx5);
-   rx5 =rx5 +qa;
+  float qa = map(cc[20], 0,127,.0,.1);
+  rotateX (rx5);
+  rx5 =rx5 +qa;
   beginShape();
   texture(cam);
   vertex(0, height *.8, 0, cam.height * .8);
@@ -118,11 +115,5 @@ void controllerChange(int channel, int number, int value) {
   println("Number:"+number);
   println("Value:"+value);
   println("Frame rate:"+frameRate);
-  //println("Font:"+fontNames[fontSelect]);   // How can I get it to say the font name, not just the #?
- // println("Font number:"+fontSelect);
   cc[number] = value;  // saves the midi output # to be converted later for what we need
-
- // if (cc[42] == 127) { // Press #42 to pause
-  // pauseToggle = !pauseToggle;
-
-  }
+}
