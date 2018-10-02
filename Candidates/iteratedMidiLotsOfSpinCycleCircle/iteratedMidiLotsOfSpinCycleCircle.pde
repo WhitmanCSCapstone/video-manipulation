@@ -24,8 +24,8 @@ void setup(){
   //vid = new Movie(this, "uuu.mov"); //Crashes when trying to use video? Talk about it 
   //vid.loop();
   //noStroke()
- frameRate(144);
- fill(0);
+  frameRate(144);
+  fill(0);
 
 }
 
