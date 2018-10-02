@@ -17,7 +17,7 @@ float frequency = 20.0;
 AudioIn mic;
 Amplitude amp;
 float rx = 0.0;
-  float ma = 0.0;
+float ma = 0.0;
 boolean back = false;
 /**
  * Texture Quad. 
@@ -56,7 +56,7 @@ void draw() {
  background(0);
     //image( img,0,0, width,height);
   }
-   else{ } 
+  else{ } 
   
   vid.read();
   float vs = map(cc[16], 0,127,.5,2);

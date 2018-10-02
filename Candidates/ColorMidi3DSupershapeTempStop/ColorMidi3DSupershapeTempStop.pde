@@ -9,8 +9,8 @@ import themidibus.*;
 float cc[] = new float[256];
 MidiBus myBus;
 
-import peasy.*;
-PeasyCam cam;
+// import peasy.*;
+// PeasyCam cam;
 
 PVector [][] globe;
 int total = 200;
@@ -18,7 +18,9 @@ float m = 0.0;
 float mchange = 0.0;
 float sm = 0.0;
 float l = 0.0;
-  
+float offset = 0;
+float xoffset = 400;
+float yoffset = 400;
 void setup(){
   size(1280,800,P3D);
   MidiBus.list();  // Shows controllers in the console
@@ -27,7 +29,7 @@ void setup(){
   for (int i = 16; i < 24; i++) {  // Sets only the knobs (16-23) to be reasonable @ start - will still jump
     cc[i] = 20;
   }
-  cam = new PeasyCam(this,1000); //room for optimizing camera location
+  // cam = new PeasyCam(this,1000); //room for optimizing camera location
   colorMode(HSB);
   globe = new PVector[total+ 1][total+ 1];
   noStroke();
@@ -62,38 +64,42 @@ void draw(){
   //timestep
   mchange += sm;
   background(0);
-  
+  noStroke();
   //Generates shadows underfolds of polygons
   lights();
   
   float r = 200;
   total = round(map(polycount,0,127,2,128));
+
   for(int i = 0; i< total+1; i++){
-    float lat = map( i,0, total,- HALF_PI,HALF_PI);
-    float r2 = supershape(lat, m,10.0,10.0,10.0);
+      float lat = map( i,0, total,- HALF_PI,HALF_PI);
+      float r2 = supershape(lat, m,10.0,10.0,10.0);
       for(int j = 0; j< total + 1; j++){
         float lon = map( j,0, total, - PI, PI);
         float r1 = supershape(lon,m,60.0,100.0,30.0);
         float x = r * r1 * cos(lon) * r2 * cos(lat);
         float y = r * r1 *sin(lon) * r1 * r2 * cos(lat);
         float z = r * r2 * sin(lat);
-            globe[i][j] = new PVector(x,y,z);
-            PVector v = PVector.random3D();
-            int u = round(map(vibrations,0,127,0,127));
-            v.mult(u);
-            globe[i][j].add(v);
+        globe[i][j] = new PVector(x,y,z);
+
+        PVector v = PVector.random3D();
+        int u = round(map(vibrations,0,127,0,127));
+        v.mult(u);
+        globe[i][j].add(v);
        }
     }
+    offset+=5;
+    //Swapping where i and j are used to calculate hu switches stripes
+    //adding offset makes them flow in a cool way
   for(int i = 0; i< total; i++){
     beginShape(TRIANGLE_STRIP);
-    for(int j = 0; j< total+ 1; j++){
-      float hu = map(j,0,total,0,255* 6);
-      fill(hu % 255,255,255);
-      noStroke();
+    float hu = map(i,0,total,0,255* 6);
+    fill((hu+offset) % 255,255,255);
+    for(int j = 0; j < total+ 1; j++){
       PVector v1 = globe[i][j];
-      vertex(v1.x,v1.y,v1.z);
+      vertex(v1.x+xoffset,v1.y+yoffset,v1.z);
       PVector v2 = globe[i+1][j];
-      vertex(v2.x,v2.y,v2.z);
+      vertex(v2.x+xoffset,v2.y+yoffset,v2.z);
     }
     endShape();
   }
