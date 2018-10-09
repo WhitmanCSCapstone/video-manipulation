@@ -57,7 +57,6 @@ void draw() {
     if (cam.available() && camTime) {
         cam.read();
     }
-  
     if (cc[60] == 127)  {// If the value of button # 64 ([R]) is 127 (pushed)
       background(0);
       
@@ -97,7 +96,12 @@ void draw() {
     }
 }
 
-
+void keyPressed(){
+  camTime=true; 
+}
+void keyReleased(){
+ camTime = false; 
+}
 void controllerChange(int channel, int number, int value) {
   // Receive a controllerChange
   println();

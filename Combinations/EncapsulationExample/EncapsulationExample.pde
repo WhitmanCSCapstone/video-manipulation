@@ -1,28 +1,44 @@
 import themidibus.*;
 float cc[] = new float[256];
+float dd[] = new float[256];
 MidiBus myBus;
-Supershape s = new Supershape(900,900);
-Supershape b = new Supershape(400,400);
 
-void setup() 
-{
+Drip[] drips = new Drip[3];
+Supershape s = new Supershape(40,40);
+boolean switcher = false;
+
+void setup() {
   size(1920,1080,P3D);
+  // Setting up midi controller
   MidiBus.list();  // Shows controllers in the console
-  myBus = new MidiBus(this, "nanoKONTROL2","CTRL");  // input and output g:-- Changed from SLIDER/KNOB for windows
-  
-  for (int i = 16; i < 24; i++) {  // Sets only the knobs (16-23) to be reasonable @ start - will still jump
-    cc[i] = 20;
+  myBus = new MidiBus(this, "nanoKONTROL2","CTRL");  // input and output
+
+  for(int i=0; i<drips.length; i++) {
+    drips[i] = new Drip(random(width), random(height),s);
   }
-  // cam = new PeasyCam(this,1000); //room for optimizing camera location
-  colorMode(HSB);
-  noStroke();
 }
 
-void draw() { 
-  background(204);
-  s.update(); 
-  b.update();  
-} 
+void draw() {
+  noStroke();
+  
+  float redBG = map(cc[0],0,127,0,255);   //
+  float greenBG = map(cc[1],0,127,0,255); //  BG color on first 3 sliders
+  float blueBG = map(cc[2],0,127,0,255);  //
+  float alpha = map(cc[16],0,127,0,255);
+  fill(redBG, greenBG, blueBG, alpha);
+  rect(0, 0, width, height);
+  
+  int divisor = int(map(cc[17],0,127,1,10));
+  
+  for(int i=0; i<drips.length; i++) {
+    drips[i].fall(divisor, new PVector(map(cc[18],0,127,-1,1),map(cc[19],0,127,-1,1)));  // Dial #18 controls direction
+  }
+}
+
+void mousePressed() {
+  Drip b = new Drip((float)mouseX,(float)mouseY,s));
+  drips.append(b);
+}
 
 void controllerChange(int channel, int number, int value) {
   // Receive a controllerChange
@@ -32,6 +48,18 @@ void controllerChange(int channel, int number, int value) {
   println("Channel:"+channel);
   println("Number:"+number);
   println("Value:"+value);
-  println("Frame rate:"+frameRate);
-  cc[number] = value;  // saves the midi output # to be converted later for what we need
+  if(number == 32 && value == 127)
+    switcher = !switcher;
+  if(!switcher)
+  {
+    print("Drops");  
+    cc[number] = value;  // saves the midi output # to be converted later for what we need
+  }
+  else{
+    dd[number] = value;
+    print("Shapes");
+    for(int i=0; i<drips.length; i++) {
+      drips[i].updateArray();  // Dial #18 controls direction
+    }
+  }
 }
