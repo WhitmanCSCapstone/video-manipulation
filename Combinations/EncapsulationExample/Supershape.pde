@@ -15,8 +15,9 @@ class Supershape{
   float vibrations = random(0,60);
   float period = random(0,60);
   float timestep = random(0,60);
-  float xvel = random(-5,5);
-  float yvel = random(-5,5);
+  
+  //float xvel = random(-5,5);
+  //float yvel = random(-5,5);
 
   Supershape(float xpos, float ypos){
     xoffset =xpos;
@@ -34,32 +35,36 @@ class Supershape{
     return r;
   }
 
-void update(){
-  //g: for all sketches, save cc to variables for clarity before doing stuff on them
-  
-  //Identify variables:
-  // float polycount = cc[16];
-  // float vibrations = cc[17];
-  // float period = cc[18];
-  // float timestep = cc[19];
-  xoffset += xvel;
-  yoffset+= yvel;
+  void update(float xoff, float yoff){
+    //g: for all sketches, save cc to variables for clarity before doing stuff on them
+    
+    //Identify variables:
+    // float polycount = cc[16];
+    // float vibrations = cc[17];
+    // float period = cc[18];
+    // float timestep = cc[19];
+    //xoffset += xvelo;
+    //yoffset+= yvelo;
+    if (xoff != -1 && yoff!=-1)
+    {
+      xoffset = xoff;
+      yoffset = yoff;
+    }
+    l = map(timestep,0,127,1,127);
+    m = map(sin(mchange),-1,1,0,l);
+    sm = map(period,0,127,0.0, 0.009);
+    
+    //timestep
+    mchange += sm;
+    // background(0);
+    noStroke();
+    //Generates shadows underfolds of polygons
+    lights();
+    
+    float r = 200;
+    total = round(map(polycount,0,127,2,128));
 
-  l = map(timestep,0,127,1,127);
-  m = map(sin(mchange),-1,1,0,l);
-  sm = map(period,0,127,0.0, 0.009);
-  
-  //timestep
-  mchange += sm;
-  // background(0);
-  noStroke();
-  //Generates shadows underfolds of polygons
-  lights();
-  
-  float r = 200;
-  total = round(map(polycount,0,127,2,128));
-
-  for(int i = 0; i< total+1; i++){
+    for(int i = 0; i< total+1; i++){
       float lat = map( i,0, total,- HALF_PI,HALF_PI);
       float r2 = supershape(lat, m,10.0,10.0,10.0);
       for(int j = 0; j< total + 1; j++){
@@ -74,22 +79,22 @@ void update(){
         int u = round(map(vibrations,0,127,0,127));
         v.mult(u);
         globe[i][j].add(v);
-       }
+      }
     }
     offset+=5;
     //Swapping where i and j are used to calculate hu switches stripes
     //adding offset makes them flow in a cool way
-  for(int i = 0; i< total; i++){
-    beginShape(TRIANGLE_STRIP);
-    float hu = map(i,0,total,0,255* 6);
-    fill((hu+offset) % 255,255,255);
-    for(int j = 0; j < total+ 1; j++){
-      PVector v1 = globe[i][j];
-      vertex(v1.x+xoffset,v1.y+yoffset,v1.z);
-      PVector v2 = globe[i+1][j];
-      vertex(v2.x+xoffset,v2.y+yoffset,v2.z);
+    for(int i = 0; i< total; i++){
+      beginShape(TRIANGLE_STRIP);
+      float hu = map(i,0,total,0,255* 6);
+      fill((hu+offset) % 255,255,255);
+      for(int j = 0; j < total+ 1; j++){
+        PVector v1 = globe[i][j];
+        vertex(v1.x+xoffset,v1.y+yoffset,v1.z);
+        PVector v2 = globe[i+1][j];
+        vertex(v2.x+xoffset,v2.y+yoffset,v2.z);
+      }
+      endShape();
     }
-    endShape();
   }
-}
 }
