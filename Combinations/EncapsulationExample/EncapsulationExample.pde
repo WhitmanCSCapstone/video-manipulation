@@ -8,7 +8,7 @@ Supershape s = new Supershape(40,40);
 boolean switcher = false;
 
 void setup() {
-  size(1920,1080,P3D);
+  size(2560,1800,P3D);
   // Setting up midi controller
   MidiBus.list();  // Shows controllers in the console
   myBus = new MidiBus(this, "nanoKONTROL2","CTRL");  // input and output
@@ -31,13 +31,13 @@ void draw() {
   int divisor = int(map(cc[17],0,127,1,10));
   
   for(int i=0; i<drips.length; i++) {
-    drips[i].fall(divisor, new PVector(map(cc[18],0,127,-1,1),map(cc[19],0,127,-1,1)));  // Dial #18 controls direction
+    drips[i].fall(divisor, new PVector(map(cc[18],0,127,-1,1),map(cc[19],0,127,-1,1)));  // Dial #18/19 controls direction
   }
 }
 
 void mousePressed() {
-  Drip b = new Drip((float)mouseX,(float)mouseY,s));
-  drips.append(b);
+  Drip b = new Drip((float)mouseX,(float)mouseY,s);
+  drips = (Drip[])append(drips,b);
 }
 
 void controllerChange(int channel, int number, int value) {

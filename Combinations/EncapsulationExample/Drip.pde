@@ -30,6 +30,7 @@ class Drip {  // Make same name as the file
       loc.x = 0;
     if (loc.x < 0)
       loc.x = width;
+      
     s.update(loc.x,loc.y);
   }
 }
