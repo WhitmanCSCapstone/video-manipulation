@@ -18,3 +18,9 @@
 *.jpg
 
 *.vlw
+
+*.autosave
+
+Candidates/SwappingExamplesketchandTexture/_DS_Store
+
+*.txt
