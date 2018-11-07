@@ -6,10 +6,10 @@
 import themidibus.*;
 float cc[] = new float[256];
 MidiBus myBus;
-
+Capture cam;
 import processing.video.*;
-Movie vid;
-
+Movie mov;
+PGraphics vid;
 import processing.sound.*;
 float inc = 0;
 float amplitude = 0.05;
@@ -18,7 +18,9 @@ AudioIn mic;
 Amplitude amp;
 float rx = 0.0;
 float ma = 0.0;
-boolean back = false;
+boolean stime = false;
+boolean movtime = false;
+boolean camTime = true;
 /**
  * Texture Quad. 
  * 
@@ -29,7 +31,7 @@ boolean back = false;
 PImage img;
 
 void setup() {
-  size(1280, 820, P3D);
+  size(1280, 720, P3D);
   MidiBus.list();  // Shows controllers in the console
   myBus = new MidiBus(this, "nanoKONTROL2","CTRL");  // input and output
   // g: nanoKONTROL2 is something I added here. Previously it said SLIDER/KNOB. Possible need for WINdows compatibility and checking OS at launch.
@@ -37,9 +39,12 @@ void setup() {
   for (int i = 16; i < 24; i++) {  // Sets only the knobs (16-23) to be max @ start
     cc[i] = 127/2;
   }
+  cam = new Capture(this, 1280,720);
+  cam.start();
+  mov = new Movie(this, "GG45.mov");
+  mov.loop();
+  vid = createGraphics(800,800);
   
-  vid = new Movie(this, "GG45.mov");
-  vid.loop();
   mic = new AudioIn(this,0);
   mic.start();
   amp = new Amplitude(this);
@@ -47,20 +52,18 @@ void setup() {
   img = loadImage("background.png"); 
   noStroke();
   background(0);
+  set1();
 }
 
 void draw() {
-  //if (back) {
+    if (cam.available() && camTime) {
+      //print("readingcam");
+        cam.read();
+    }
+    if(movtime)
+    mov.read();
   
- if (cc[60] == 127)  {// If the value of button # 64 ([R]) is 127 (pushed)
- background(0);
-    //image( img,0,0, width,height);
-  }
-  else{ } 
-  
-  vid.read();
-  float vs = map(cc[16], 0,127,.5,2);
-  vid.speed(vs);
+
   float fillOpacity =  map(cc[20], 0, 127,0, 255);
   tint(255,fillOpacity);
   translate(width / 2, height/2);
@@ -75,7 +78,31 @@ void draw() {
   float rZ = map(cc[19], 0,127,radians(0),radians(360));
   rotateZ(rZ);
   beginShape();
-  texture(vid);
+  if (stime)
+  {
+    vid.beginDraw();
+    update(vid);
+    vid.endDraw();  
+    texture(vid);
+  }
+  if(camTime)
+  {
+    print("camtime");
+   //vid.beginDraw();
+   //ucam(vid);
+   //vid.endDraw();
+   texture(cam);
+  }
+  if(movtime)
+  {
+    print("movtime");
+   //vid.beginDraw();
+   //ucam(vid);
+   //vid.endDraw();
+   texture(mov);
+  }
+  
+  
   vertex(-600, -400, 0, 0, 0);
   vertex(600, -400, 0, vid.width, 0);
   vertex(600, 400, 0, vid.width, vid.height);
@@ -87,7 +114,6 @@ void draw() {
   }
 }
 
-
 void controllerChange(int channel, int number, int value) {
   // Receive a controllerChange
   println();
@@ -98,9 +124,23 @@ void controllerChange(int channel, int number, int value) {
   println("Value:"+value);
   println("Frame rate:"+frameRate);
   cc[number] = value;  // saves the midi output # to be converted later for what we need
-
-   
+  if (value == 127){
+  if (number == 60){
+     camTime = true;
+     stime=false;
+     movtime=false;
+  }
+  if(number == 61){
+      stime = true;
+      camTime=false;
+      movtime=false;
+  }
+  if(number == 62){
+   movtime = true;
+   stime = false;
+   camTime=false;
+  }
+  }
  // if (cc[42] == 127) { // Press #42 to pause
   // pauseToggle = !pauseToggle;
   }
- //}

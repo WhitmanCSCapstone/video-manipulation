@@ -23,7 +23,7 @@ void ucam(PGraphics p) {
     //float rZ = map(cc[19], 0,127,radians(0),radians(360));
     //rotateZ(rZ);
     //beginShape();
-    if(s3){
+    if(camTime){
       p.background(0);
       p.image(cam,-500,-500,p.width,p.height);
 }else{

@@ -40,7 +40,7 @@ void setup() {
   
   // Setting up midi controller
   MidiBus.list();  // Shows controllers in the console
-  myBus = new MidiBus(this, "SLIDER/KNOB","CTRL");  // input and output
+  myBus = new MidiBus(this, "nanoKONTROL2","CTRL");  // input and output
   
   for (int i = 16; i < 24; i++) {  // Sets only the knobs (16-23) to be max @ start
     cc[i] = 127;

@@ -1,6 +1,5 @@
 /*
-  FlipMidiXYZ_withCamZoomAndBackgroundAndVid: Pommegranate.
-  Uses Midi controller to rotate and modify an input video. 
+  Swapping Example. Prototyping code for final iteration.
 */
 
 import themidibus.*;
@@ -14,19 +13,15 @@ import processing.sound.*;
 float inc = 0;
 float amplitude = 0.05;
 float frequency = 20.0;
-AudioIn mic;
-Amplitude amp;
 float rx = 0.0;
 float ma = 0.0;
-boolean stime = false;
-boolean movtime = false;
-boolean camTime = true;
-/**
- * Texture Quad. 
- * 
- * Load an image and draw it onto a quad. The texture() function sets
- * the texture image. The vertex() function maps the image to the geometry.
- */
+
+AudioIn mic;
+Amplitude amp;
+
+boolean s1 = false;
+boolean s2 = false;
+boolean s3 = true;
 
 PImage img;
 
@@ -56,11 +51,11 @@ void setup() {
 }
 
 void draw() {
-    if (cam.available() && camTime) {
+    if (cam.available() && s3) {
       //print("readingcam");
         cam.read();
     }
-    if(movtime)
+    if(s2)
     mov.read();
   
 
@@ -78,24 +73,24 @@ void draw() {
   float rZ = map(cc[19], 0,127,radians(0),radians(360));
   rotateZ(rZ);
   beginShape();
-  if (stime)
+  if (s1)
   {
     vid.beginDraw();
     update(vid);
     vid.endDraw();  
     texture(vid);
   }
-  if(camTime)
+  if(s3)
   {
-    print("camtime");
+    print("s3");
    //vid.beginDraw();
    //ucam(vid);
    //vid.endDraw();
    texture(cam);
   }
-  if(movtime)
+  if(s2)
   {
-    print("movtime");
+    print("s2");
    //vid.beginDraw();
    //ucam(vid);
    //vid.endDraw();
@@ -126,19 +121,19 @@ void controllerChange(int channel, int number, int value) {
   cc[number] = value;  // saves the midi output # to be converted later for what we need
   if (value == 127){
   if (number == 60){
-     camTime = true;
-     stime=false;
-     movtime=false;
+     s3 = true;
+     s1=false;
+     s2=false;
   }
   if(number == 61){
-      stime = true;
-      camTime=false;
-      movtime=false;
+      s1 = true;
+      s3=false;
+      s2=false;
   }
   if(number == 62){
-   movtime = true;
-   stime = false;
-   camTime=false;
+   s2 = true;
+   s1 = false;
+   s3=false;
   }
   }
  // if (cc[42] == 127) { // Press #42 to pause
