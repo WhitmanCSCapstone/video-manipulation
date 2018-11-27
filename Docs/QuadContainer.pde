@@ -26,13 +26,13 @@ public void selectNewQuad(int selectID);
 
 /*
  * Deprecated: Update the properties using the values in a given list of Input objects
- * @input params Array of input objects to pull update values from.
+ * @arg params Array of input objects to pull update values from.
  */
 public void updateProps(input[] params);
 
 /*
  * Use given params to tell selected quad to draw to a specific buffer
- * @input params array of doubles containing the paramaters the quad should use to draw.
+ * @arg params array of doubles containing the paramaters the quad should use to draw.
  */
 public void drawToBuffer(double[] params);
 

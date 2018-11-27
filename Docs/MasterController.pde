@@ -37,14 +37,14 @@ private void notifyInputController(Input []);
 
 /* 
  * Used to create an FFT object. 
- * @input AudioDevice an object that contains the audio source to FFT
+ * @arg AudioDevice an object that contains the audio source to FFT
  * @return FFT object created from the AudioDevice input
  */
 public FFT setupFFT(AudioDevice);
 
 /*
  * Tell QuadContainer to switch the currently selected quad
- * @input quadIndex the number of the quad to switch to
+ * @arg quadIndex the number of the quad to switch to
  */
 public void switchQuad(int quadIndex);
 
