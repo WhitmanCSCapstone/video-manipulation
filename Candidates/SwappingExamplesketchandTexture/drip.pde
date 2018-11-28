@@ -14,10 +14,16 @@ class RAINBOW extends QUAD{
     p.noStroke();
     
     float redBG = map(cc[1],0,127,0,255);   //
+    if(bb[65])
+      redBG += map(fftAvg,0,20,0,127);
     float greenBG = map(cc[2],0,127,0,255); //  BG color on first 3 sliders
+    if(bb[66])
+      greenBG += map(fftAvg,0,20,0,127);
     float blueBG = map(cc[3],0,127,0,255);  //
+    if(bb[67])
+      blueBG += map(fftAvg,0,20,0,127);
     float alpha = map(cc[23],0,127,0,255);
-    p.fill(redBG, greenBG, blueBG, alpha);
+    p.fill(min(redBG,255), min(greenBG,255), min(blueBG,255), alpha);
     p.rect(0, 0, p.width, p.height);
     
     int divisor = int(map(cc[21],0,127,50,1));

@@ -17,6 +17,7 @@ class SLATS extends QUAD{
     cam = new Movie(app,"GG45.mov");
     cam.loop();
     noStroke();
+    cam.pause();
   }
   
   void update(PGraphics p) {
