@@ -11,7 +11,7 @@ public interface PropertyHandler {
 
 	/*
 	 * Call this function to tell this object to modify the behavior of the QuadObject its connected to.
-	 * @arg val the input value that this object will use to maniuplate the QuadObject from its current state.
+	 * @param val the input value that this object will use to maniuplate the QuadObject from its current state.
 	 */
 	public void handleInput(double val);
 
