@@ -109,9 +109,6 @@ void draw() {
   vertex(-600, 400, 0, 0, vid.height);
   endShape();
   camera(width/2, height/2, (height/2) / tan(PI/map(cc[0],0,127,8, 4)), width/2, height/2, 0, 0, 1, 0);
-  if (cc[45] == 127) { // Press #45 to save an image
-    saveImage();       // See save function
-  }
 }
 
 void controllerChange(int channel, int number, int value) {

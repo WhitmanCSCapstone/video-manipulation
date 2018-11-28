@@ -41,9 +41,10 @@ class CHANGINGFONTS extends QUAD{
     words = split(joinLines, " ");   // splits paragraph (long single string) at spaces (" ") into different cells
     
     // Array of font names
-    String[] fontNames = {"Wingdings2-500.vlw","SnellRoundhand-Bold-500.vlw", "SynchroLET-500.vlw", "Monaco-500.vlw", "NanumBrush-500.vlw", 
-                           "Helvetica-500.vlw", "Palatino-Roman-500.vlw", "Impact-500.vlw"};
-                          
+    //String[] fontNames = {"Wingdings2-500.vlw","SnellRoundhand-Bold-500.vlw", "SynchroLET-500.vlw", "Monaco-500.vlw", "NanumBrush-500.vlw", 
+                           //"Helvetica-500.vlw", "Palatino-Roman-500.vlw", "Impact-500.vlw"};
+    String[] fontNames = {"Impact-500.vlw"};
+    //                       "Helvetica-500.vlw", "Palatino-Roman-500.vlw", "Impact-500.vlw"};
     // Array of actual fonts, loaded using names in array above
     fonts = new PFont[fontNames.length];   // Make its size match the # of fonts
   
@@ -58,30 +59,30 @@ class CHANGINGFONTS extends QUAD{
       p.background(255);
       if(redToggle){
         // BACKGROUND ALPHA CONTROL: for fade  
-        float BG_AlphaControl = map(cc[16],0,127,0,255);
+        float BG_AlphaControl = map(cc[23],0,127,0,255);
         // --------------------
         // TEXT ALPHA CONTROL:
         float textAlphaControl = map(cc[23],0,127,0,255);
         // --------------------
         // SPEED CONTROL: how often to change the word (if (frameCount % speed == 0...)) 
-        int speedControl = round(map(cc[17],0,127,30,2));  // Shouldn't be float b/c % 0
+        int speedControl = round(map(cc[21],0,127,30,2));  // Shouldn't be float b/c % 0
         // --------------------
         // TEXT BOX SIZE CONTROL: how much of the screen text should take up (in box)
         float boxSizeControl = map(cc[18],0,127,0.3,.9);
         // --------------------
         // MAX SIZE CONTROL: changing the biggest font sizes to match b/w short and long words
         // The fraction of the screen height to allow the font to be (if short word)
-        float fontSizeControl = map(cc[19],0,127,0.2,1);
+        float fontSizeControl = map(cc[22],0,127,0.2,1);
         // --------------------
         // FONT SELECTION
         //int fontSpeedControl = round(map(cc[20],0,127,500,10));  // This is for changing the speed at which the fonts cycle rather than custom selection
         fontSelect = int(random(0,fonts.length-1));  // Pick font based on dial
         // --------------------
         // LEFT AND RIGHT
-        float xPos = map(cc[21], 0, 127, 0, width);
-        // --------------------
-        // UP AND DOWN
-        float yPos = map(cc[22], 0, 127, height, 0);
+        //float xPos = map(cc[21], 0, 127, 0, width);
+        //// --------------------
+        //// UP AND DOWN
+        //float yPos = map(cc[22], 0, 127, height, 0);
         // --------------------
         // TEXT RGB
         red = map(cc[1], 0, 127, 0, 255);
@@ -97,15 +98,15 @@ class CHANGINGFONTS extends QUAD{
         float fontSize = 100;   // arbitrary, just for calculating correct size below
         //int mf = random
         p.textFont(fonts[fontSelect], fontSize);   // Tell the computer that size for the following calculations
-        float maxSizeW = fontSize/p.textWidth(words[wordIndex]) * (width*boxSizeControl);
-        float maxSizeH = fontSize/(textDescent()+p.textAscent()) * (height*boxSizeControl);
+        float maxSizeW = fontSize/p.textWidth(words[wordIndex]) * (p.width*boxSizeControl);
+        float maxSizeH = fontSize/(textDescent()+p.textAscent()) * (p.height*boxSizeControl);
         p.fill(255, BG_AlphaControl);  // fills screen-sized rectangle (below) with white w/ opacity determined by midi
-        p.rect(0,0,width,height);
+        p.rect(0,0,p.width,p.height);
         p.fill(0);
         fontSize = (min(maxSizeW, maxSizeH));   // Reset fontSize to be the smaller of the two possible maximums for height and width
         fontSize = min(fontSize, fontSizeControl*height*boxSizeControl);
         p.textSize(fontSize);
-        p.text(wordtoshow, xPos, yPos);
+        p.text(wordtoshow, p.width/2, p.height/2);
         //stroke(0);
         //strokeWeight(0.1*fontSize);
         // if(textWidth(wordtoshow)>5) {
