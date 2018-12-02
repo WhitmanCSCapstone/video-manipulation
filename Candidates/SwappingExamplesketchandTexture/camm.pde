@@ -4,8 +4,8 @@
  * Load an image and draw it onto a quad. The texture() function sets
  * the texture image. The vertex() function maps the image to the geometry.
  */
-
-void ucam(PGraphics p) {
+class UCAM extends QUAD{
+  void update(PGraphics p) {
     
     float vs = map(cc[16], 0,127,.5,2);
     mov.speed(vs);
@@ -16,4 +16,6 @@ void ucam(PGraphics p) {
 
       p.image(mov,0,0);
     } 
+}
+  
 }
