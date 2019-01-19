@@ -28,3 +28,5 @@ class MidiInput extends Input{
     public void updateVal(double inputVal){}
     private double mapVal(double inputVal){}
     */
+
+}
