@@ -1,29 +1,6 @@
 /*
-  Some changes:
-    The knobs controlling the rainbow drip have been changed to the last 3. (dir1,dir2,alpha)
-    Code supports lighting up the midi controller. (Let me know if it no longer works the other way)
-      For lighting up the midi controller - Consider downloading the korg driver for nanoKONTROL2 at https://www.korg.com/us/support/download/software/0/159/1354/
-      Open and connect to the controller, then click the northwest-most button. Change led mode to EXTERNAL.
-      Changes in the code are in setting up the controller (needs an output), and when the controller is updated, send it a signal
-    Drawing method has changed:
-      Much more clear how sketches are drawn to the main video quad. 
-      Sketches can be drawn over each other.
-        In the case of sketches which draw to a background, their individual background alpha can be changed to overwrite others (to an extent)
-          Currently there is a predefined order in which the sketches draw, it would not be hard to make that based on the order they are added via controller.
-    
-    TODO:
-      Automate sketch translation to draw on a PGraphics object instead. 
-      Add sound.
-      Movie pausing and resuming is easy. Let me know if it is a priority to add it.
-      Organizing which knobs control what is still up in the air. The text sketch here uses almost all the knobs. They can be consolidated to the last 3
-        or there can be a button which controls what knobs are affecting what. Previously we considered that a limitation of the controller though. 
-      Setting the first few knobs to what you wanted. Controls are still all over the place. 
-      WE GOT LIGHTS WORKING THOUGH!
-      
-      Stopping. 
-      SPEED AND FADE MORE IMPORTANT
+  Comments go here.
 */
-
 import themidibus.*;
 import java.util.*;
 float cc[] = new float[256];
@@ -56,7 +33,8 @@ int specSize;
 int targetFreq = 10; // Low is for lower frequencies
 int bandwidth = 20; //Width of frequency band, larger is a smoother responce
 float fftAvg = 0;
-boolean isLive = false;
+boolean soundLive = true;
+boolean camLive = true;
 float rx = 0.0;
 float ry = 0.0;
 float mx = 0.0;
@@ -65,24 +43,51 @@ float my = 0.0;
 //This begins by displaying No sketches.
 boolean s1 = false;
 boolean s2 = false;
-boolean s3 = false;
+boolean s3 = true;
+boolean s4 = false;
 PImage img;
 //BIT b;
 CHANGINGFONTS cf;
 RAINBOW r;
 SLATS s;
 UCAM uc;
+CIRCLE cir;
 List<QUAD> quads;
 
+boolean reset = false;
+boolean resumespin = false;
+void loadBoard()
+{
+  bb[45] = soundLive;  //Allows for controller updating on program start, so the controller always reflects on state
+                    //Can be adapted to other properties in future 
+  bb[41] = camLive;
+  bb[42] = reset;
+  bb[32] = s1;
+  bb[33] = s2;
+  bb[34] = s3;
+  bb[35] = s4;
+  for(int i = 32; i < 72;i++) // Update sketches to reflect true state
+  {
+    if(bb[i])
+      myBus.sendControllerChange(0,i,127); //true
+    else
+      myBus.sendControllerChange(0,i,0); //false
+  }
+  for (int i = 16; i < 20; i++) {  // Sets only the knobs (16-19) to be med @ start
+   cc[i] = 63.5;
+  }
+  cc[20] = 127;//fade off to start
+  //Last 3 knobs start at 0
+}
 void setup() {
-  size(1280,720, P3D);
+  size(3800,2100, P3D);
+  //fullScreen(P3D);
   MidiBus.list();  // Shows controllers in the console
   myBus = new MidiBus(this, "nanoKONTROL2","nanoKONTROL2");  // input and output
   // g: nanoKONTROL2 is something I added here. Previously it said SLIDER/KNOB, CTRL. Possible need for WINdows compatibility and checking OS at launch.
   // Second parameter is output, necessary for setting lights of the knob.
-
   
-  vid = createGraphics(1280,720,P3D);
+  vid = createGraphics(1920,1080,P3D);
   img = loadImage("background.png"); 
   
   noStroke();
@@ -92,15 +97,17 @@ void setup() {
   //b = new BIT();
   cf = new CHANGINGFONTS();
   r = new RAINBOW();
-  s = new SLATS();
-  //uc = new UCAM();
+  //s = new SLATS();
+  cir = new CIRCLE();
+  uc = new UCAM();
   //We add them to the quad array to call them in the same way.
   quads = new ArrayList<QUAD>();
   //quads.add(b);
   quads.add(cf);
+  quads.add(cir);
   quads.add(r);
-  quads.add(s);
-
+  //quads.add(s);
+  quads.add(uc);
   for(int i = 0;i<quads.size();i++)
   {
     quads.get(i).setup(this,vid); // Not all sketches use the PApplet or PGraphics parameter but it doesn't hurt to pass them around
@@ -109,11 +116,11 @@ void setup() {
   minim = new Minim(this); //minum works better for fft I think, it is also easier to swap between prerecorded and live audio
   //I have noticed a delay in live audio though, which isn't seen when a mp3 is used.
   in = minim.getLineIn(Minim.STEREO, 512);
-  kick = minim.loadFile("hydrogen.mp3", // filename
+  kick = minim.loadFile("maniac.mp3", // filename
                             1024      // buffer size
                          );
                          if ( kick == null ) println("Didn't get kick!");
-  if(isLive){
+  if(soundLive){
     fft = new FFT(in.bufferSize(), in.sampleRate());
   }
   else
@@ -124,22 +131,12 @@ void setup() {
   specSize = fft.specSize();
   fftSmooth = new float[specSize];
   fftReal   = new float[specSize];
-  bb[45] = isLive;  //Allows for controller updating on program start, so the controller always reflects on state
-                    //Can be adapted to other properties in future 
-  if(bb[45])
-    myBus.sendControllerChange(0,45,127); //true
-  else
-    myBus.sendControllerChange(0,45,0); //false
-  for (int i = 16; i < 19; i++) {  // Sets only the knobs (16-19) to be med @ start
-   cc[i] = 127/2;
-  }
-  cc[20] = 127;//fade off to start
-  //Last 3 knobs start at 0
+  loadBoard();
 }
 
 float doFFT(){
   smoothing = map(cc[7],0,127,0.0,1.0); //Controls FFT smoothing
-  if(bb[45])//isLive
+  if(bb[45])//soundLive
     fft.forward(in.left);
   else
     fft.forward(kick.mix);
@@ -173,38 +170,41 @@ void draw() {
     adjust = map(fftAvg,0,60,0,255);
   }
   tint(255,min(fillOpacity+adjust,255));
-  translate(width / 2, height/2);
-  adjust = 0;
-
-  float xskew = map(cc[16],0,127,radians(0),radians(360));
-  mx = map(cc[17], 0,127,-.2,.2);
-  if(bb[48])
-    xskew += map(fftAvg,0,20,0,PI/16); //offset for fft x 
-  if(bb[49])
-    adjust += map(fftAvg,0,20,-PI/64,PI/64);//rotation
-  rotateX (rx + adjust + xskew);
-  rx += mx + adjust;
-  adjust = 0;
   
-  float yskew = map(cc[18], 0,127,radians(0),radians(360));
-  my = map(cc[19], 0,127,-.2,.2);
-  if(bb[50])
-    yskew += map(fftAvg,0,20,0,PI/16); //offset for fft y 
-  if(bb[51])
-    adjust = map(fftAvg,0,20,-PI/64,PI/64); //y rotation
-  rotateY(ry + adjust + yskew);
-  ry += my + adjust;
   adjust = 0;
-
-  //Z rotation currently disabled
-  // float rZ = map(cc[19], 0,127,radians(0),radians(360));
-  // if(bb[51])
-  //   adjust = map(fftAvg,0,20,0,PI/8); //offset for fft z
-  // rotateZ(rZ+adjust);
-  // adjust = 0;
+  if(!reset){
+    translate(width / 2, height/2);
+    float xskew = map(cc[16],0,127,radians(0),radians(360));
+    mx = map(cc[17], 0,127,-.09,.09);
+    if(bb[48])
+      xskew += map(fftAvg,0,20,0,PI/16); //offset for fft x 
+    if(bb[49])
+      adjust += map(fftAvg,0,20,0,PI/64);//rotation
+    rotateX (rx + adjust + xskew);
+    rx += mx + adjust;
+    adjust = 0;
+    
+    float yskew = map(cc[18], 0,127,radians(0),radians(360));
+    my = map(cc[19], 0,127,-.09,.09);
+    if(bb[50])
+      yskew += map(fftAvg,0,20,0,PI/16); //offset for fft y 
+    if(bb[51])
+      adjust = map(fftAvg,0,20,0,PI/64); //y rotation
+    rotateY(ry + adjust + yskew);
+    ry += my + adjust;
+    adjust = 0;
+  
+    //Z rotation currently disabled
+    // float rZ = map(cc[19], 0,127,radians(0),radians(360));
+    // if(bb[51])
+    //   adjust = map(fftAvg,0,20,0,PI/8); //offset for fft z
+    // rotateZ(rZ+adjust);
+    // adjust = 0;
+  }
+  
 
   beginShape();
-  if (s1)
+  if(s1)
   {
     vid.beginDraw();
     quads.get(0).update(vid);
@@ -222,25 +222,39 @@ void draw() {
    quads.get(2).update(vid);
    vid.endDraw();
   }
+  if(s4)
+  {
+   vid.beginDraw();
+   quads.get(3).update(vid);
+   vid.endDraw();
+  }
   texture(vid);
-  
-  vertex(-600, -400, 0, 0, 0);
-  vertex(600, -400, 0, vid.width, 0);
-  vertex(600, 400, 0, vid.width, vid.height);
-  vertex(-600, 400, 0, 0, vid.height);
+  if(!reset){
+    //CHANGE THESE FOR A BIGGER GRAPHICS BUFFER
+    vertex(-600, -400, 0, 0, 0);
+    vertex(600, -400, 0, vid.width, 0);
+    vertex(600, 400, 0, vid.width, vid.height);
+    vertex(-600, 400, 0, 0, vid.height);
+  }
+  else{
+    vertex(0, 0, 0, 0, 0);
+    vertex(width, 0, 0, vid.width, 0);
+    vertex(width, height, 0, vid.width, vid.height);
+    vertex(0, height, 0, 0, vid.height);
+  }
   endShape();
-
+  //CHANGE THESE FOR A BIGGER GRAPHICS BUFFER
+  
+  
   if(bb[64]) //zoom
     adjust = map(fftAvg,0.0,20.0,0.0,40.0); //zoom mapped to fft
-  camera(width/2, height/2, (height/2) / tan(PI/map(cc[0]+adjust,0,127,8, 4)), width/2, height/2, 0, 0, 1, 0);
+  //camera(width/2, height/2, (height/2) / tan(PI/map(cc[0]+adjust,0,127,8, 4)), width/2, height/2, 0, 0, 1, 0);
   //background(bigColor);
 }
 
 void controllerChange(int channel, int number, int value) {
   // Receive a controllerChange
   println();
-  println("Controller Change:");
-  println("--------");
   println("Channel:"+channel);
   println("Number:"+number);
   println("Value:"+value);
@@ -258,28 +272,44 @@ void controllerChange(int channel, int number, int value) {
       myBus.sendControllerChange(channel,number,127); 
     }
     if (number == 32){
-       s2 = !s2;
+       s1 = !s1;
        //s1=false;
        //s3=false;
     }
     else if(number == 33){
-        s1 = !s1;
+        s2 = !s2;
         //s2=false;
         //s3=false;
     }
     else if(number == 34){
      s3 = !s3;
-     //Pauses and plays the video
-     if(!s3)
-      s.cam.pause();
-     else
-       s.cam.play();
      //s1 = false;
      //s2=false;
     }
+    else if(number == 35){
+     s4 = !s4;
+     //s1 = false;
+     //s2=false;
+    }
+    else if(number == 41){
+     camLive = bb[number];
+     if(camLive)
+     {
+       mov.pause();
+     }
+     else
+       mov.play();
+     //s1 = false;
+     //s2=false;
+    }
+    else if(number == 42)
+    {
+     reset = bb[42];
+     resumespin = !reset;
+    }
     else if(number == 45)//swapping live and recorded audio
     {
-      isLive = bb[number];
+      soundLive = bb[number];
       if(bb[number])
       {
         kick.pause(); //optionally pause the audio while switching to live sound
@@ -296,13 +326,13 @@ void controllerChange(int channel, int number, int value) {
     }
     else if(number == 62) //controlling the target frequency for the fft
     {
-      targetFreq = min(500, targetFreq+10);
-      println(targetFreq);
+      targetFreq = min(20, targetFreq+1);
+      println("Frequency:" +targetFreq);
     }
     else if(number == 61)
     {
-      targetFreq = max(0,targetFreq - 10);
-      println(targetFreq);
+      targetFreq = max(0,targetFreq - 1);
+      println("Frequency:" +targetFreq);
     }
   }
   else{
