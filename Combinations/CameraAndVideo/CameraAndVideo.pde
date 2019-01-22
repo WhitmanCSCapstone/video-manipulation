@@ -34,7 +34,7 @@ PImage img;
 void setup() {
   size(1280, 820, P3D);
   MidiBus.list();  // Shows controllers in the console
-  myBus = new MidiBus(this, "nanoKONTROL2","SLIDER/KNOB","CTRL");  // input and output
+  myBus = new MidiBus(this, "SLIDER/KNOB","CTRL");  // input and output
   // g: nanoKONTROL2 is something I added here. Previously it said SLIDER/KNOB. Possible need for WINdows compatibility and checking OS at launch.
   cam = new Capture(this, 1280,720);
   cam.start();
@@ -42,13 +42,13 @@ void setup() {
     cc[i] = 127/2;
   }
   
-  vid = new Movie(this, "GG45.mov");
+  vid = new Movie(this, "ppp.mov");
   vid.loop();
   mic = new AudioIn(this,0);
   mic.start();
   amp = new Amplitude(this);
   amp.input(mic);
-  img = loadImage("background.png"); 
+  //img = loadImage("background.png"); 
   noStroke();
   background(0);
 }
