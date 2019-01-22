@@ -54,11 +54,14 @@ UCAM uc;
 CIRCLE cir;
 List<QUAD> quads;
 
+boolean reset = false;
+boolean resumespin = false;
 void loadBoard()
 {
   bb[45] = soundLive;  //Allows for controller updating on program start, so the controller always reflects on state
                     //Can be adapted to other properties in future 
   bb[41] = camLive;
+  bb[42] = reset;
   bb[32] = s1;
   bb[33] = s2;
   bb[34] = s3;
@@ -77,10 +80,10 @@ void loadBoard()
   //Last 3 knobs start at 0
 }
 void setup() {
-  //size(3800,2100, P3D);
-  fullScreen(P3D);
+  size(3800,2100, P3D);
+  //fullScreen(P3D);
   MidiBus.list();  // Shows controllers in the console
-  myBus = new MidiBus(this, "SLIDER/KNOB","CTRL");  // input and output
+  myBus = new MidiBus(this, "nanoKONTROL2","nanoKONTROL2");  // input and output
   // g: nanoKONTROL2 is something I added here. Previously it said SLIDER/KNOB, CTRL. Possible need for WINdows compatibility and checking OS at launch.
   // Second parameter is output, necessary for setting lights of the knob.
   
@@ -167,35 +170,38 @@ void draw() {
     adjust = map(fftAvg,0,60,0,255);
   }
   tint(255,min(fillOpacity+adjust,255));
-  translate(width / 2, height/2);
-  adjust = 0;
-
-  float xskew = map(cc[16],0,127,radians(0),radians(360));
-  mx = map(cc[17], 0,127,-.09,.09);
-  if(bb[48])
-    xskew += map(fftAvg,0,20,0,PI/16); //offset for fft x 
-  if(bb[49])
-    adjust += map(fftAvg,0,20,0,PI/64);//rotation
-  rotateX (rx + adjust + xskew);
-  rx += mx + adjust;
-  adjust = 0;
   
-  float yskew = map(cc[18], 0,127,radians(0),radians(360));
-  my = map(cc[19], 0,127,-.09,.09);
-  if(bb[50])
-    yskew += map(fftAvg,0,20,0,PI/16); //offset for fft y 
-  if(bb[51])
-    adjust = map(fftAvg,0,20,0,PI/64); //y rotation
-  rotateY(ry + adjust + yskew);
-  ry += my + adjust;
   adjust = 0;
-
-  //Z rotation currently disabled
-  // float rZ = map(cc[19], 0,127,radians(0),radians(360));
-  // if(bb[51])
-  //   adjust = map(fftAvg,0,20,0,PI/8); //offset for fft z
-  // rotateZ(rZ+adjust);
-  // adjust = 0;
+  if(!reset){
+    translate(width / 2, height/2);
+    float xskew = map(cc[16],0,127,radians(0),radians(360));
+    mx = map(cc[17], 0,127,-.09,.09);
+    if(bb[48])
+      xskew += map(fftAvg,0,20,0,PI/16); //offset for fft x 
+    if(bb[49])
+      adjust += map(fftAvg,0,20,0,PI/64);//rotation
+    rotateX (rx + adjust + xskew);
+    rx += mx + adjust;
+    adjust = 0;
+    
+    float yskew = map(cc[18], 0,127,radians(0),radians(360));
+    my = map(cc[19], 0,127,-.09,.09);
+    if(bb[50])
+      yskew += map(fftAvg,0,20,0,PI/16); //offset for fft y 
+    if(bb[51])
+      adjust = map(fftAvg,0,20,0,PI/64); //y rotation
+    rotateY(ry + adjust + yskew);
+    ry += my + adjust;
+    adjust = 0;
+  
+    //Z rotation currently disabled
+    // float rZ = map(cc[19], 0,127,radians(0),radians(360));
+    // if(bb[51])
+    //   adjust = map(fftAvg,0,20,0,PI/8); //offset for fft z
+    // rotateZ(rZ+adjust);
+    // adjust = 0;
+  }
+  
 
   beginShape();
   if(s1)
@@ -223,17 +229,26 @@ void draw() {
    vid.endDraw();
   }
   texture(vid);
-  
-  //CHANGE THESE FOR A BIGGER GRAPHICS BUFFER
-  vertex(-600, -400, 0, 0, 0);
-  vertex(600, -400, 0, vid.width, 0);
-  vertex(600, 400, 0, vid.width, vid.height);
-  vertex(-600, 400, 0, 0, vid.height);
+  if(!reset){
+    //CHANGE THESE FOR A BIGGER GRAPHICS BUFFER
+    vertex(-600, -400, 0, 0, 0);
+    vertex(600, -400, 0, vid.width, 0);
+    vertex(600, 400, 0, vid.width, vid.height);
+    vertex(-600, 400, 0, 0, vid.height);
+  }
+  else{
+    vertex(0, 0, 0, 0, 0);
+    vertex(width, 0, 0, vid.width, 0);
+    vertex(width, height, 0, vid.width, vid.height);
+    vertex(0, height, 0, 0, vid.height);
+  }
   endShape();
-
+  //CHANGE THESE FOR A BIGGER GRAPHICS BUFFER
+  
+  
   if(bb[64]) //zoom
     adjust = map(fftAvg,0.0,20.0,0.0,40.0); //zoom mapped to fft
-  camera(width/2, height/2, (height/2) / tan(PI/map(cc[0]+adjust,0,127,8, 4)), width/2, height/2, 0, 0, 1, 0);
+  //camera(width/2, height/2, (height/2) / tan(PI/map(cc[0]+adjust,0,127,8, 4)), width/2, height/2, 0, 0, 1, 0);
   //background(bigColor);
 }
 
@@ -286,6 +301,11 @@ void controllerChange(int channel, int number, int value) {
        mov.play();
      //s1 = false;
      //s2=false;
+    }
+    else if(number == 42)
+    {
+     reset = bb[42];
+     resumespin = !reset;
     }
     else if(number == 45)//swapping live and recorded audio
     {
