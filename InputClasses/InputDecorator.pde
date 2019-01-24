@@ -6,6 +6,10 @@
 
 class InputDecorator extends Input {
 
-    public Input inputComponent;
+    private Input inputComponent;
+    
+    InputDecorator(Input inputComp) {   
+      inputComponent = inputComp;    
+    }
 
 }

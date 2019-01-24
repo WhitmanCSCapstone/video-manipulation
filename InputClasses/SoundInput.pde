@@ -4,7 +4,14 @@
 * noticed by the clien (InputController)
 */
 
-class SoundInput {
+class SoundInput extends InputDecorator{
+  
+    private int freqMin;
+    private Input inputComponent;
+    
+    SoundInput(Input inputComp) {   
+      super(inputComp);
+    }
 
 
     /* UML DIAGRAM

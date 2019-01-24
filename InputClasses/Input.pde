@@ -12,16 +12,20 @@ class Input {
     public void updateVal(){}
     */
     
-    /* CHANGES FROM UML
-    public double value;
-    private double mapMin;
-    private double mapMax;
-    public void updateVal(double inputVal){}
-    public double getVal(){}
-    */
+    private double value;
+    //private double mapMin;
+    //private double mapMax;
+    
+    Input(){
+      value = 0;
+    }
+    
+    public void updateVal(double inputVal) {
+      value = inputVal;
+    }
+    
+    public double getVal(){
+      return value;
+    }
 
-    /**
-    * This virtual method maps an input into the field "value"
-    */
-    public void updateVal(){}
 }
