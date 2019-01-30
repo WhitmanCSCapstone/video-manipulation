@@ -145,8 +145,8 @@ float doFFT(){
     fft.forward(in.left);
   else
     fft.forward(kick.mix);
-  fftReal = fft.getSpectrumReal();
-  fftImag = fft.getSpectrumImaginary();
+  //fftReal = fft.getSpectrumReal();
+  //fftImag = fft.getSpectrumImaginary();
   for(int i = 0; i < specSize; i++)
   {
     float band = fft.getBand(i);

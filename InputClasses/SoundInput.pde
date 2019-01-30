@@ -7,9 +7,9 @@
 class SoundInput extends InputDecorator{
   
     private int freqMin;
-    private Input inputComponent;
+    private input inputComponent;
     
-    SoundInput(Input inputComp) {   
+    SoundInput(input inputComp) {   
       super(inputComp);
     }
 

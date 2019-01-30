@@ -1,16 +1,16 @@
-
+int cunter = 0;
 class RAINBOW {
   Drip[] drips;
 
-  void setup(PApplet app, PGraphics p) {
+  void setup(PGraphics p) {
     print("Called rainbow setup");
-    drips = new Drip[150];
+    drips = new Drip[300];
     for(int i=0; i<drips.length; i++) {
       drips[i] = new Drip(random(p.width), 200, int(random(255)), int(random(255)), int(random(255)), p.width/100+random(p.width/40), random(p.width/30,p.width/8));
     }
   }
 
-  void update(PGraphics p, Input inputs[]) {
+  void update(PGraphics p, input inputs[]) {
     // println("RAINBOW UPDATE");
     
     /*
@@ -45,6 +45,8 @@ class RAINBOW {
     int divisor = int(map((float)inputs[17].getVal(),0,127,50,1));
   
     for(int i=0; i<drips.length; i++) {
+      // println(cunter++);
+      // println("calling the shitty fall function "+i+" input[18]: "+inputs[18].getVal());
       drips[i].fall(p,i/divisor, map((float)inputs[18].getVal(),0,127,-1,1));  // Dial #18 controls direction
     }
     

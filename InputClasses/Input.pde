@@ -3,20 +3,20 @@
 * a continuous value translate from one or multiple inputs
 * such as sound, midi, or keyboard.
 */
-class Input {
+class input {
 
     /* UML DIAGRAM
     public int value;
     public int mapMin;
     public int mapMax;
-    public void updateVal(){}
+    public void updateVal(){}xq
     */
     
     private double value;
     //private double mapMin;
     //private double mapMax;
     
-    Input(){
+    input(){
       value = 0;
     }
     

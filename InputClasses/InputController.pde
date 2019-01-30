@@ -2,9 +2,11 @@
 
 class InputController {
   
-    private Input inputArray[];
+    private input inputArray[];
     
     InputController(int inputNum, boolean midiFlag, boolean soundFlag) {
+      
+      inputArray = new input[inputNum];
       
       if (midiFlag && soundFlag) {
         for (int i=0; i<inputNum; i++){
@@ -23,7 +25,7 @@ class InputController {
       inputArray[number].updateVal(value);
     }
     
-    public Input[] fetchInputs() {
+    public input[] fetchInputs() {
       return inputArray;
     }
     //public double buildParamValues()

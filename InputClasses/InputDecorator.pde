@@ -4,11 +4,11 @@
 * like SoundInput add additional decorating behavior.
 */
 
-class InputDecorator extends Input {
+class InputDecorator extends input {
 
-    private Input inputComponent;
+    private input inputComponent;
     
-    InputDecorator(Input inputComp) {   
+    InputDecorator(input inputComp) {   
       inputComponent = inputComp;    
     }
 

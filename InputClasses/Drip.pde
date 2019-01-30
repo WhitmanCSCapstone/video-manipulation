@@ -18,7 +18,7 @@ class Drip {  // Make same name as the file
     l = dripWidth;
     h = dripHeight;
   }
-  
+  int pcount = 0;
  // Like draw
  void fall(PGraphics p, int speed, float direction) {
     y = y + speed*direction;  // how fast up or down
@@ -26,8 +26,11 @@ class Drip {  // Make same name as the file
       y = -h;
     else if (y < -h)
       y = p.height + h - 1;
-
+    // println("P" + pcount++);
     p.fill(r,g,b);
     p.ellipse(x, y, l, h);
+    // p.rect(10,10,10,10);
+    
+    // p.point(random(width),random(height));
   }
 }

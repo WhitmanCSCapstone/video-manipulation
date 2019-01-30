@@ -1,10 +1,9 @@
-import Input;
 
 /**
 * The MidiInput class is the concrete implementation of
 * an input that is specific to mapping Midi inputs.
 */
-class MidiInput extends Input{
+class MidiInput extends input{
 
     /* UML DIAGRAM
     private int midiMin;
