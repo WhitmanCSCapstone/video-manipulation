@@ -47,7 +47,7 @@ class RAINBOW {
     for(int i=0; i<drips.length; i++) {
       // println(cunter++);
       // println("calling the shitty fall function "+i+" input[18]: "+inputs[18].getVal());
-      drips[i].fall(p,i/divisor, map((float)inputs[18].getVal(),0,127,-1,1));  // Dial #18 controls direction
+      drips[i].fall(p,i/divisor, map(inputs[18].getVal(),0,127,-1,1));  // Dial #18 controls direction
     }
     
     

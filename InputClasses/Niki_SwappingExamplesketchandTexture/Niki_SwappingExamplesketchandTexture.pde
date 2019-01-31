@@ -140,6 +140,7 @@ void setup() {
 }
 
 float doFFT(){
+  
   smoothing = map(cc[7],0,127,0.0,1.0); //Controls FFT smoothing
   if(bb[45])//isLive
     fft.forward(in.left);

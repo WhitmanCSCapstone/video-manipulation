@@ -1,5 +1,7 @@
 import themidibus.*;
 import java.util.*;
+import ddf.minim.*;
+import ddf.minim.analysis.*;
 
 MidiBus myBus;
 
@@ -21,7 +23,7 @@ void setup(){
   width = 720;
 
   midiFlag = true;
-  soundFlag = false;
+  soundFlag = true;
 
   vid = createGraphics(height,width,P3D);
   size(1280,720, P3D);
@@ -32,7 +34,7 @@ void setup(){
   
   r = new RAINBOW();
   
-  inputController = new InputController(256, midiFlag, soundFlag);
+  inputController = new InputController(this, 256, midiFlag, soundFlag);
   
   r.setup(vid);
 }
@@ -59,6 +61,6 @@ void controllerChange(int channel, int number, int value) {
   println("Number:"+number);
   println("Value:"+value);
   
-  inputController.updateModel(number,(double)value);
+  inputController.updateModel(number,(float)value);
   
 }

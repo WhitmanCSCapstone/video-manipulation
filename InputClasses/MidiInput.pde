@@ -11,8 +11,8 @@ class MidiInput extends input{
     public int inputSource;
     */
     
-    private double midiMin;
-    private double midiMax;
+    private float midiMin;
+    private float midiMax;
     public int inputSource;
     
 

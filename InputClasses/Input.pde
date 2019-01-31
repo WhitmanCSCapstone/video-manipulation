@@ -12,7 +12,7 @@ class input {
     public void updateVal(){}xq
     */
     
-    private double value;
+    private float value;
     //private double mapMin;
     //private double mapMax;
     
@@ -20,12 +20,20 @@ class input {
       value = 0;
     }
     
-    public void updateVal(double inputVal) {
+    public void updateVal(float inputVal) {
       value = inputVal;
     }
     
-    public double getVal(){
+    public float getVal(){
       return value;
     }
+    
+    public void setSmoother(float smoothRaw) {
+      smoothRaw = smoothRaw+1;
+    }
+    
+    public void toggleLive(){
+    }
+      
 
 }
