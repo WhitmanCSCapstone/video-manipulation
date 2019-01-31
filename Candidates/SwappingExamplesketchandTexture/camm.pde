@@ -5,15 +5,27 @@
  * the texture image. The vertex() function maps the image to the geometry.
  */
 class UCAM extends QUAD{
+  void setup(PApplet app, PGraphics p) {
+    mov = new Movie(app,"GG45.mov");
+    mov.loop();
+    noStroke();
+    mov.pause();
+    String[] cameras = Capture.list();
+    cam = new Capture(app, cameras[0]);
+    cam.start();
+  }
+  
   void update(PGraphics p) {
     
-    float vs = map(cc[16], 0,127,.5,2);
-    mov.speed(vs);
-    if(s2){
-
+    if(camLive){//Camera
+      if (cam.available() == true) {
+        cam.read();
+      }
       p.image(cam,0,0,p.width,p.height);
     }else{//video
-
+      if (mov.available() == true) {
+        mov.read();
+      }
       p.image(mov,0,0);
     } 
 }
