@@ -4,8 +4,16 @@
 * like SoundInput add additional decorating behavior.
 */
 
-class InputDecorator extends Input {
+class InputDecorator extends input {
 
-    public Input inputComponent;
+    public input inputComponent;
+    
+    InputDecorator(input inputComp) {   
+      inputComponent = inputComp;    
+    }
+    
+    public float getVal(){
+      return inputComponent.getVal();
+    }
 
 }

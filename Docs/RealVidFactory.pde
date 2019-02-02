@@ -1,7 +1,7 @@
 /*
  * Factory to construct geometry quads.
  */
-public class RealVidQuad implements QuadFactory {
+public class RealVidQuad extends QuadFactory {
 
 
 	/*

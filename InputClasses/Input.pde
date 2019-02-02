@@ -3,25 +3,28 @@
 * a continuous value translate from one or multiple inputs
 * such as sound, midi, or keyboard.
 */
-class Input {
+class input {
 
     /* UML DIAGRAM
     public int value;
     public int mapMin;
     public int mapMax;
-    public void updateVal(){}
+    public void updateVal(){}xq
     */
     
-    /* CHANGES FROM UML
-    public double value;
-    private double mapMin;
-    private double mapMax;
-    public void updateVal(double inputVal){}
-    public double getVal(){}
-    */
-
-    /**
-    * This virtual method maps an input into the field "value"
-    */
-    public void updateVal(){}
+    public float value;
+    //private double mapMin;
+    //private double mapMax;
+    
+    input(){
+      value = 0;
+    }
+    
+    public void updateVal(float inputVal) {
+      value = inputVal;
+    }
+    
+    public float getVal(){
+      return value;
+    }
 }

@@ -1,10 +1,9 @@
-import Input;
 
 /**
 * The MidiInput class is the concrete implementation of
 * an input that is specific to mapping Midi inputs.
 */
-class MidiInput extends Input{
+class MidiInput extends input{
 
     /* UML DIAGRAM
     private int midiMin;
@@ -12,21 +11,40 @@ class MidiInput extends Input{
     public int inputSource;
     */
     
-    /* CHANGES FROM UML
-    private double midiMin;
-    private double midiMax;
+    private float midiMin;
+    private float midiMax;
+    private float deadzone;
+    private boolean hasDeadZone;
     public int inputSource;
-    */
+
+
+    MidiInput(boolean hasDZone){
+        super();
+        deadzone = 4;
+        midiMin = 0;
+        midiMax = 127;
+        hasDeadZone = hasDZone;
+    }
     
-    /* UML DIAGRAM
-    public void updateVal(){}
+
+    public void updateVal(float val){
+        if(hasDeadZone && (val > 63.5-deadzone && value < deadzone + 63.5)){
+            value = 63.5;
+        } else if (val < midiMin) {
+            value = midiMin;
+        } else if (val > midiMax) {
+            value = midiMax;
+        } else {
+          value = val;
+        }
+    }
+/*
     public int mapValue(int midiVal){}
     public updateValUsing(int midiVal){}
-    */
+
     
-    /* CHANGES FROM UML
     public void updateVal(double inputVal){}
     private double mapVal(double inputVal){}
-    */
+*/
 
 }
