@@ -14,28 +14,35 @@ class InputController {
 
       soundFlag = isSound;
       midiFlag = isMidi;
+
+      //whether the input has a dead zone is specific to Midi
+      boolean hasDeadZone = false;
       
       if (soundFlag) {
+        SoundDecorator soundInputArray[];
+        SoundDecorator soundInput;
+        soundInputArray = new SoundDecorator[inputNum];
+
         for (int i=0; i<inputNum; i++){
-          boolean hasDeadZone = false; //whether the input has a dead zone is specific to Midi
           MidiInput midiInputRef = new MidiInput(hasDeadZone);
-          inputArray[i] = new SoundDecorator(midiInputRef, minim);
+          soundInput = new SoundDecorator(midiInputRef);
+          inputArray[i] = soundInput;
+          soundInputArray[i] = soundInput;
         }
-        fftController(inputArray,app);
+        fftController = new FFTController(soundInputArray,app);
       }
       else if (midiFlag) {
         for (int i=0; i<inputNum; i++){
-          inputArray[i] = new MidiInput();
+          inputArray[i] = new MidiInput(hasDeadZone);
         }
       }
     }
     
     public void updateModel(int number, float value) {
-
       if (soundFlag) {
         fftController.updateModel(number, value);
-      } else {
-        inputArray[number].updateVal(value);
+      } else if (MIDI_MAP.get(number)!=null){
+        inputArray[MIDI_MAP.get(number)].updateVal(value);
       }
     }
     

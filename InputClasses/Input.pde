@@ -12,7 +12,7 @@ class input {
     public void updateVal(){}xq
     */
     
-    private float value;
+    public float value;
     //private double mapMin;
     //private double mapMax;
     

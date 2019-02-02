@@ -9,7 +9,7 @@ class FFTController {
     private boolean isLive;
     private FFT fft;
 
-    FFTController(SoundDecorator arrayInput,PApplet app) {
+    FFTController(SoundDecorator arrayInput[],PApplet app) {
         minim = new Minim(app);
         inputArray = arrayInput;
         liveAudio = minim.getLineIn(Minim.STEREO, 512);
@@ -28,11 +28,11 @@ class FFTController {
             }
         }
         //controlling the target frequency for the fft
-        else if(number == TARGET_FREQ_MIN || number = TARGET_FREQ_MAX) {
-            changeTargetFreq();
+        else if(number == TARGET_FREQ_MIN || number == TARGET_FREQ_MAX) {
+            changeTargetFreq(number);
         }
 
-        else if(KNOB_MAP.get(number)) {
+        else if(KNOB_MAP.get(number) != null) {
             inputArray[KNOB_MAP.get(number)].toggleOn();
         }
 
@@ -41,8 +41,6 @@ class FFTController {
         }else {
             fft.forward(nonLiveAudio.mix);
         }
-
-        
         
         inputArray[number].updateVal(value);
     }
@@ -52,7 +50,6 @@ class FFTController {
             for (int i=0; i<inputArray.length; i++) {
                 inputArray[i].setTargetFreq(true);
             }
-            targetFreq = min(500, targetFreq+10);
         } else {
             for (int i=0; i<inputArray.length; i++) {
                 inputArray[i].setTargetFreq(false);
@@ -65,7 +62,7 @@ class FFTController {
         setFFT();
     }
 
-    private setFFT(){
+    private void setFFT(){
         if(isLive){
             fft = new FFT(liveAudio.bufferSize(), liveAudio.sampleRate());
         }
@@ -74,7 +71,7 @@ class FFTController {
             fft = new FFT(nonLiveAudio.bufferSize(), nonLiveAudio.sampleRate());
         }
         for (int i=0; i<inputArray.length; i++) {
-            inputArray[i].setFFT(fft);
+            inputArray[i].toggleFFT(fft);
         }
     }
 }

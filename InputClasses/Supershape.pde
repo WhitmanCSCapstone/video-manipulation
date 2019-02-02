@@ -65,10 +65,10 @@ class Supershape {
     //g: for all sketches, save cc to variables for clarity before doing stuff on them
     
     //Identify variables:
-    polycount = inputs[0];
-    vibrations = inputs[1];
-    period = inputs[2];
-    timestep = inputs[3];
+    polycount = inputs[0].getVal();
+    vibrations = inputs[1].getVal();
+    period = inputs[2].getVal();
+    timestep = inputs[3].getVal();
     
     l = map(timestep,0,127,1,127);
     m = map(sin(mchange),-1,1,0,l);

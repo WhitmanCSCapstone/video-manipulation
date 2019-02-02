@@ -19,7 +19,7 @@ class MidiInput extends input{
 
 
     MidiInput(boolean hasDZone){
-        value = 0;
+        super();
         deadzone = 4;
         midiMin = 0;
         midiMax = 127;
@@ -34,6 +34,8 @@ class MidiInput extends input{
             value = midiMin;
         } else if (val > midiMax) {
             value = midiMax;
+        } else {
+          value = val;
         }
     }
 /*

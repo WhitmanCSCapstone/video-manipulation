@@ -14,6 +14,7 @@ public static final int SMOOTHER = 7;
 
 Map<Integer, Integer> KNOB_MAP;
 
+Map<Integer, Integer> MIDI_MAP;
 
 InputController inputController;
 
@@ -30,6 +31,12 @@ void setup(){
   KNOB_MAP.put(34,18);
   KNOB_MAP.put(35,19);
 
+  MIDI_MAP = new HashMap<Integer, Integer>();
+  MIDI_MAP.put(16,0);
+  MIDI_MAP.put(17,1);
+  MIDI_MAP.put(18,2);
+  MIDI_MAP.put(19,3);
+
   size(1280,800,P3D);
   MidiBus.list();  // Shows controllers in the console
   myBus = new MidiBus(this, "SLIDER/KNOB","CTRL");  // input and output g:-- Changed from SLIDER/KNOB for windows
@@ -37,7 +44,7 @@ void setup(){
   superShape = new Supershape();
 
   midiFlag = true;
-  soundFlag = true;
+  soundFlag = false;
 
   inputController = new InputController(this, 4, midiFlag, soundFlag);
 }
@@ -57,6 +64,10 @@ void draw() {
   vertex(-vid.width, vid.height, 0, 0, vid.height);
   endShape();
   */
+  /*
+  for (int i=0; i<inputController.fetchInputs().length; i++){
+    println("INPUT: "+inputController.fetchInputs()[i].getVal());
+  } */
   superShape.display(inputController.fetchInputs());
 }
 
