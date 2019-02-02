@@ -1,21 +1,24 @@
 /*
   Comments go here.
 */
+
 import themidibus.*;
 import java.util.*;
 float cc[] = new float[256];
 boolean bb[] = new boolean[256]; //array representing "on" state of board
-import ddf.minim.analysis.*;
-import ddf.minim.*;
-Minim       minim;
-AudioInput  in;
-FFT         fft;
+
 float deadzone = 4; //This is the deadzone for the controller. This gives a range of 8 where the controller will read 63.5.
 MidiBus myBus;
 Capture cam;
 import processing.video.*;
 Movie mov;
+
 PGraphics vid;
+import ddf.minim.analysis.*;
+import ddf.minim.*;
+Minim       minim;
+AudioInput  in;
+FFT         fft;
 import processing.sound.AudioIn;
 import processing.sound.Amplitude;
 import processing.sound.SoundFile; //I'm overwriting the imports in some cases, order matters
@@ -52,17 +55,13 @@ RAINBOW r;
 SLATS s;
 UCAM uc;
 CIRCLE cir;
-MIDINOISEWALK mnw;
 List<QUAD> quads;
 
-boolean reset = false;
-boolean resumespin = false;
 void loadBoard()
 {
   bb[45] = soundLive;  //Allows for controller updating on program start, so the controller always reflects on state
                     //Can be adapted to other properties in future 
   bb[41] = camLive;
-  bb[42] = reset;
   bb[32] = s1;
   bb[33] = s2;
   bb[34] = s3;
@@ -79,17 +78,17 @@ void loadBoard()
   }
   cc[20] = 127;//fade off to start
   //Last 3 knobs start at 0
-  cc[18]=63.5;
 }
 void setup() {
-  size(3800,2100, P3D);
+  size(1280,800, P3D);
   //fullScreen(P3D);
   MidiBus.list();  // Shows controllers in the console
-  myBus = new MidiBus(this, "nanoKONTROL2","nanoKONTROL2");  // input and output
+  myBus = new MidiBus(this, "SLIDER/KNOB","CTRL");  // input and output
   // g: nanoKONTROL2 is something I added here. Previously it said SLIDER/KNOB, CTRL. Possible need for WINdows compatibility and checking OS at launch.
   // Second parameter is output, necessary for setting lights of the knob.
   
-  vid = createGraphics(1280,720,P3D);
+  vid = createGraphics(1920,1080,P3D);
+  //vid = createGraphics(1280,800,P3D);
   img = loadImage("background.png"); 
   
   noStroke();
@@ -102,16 +101,14 @@ void setup() {
   //s = new SLATS();
   cir = new CIRCLE();
   uc = new UCAM();
-  mnw = new MIDINOISEWALK();
   //We add them to the quad array to call them in the same way.
   quads = new ArrayList<QUAD>();
   //quads.add(b);
   quads.add(cf);
   quads.add(cir);
-  quads.add(mnw);
   quads.add(r);
   //quads.add(s);
-  
+  quads.add(uc);
   for(int i = 0;i<quads.size();i++)
   {
     quads.get(i).setup(this,vid); // Not all sketches use the PApplet or PGraphics parameter but it doesn't hurt to pass them around
@@ -120,7 +117,7 @@ void setup() {
   minim = new Minim(this); //minum works better for fft I think, it is also easier to swap between prerecorded and live audio
   //I have noticed a delay in live audio though, which isn't seen when a mp3 is used.
   in = minim.getLineIn(Minim.STEREO, 512);
-  kick = minim.loadFile("maniac.mp3", // filename
+  kick = minim.loadFile("hydrogen.mp3", // filename
                             1024      // buffer size
                          );
                          if ( kick == null ) println("Didn't get kick!");
@@ -174,38 +171,35 @@ void draw() {
     adjust = map(fftAvg,0,60,0,255);
   }
   tint(255,min(fillOpacity+adjust,255));
-  
+  translate(width / 2, height/2);
   adjust = 0;
-  if(!reset){
-    translate(width / 2, height/2);
-    float xskew = map(cc[16],0,127,radians(0),radians(360));
-    mx = map(cc[17], 0,127,-.09,.09);
-    if(bb[48])
-      xskew += map(fftAvg,0,20,0,PI/16); //offset for fft x 
-    if(bb[49])
-      adjust += map(fftAvg,0,20,0,PI/64);//rotation
-    rotateX (rx + adjust + xskew);
-    rx += mx + adjust;
-    adjust = 0;
-    
-    float yskew = map(cc[18], 0,127,radians(0),radians(360));
-    my = map(cc[19], 0,127,-.09,.09);
-    if(bb[50])
-      yskew += map(fftAvg,0,20,0,PI/16); //offset for fft y 
-    if(bb[51])
-      adjust = map(fftAvg,0,20,0,PI/64); //y rotation
-    rotateY(ry + adjust + yskew);
-    ry += my + adjust;
-    adjust = 0;
+
+  float xskew = map(cc[16],0,127,radians(0),radians(360));
+  mx = map(cc[17], 0,127,-.09,.09);
+  if(bb[48])
+    xskew += map(fftAvg,0,20,0,PI/16); //offset for fft x 
+  if(bb[49])
+    adjust += map(fftAvg,0,20,0,PI/64);//rotation
+  rotateX (rx + adjust + xskew);
+  rx += mx + adjust;
+  adjust = 0;
   
-    //Z rotation currently disabled
-    // float rZ = map(cc[19], 0,127,radians(0),radians(360));
-    // if(bb[51])
-    //   adjust = map(fftAvg,0,20,0,PI/8); //offset for fft z
-    // rotateZ(rZ+adjust);
-    // adjust = 0;
-  }
-  
+  float yskew = map(cc[18], 0,127,radians(0),radians(360));
+  my = map(cc[19], 0,127,-.09,.09);
+  if(bb[50])
+    yskew += map(fftAvg,0,20,0,PI/16); //offset for fft y 
+  if(bb[51])
+    adjust = map(fftAvg,0,20,0,PI/64); //y rotation
+  rotateY(ry + adjust + yskew);
+  ry += my + adjust;
+  adjust = 0;
+
+  //Z rotation currently disabled
+  // float rZ = map(cc[19], 0,127,radians(0),radians(360));
+  // if(bb[51])
+  //   adjust = map(fftAvg,0,20,0,PI/8); //offset for fft z
+  // rotateZ(rZ+adjust);
+  // adjust = 0;
 
   beginShape();
   if(s1)
@@ -233,23 +227,14 @@ void draw() {
    vid.endDraw();
   }
   texture(vid);
-  if(!reset){
-    //CHANGE THESE FOR A BIGGER GRAPHICS BUFFER
-    vertex(-600, -400, 0, 0, 0);
-    vertex(600, -400, 0, vid.width, 0);
-    vertex(600, 400, 0, vid.width, vid.height);
-    vertex(-600, 400, 0, 0, vid.height);
-  }
-  else{
-    vertex(0, 0, 0, 0, 0);
-    vertex(width, 0, 0, vid.width, 0);
-    vertex(width, height, 0, vid.width, vid.height);
-    vertex(0, height, 0, 0, vid.height);
-  }
-  endShape();
+  
   //CHANGE THESE FOR A BIGGER GRAPHICS BUFFER
-  
-  
+  vertex(-640, -400, 0, 0, 0);
+  vertex(640, -400, 0, vid.width, 0);
+  vertex(640, 400, 0, vid.width, vid.height);
+  vertex(-640, 400, 0, 0, vid.height);
+  endShape();
+
   if(bb[64]) //zoom
     adjust = map(fftAvg,0.0,20.0,0.0,40.0); //zoom mapped to fft
   camera(width/2, height/2, (height/2) / tan(PI/map(cc[0]+adjust,0,127,8, 4)), width/2, height/2, 0, 0, 1, 0);
@@ -305,11 +290,6 @@ void controllerChange(int channel, int number, int value) {
        mov.play();
      //s1 = false;
      //s2=false;
-    }
-    else if(number == 42)
-    {
-     reset = bb[42];
-     resumespin = !reset;
     }
     else if(number == 45)//swapping live and recorded audio
     {
