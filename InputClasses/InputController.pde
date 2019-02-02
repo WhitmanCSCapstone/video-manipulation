@@ -47,6 +47,9 @@ class InputController {
     }
     
     public input[] fetchInputs() {
+      if (soundFlag){
+        return fftController.fetchInputs();
+      }
       return inputArray;
     }
 }

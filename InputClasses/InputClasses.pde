@@ -23,6 +23,8 @@ Supershape superShape;
 boolean midiFlag;
 boolean soundFlag;
 
+float diff = 0.0;
+
 void setup(){
 
   KNOB_MAP = new HashMap<Integer, Integer>();
@@ -44,7 +46,7 @@ void setup(){
   superShape = new Supershape();
 
   midiFlag = true;
-  soundFlag = false;
+  soundFlag = true;
 
   inputController = new InputController(this, 4, midiFlag, soundFlag);
 }
@@ -68,6 +70,10 @@ void draw() {
   for (int i=0; i<inputController.fetchInputs().length; i++){
     println("INPUT: "+inputController.fetchInputs()[i].getVal());
   } */
+  if (inputController.fetchInputs()[0].getVal()!=diff) {
+    println("changed");
+  }
+  diff=inputController.fetchInputs()[0].getVal();
   superShape.display(inputController.fetchInputs());
 }
 
@@ -82,7 +88,5 @@ void controllerChange(int channel, int number, int value) {
   if (KNOB_MAP.get(number) != null){
     myBus.sendControllerChange(channel,number,0);
   }
-  
   inputController.updateModel(number,(float)value);
-  
 }

@@ -6,8 +6,6 @@
 
 class SoundDecorator extends InputDecorator{
   
-    private input inputComponent;
-
     private int specSize;
     private int targetFreq; // Low is for lower frequencies
     private int bandwidth; //Width of frequency band, larger is a smoother responce
@@ -23,6 +21,7 @@ class SoundDecorator extends InputDecorator{
       bandwidth = 20;
       fftAvg = 0;
       smoothMapped = 0.85;
+      isOn=false;
       //toggleFFT(fourierTrans);
     }
 
@@ -30,6 +29,7 @@ class SoundDecorator extends InputDecorator{
       fftAvg = getAvgFFT();
       float adjust = map(fftAvg,0,60,0,255);
       if (!isOn) {
+        println("adjust: "+adjust);
         adjust = 0;
       }
       inputComponent.updateVal(inputVal + adjust);

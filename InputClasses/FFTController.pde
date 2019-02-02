@@ -18,7 +18,6 @@ class FFTController {
     }
 
     public void updateModel(int number, float value) {
-
         if (number == LIVE_AUDIO) {
             toggleLive();
         }
@@ -31,9 +30,11 @@ class FFTController {
         else if(number == TARGET_FREQ_MIN || number == TARGET_FREQ_MAX) {
             changeTargetFreq(number);
         }
-
         else if(KNOB_MAP.get(number) != null) {
-            inputArray[KNOB_MAP.get(number)].toggleOn();
+            println("heerer");
+            if (value==127){ //CORRECT LATER
+              inputArray[MIDI_MAP.get(KNOB_MAP.get(number))].toggleOn();
+            }
         }
 
         if(isLive) {
@@ -41,8 +42,13 @@ class FFTController {
         }else {
             fft.forward(nonLiveAudio.mix);
         }
-        
-        inputArray[number].updateVal(value);
+        if (MIDI_MAP.get(number)!=null){
+          inputArray[MIDI_MAP.get(number)].updateVal(value);
+        }
+    }
+
+    public input[] fetchInputs(){
+        return inputArray;
     }
 
     private void changeTargetFreq(int number){
@@ -64,12 +70,15 @@ class FFTController {
 
     private void setFFT(){
         if(isLive){
+            println("check1");
             fft = new FFT(liveAudio.bufferSize(), liveAudio.sampleRate());
         }
         else {
+            println("check2");
             nonLiveAudio.loop();
             fft = new FFT(nonLiveAudio.bufferSize(), nonLiveAudio.sampleRate());
         }
+        println("survived");
         for (int i=0; i<inputArray.length; i++) {
             inputArray[i].toggleFFT(fft);
         }
