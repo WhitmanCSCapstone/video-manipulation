@@ -25,7 +25,7 @@ float yoffset = 400;
 void setup(){
   size(1280,800,P3D);
   MidiBus.list();  // Shows controllers in the console
-  myBus = new MidiBus(this, "nanoKONTROL2","CTRL");  // input and output g:-- Changed from SLIDER/KNOB for windows
+  myBus = new MidiBus(this, "SLIDER/KNOB","CTRL");  // input and output g:-- Changed from SLIDER/KNOB for windows
   
   for (int i = 16; i < 24; i++) {  // Sets only the knobs (16-23) to be reasonable @ start - will still jump
     cc[i] = 20;

@@ -27,13 +27,4 @@ class input {
     public float getVal(){
       return value;
     }
-    
-    public void setSmoother(float smoothRaw) {
-      smoothRaw = smoothRaw+1;
-    }
-    
-    public void toggleLive(){
-    }
-      
-
 }

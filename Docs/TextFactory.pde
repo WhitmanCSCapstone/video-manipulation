@@ -1,7 +1,7 @@
 /*
  * Factory to construct geometry quads.
  */
-public class TextFactory implements QuadFactory {
+public class TextFactory extends QuadFactory {
 
 
 	/*

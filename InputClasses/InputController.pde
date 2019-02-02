@@ -3,6 +3,7 @@
 class InputController {
   
     private input inputArray[];
+    private FFTController fftController;
     
     boolean soundFlag;
     boolean midiFlag;
@@ -13,14 +14,14 @@ class InputController {
 
       soundFlag = isSound;
       midiFlag = isMidi;
-      Minim minim;
       
-      if (midiFlag && soundFlag) {
-        minim = new Minim(app);
+      if (soundFlag) {
         for (int i=0; i<inputNum; i++){
-          MidiInput midiInputRef = new MidiInput();
-          inputArray[i] = new SoundInput(midiInputRef, minim);
+          boolean hasDeadZone = false; //whether the input has a dead zone is specific to Midi
+          MidiInput midiInputRef = new MidiInput(hasDeadZone);
+          inputArray[i] = new SoundDecorator(midiInputRef, minim);
         }
+        fftController(inputArray,app);
       }
       else if (midiFlag) {
         for (int i=0; i<inputNum; i++){
@@ -29,28 +30,16 @@ class InputController {
       }
     }
     
-    public void updateModel(int number, float value) {   
-      inputArray[number].updateVal(value);
+    public void updateModel(int number, float value) {
 
-      if (number == 7 && soundFlag) {
-        for (int i=0; i<inputArray.length; i++) {
-          inputArray[i].setSmoother(value);
-        }
-      }
-      if (number == 45 && soundFlag) {
-        for (int i=0; i<inputArray.length; i++) {
-          inputArray[i].toggleLive();
-        }
-      }
-      if (number == 7 && soundFlag) {
-        for (int i=0; i<inputArray.length; i++) {
-          inputArray[i].setSmoother(value);
-        }
+      if (soundFlag) {
+        fftController.updateModel(number, value);
+      } else {
+        inputArray[number].updateVal(value);
       }
     }
     
     public input[] fetchInputs() {
       return inputArray;
     }
-    //public double buildParamValues()
 }

@@ -1,7 +1,7 @@
 /*
  * Factory to construct geometry quads.
  */
-public class GeometryFactory implements QuadFactory {
+public class GeometryFactory extends QuadFactory {
 
 
 	/*
