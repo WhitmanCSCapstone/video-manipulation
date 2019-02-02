@@ -52,4 +52,10 @@ class InputController {
       }
       return inputArray;
     }
+
+    public void refresh(){
+      if (soundFlag){
+        fftController.refresh();
+      }
+    }
 }

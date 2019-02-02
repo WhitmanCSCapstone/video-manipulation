@@ -7,13 +7,16 @@
 class InputDecorator extends input {
 
     public input inputComponent;
+
+    public float decorateVal;
     
     InputDecorator(input inputComp) {   
-      inputComponent = inputComp;    
+      inputComponent = inputComp;
+      decorateVal = 0; 
     }
     
     public float getVal(){
-      return inputComponent.getVal();
+      return (inputComponent.getVal()+decorateVal);
     }
-
+    
 }

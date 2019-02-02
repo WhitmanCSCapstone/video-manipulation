@@ -69,10 +69,11 @@ void draw() {
   /*
   for (int i=0; i<inputController.fetchInputs().length; i++){
     println("INPUT: "+inputController.fetchInputs()[i].getVal());
-  } */
+  } 
   if (inputController.fetchInputs()[0].getVal()!=diff) {
     println("changed");
-  }
+  } */
+  inputController.refresh();
   diff=inputController.fetchInputs()[0].getVal();
   superShape.display(inputController.fetchInputs());
 }

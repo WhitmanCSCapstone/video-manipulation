@@ -31,17 +31,13 @@ class FFTController {
             changeTargetFreq(number);
         }
         else if(KNOB_MAP.get(number) != null) {
-            println("heerer");
-            if (value==127){ //CORRECT LATER
+            if (value==127){ //FIX EXPLICIT REFERENCE TO MIDI
               inputArray[MIDI_MAP.get(KNOB_MAP.get(number))].toggleOn();
             }
         }
 
-        if(isLive) {
-        fft.forward(liveAudio.left);
-        }else {
-            fft.forward(nonLiveAudio.mix);
-        }
+        driveFFT();
+
         if (MIDI_MAP.get(number)!=null){
           inputArray[MIDI_MAP.get(number)].updateVal(value);
         }
@@ -49,6 +45,24 @@ class FFTController {
 
     public input[] fetchInputs(){
         return inputArray;
+    }
+
+    public void refresh(){
+        driveFFT();
+        for (int i=0; i<inputArray.length; i++){
+            inputArray[i].setDecorateVal();
+        }
+    }
+
+    private void driveFFT(){
+        if(isLive) {
+            fft.forward(liveAudio.left);
+        }else {
+            fft.forward(nonLiveAudio.mix);
+        }
+        for (int i=0; i<inputArray.length; i++){
+            inputArray[i].toggleFFT(fft);
+        }
     }
 
     private void changeTargetFreq(int number){
@@ -70,15 +84,12 @@ class FFTController {
 
     private void setFFT(){
         if(isLive){
-            println("check1");
             fft = new FFT(liveAudio.bufferSize(), liveAudio.sampleRate());
         }
         else {
-            println("check2");
             nonLiveAudio.loop();
             fft = new FFT(nonLiveAudio.bufferSize(), nonLiveAudio.sampleRate());
         }
-        println("survived");
         for (int i=0; i<inputArray.length; i++) {
             inputArray[i].toggleFFT(fft);
         }

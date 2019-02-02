@@ -15,24 +15,27 @@ class SoundDecorator extends InputDecorator{
     private float[] fftSmooth;
     private FFT fft;
 
-    SoundDecorator(input inputComp) {   
+    SoundDecorator(input inputComp) {
       super(inputComp);
       targetFreq = 10;
       bandwidth = 20;
       fftAvg = 0;
       smoothMapped = 0.85;
       isOn=false;
-      //toggleFFT(fourierTrans);
     }
 
     public void updateVal(float inputVal) {
-      fftAvg = getAvgFFT();
-      float adjust = map(fftAvg,0,60,0,255);
-      if (!isOn) {
-        println("adjust: "+adjust);
-        adjust = 0;
+      setDecorateVal();
+      inputComponent.updateVal(inputVal);
+    }
+
+    public void setDecorateVal(){
+      if (isOn){
+        fftAvg = getAvgFFT();
+        decorateVal = map(fftAvg,0,60,0,255);
+      }else {
+        decorateVal = 0;
       }
-      inputComponent.updateVal(inputVal + adjust);
     }
 
     public void toggleFFT(FFT fourierTrans) {
@@ -46,7 +49,7 @@ class SoundDecorator extends InputDecorator{
     }
 
     public void setSmoother(float smoothRaw) {
-      smoothMapped = map(smoothRaw,0,127,0.0,1.0);
+      smoothMapped = map(smoothRaw,0,127,0.0,1.0); //FIX EXPLICIT REFERENCE TO MIDI
     }
 
     public void setTargetFreq(boolean isMin) {
