@@ -1,12 +1,12 @@
 /*
  * This object controls the different possible quads of the program.
- * It does things like pass values, tell to draw, construc them, decide which 
+ * It does things like pass values, tell to draw, construct them, decide which 
  * quad should be drawn.
  */
 public class QuadContainer {
 
 	/*
-	 * Buffer that quads shoudld be drawn to. What eventually gets drawn to screen.
+	 * Buffer that quads should be drawn to. What eventually gets drawn to screen.
 	 */
 	private PGraphics buffer;
 
@@ -30,7 +30,7 @@ public class QuadContainer {
 	 * Deprecated: Update the properties using the values in a given list of Input objects
 	 * @param params Array of input objects to pull update values from.
 	 */
-	public void updateProps(input[] params);
+	public void updateProps(double[] params);
 
 	/*
 	 * Use given params to tell selected quad to draw to a specific buffer
