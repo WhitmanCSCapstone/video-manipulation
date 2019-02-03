@@ -13,7 +13,7 @@ class FFTController {
         minim = new Minim(app);
         inputArray = arrayInput;
         liveAudio = minim.getLineIn(Minim.STEREO, 512);
-        nonLiveAudio = minim.loadFile("groove.mp3", 1024);
+        nonLiveAudio = minim.loadFile(MP3_NAME, 1024);
         setFFT();
     }
 
@@ -31,12 +31,10 @@ class FFTController {
             changeTargetFreq(number);
         }
         else if(KNOB_MAP.get(number) != null) {
-            if (value==127){ //FIX EXPLICIT REFERENCE TO MIDI
+            if (value==INPUT_MAX){ //FIX EXPLICIT REFERENCE TO MIDI
               inputArray[MIDI_MAP.get(KNOB_MAP.get(number))].toggleOn();
             }
         }
-
-        driveFFT();
 
         if (MIDI_MAP.get(number)!=null){
           inputArray[MIDI_MAP.get(number)].updateVal(value);

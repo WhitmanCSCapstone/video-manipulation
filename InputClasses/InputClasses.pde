@@ -3,6 +3,10 @@ import java.util.*;
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 
+import processing.sound.AudioIn;
+import processing.sound.Amplitude;
+import processing.sound.SoundFile; //I'm overwriting the imports in some cases, order matters
+
 MidiBus myBus;
 
 //MAGIC CONSTANT VILLAGE (FOR MIDI)
@@ -11,10 +15,16 @@ public static final int TARGET_FREQ_MIN = 62;
 public static final int TARGET_FREQ_MAX = 61;
 public static final int PLAY_VID = 34;
 public static final int SMOOTHER = 7;
+public static final int INPUT_MIN = 0;
+public static final int INPUT_MAX = 127;
+
+public static final String MP3_NAME = "groove.mp3";
 
 Map<Integer, Integer> KNOB_MAP;
 
 Map<Integer, Integer> MIDI_MAP;
+
+boolean midiSwitches[];
 
 InputController inputController;
 
@@ -48,7 +58,12 @@ void setup(){
   midiFlag = true;
   soundFlag = true;
 
-  inputController = new InputController(this, 4, midiFlag, soundFlag);
+  inputController = new InputController(this, MIDI_MAP.size(), midiFlag, soundFlag);
+  midiSwitches = new boolean[MIDI_MAP.size()];
+  for (int i=0; i<midiSwitches.length; i++){
+    midiSwitches[i] = false;
+  }
+
 }
 
 
@@ -66,15 +81,8 @@ void draw() {
   vertex(-vid.width, vid.height, 0, 0, vid.height);
   endShape();
   */
-  /*
-  for (int i=0; i<inputController.fetchInputs().length; i++){
-    println("INPUT: "+inputController.fetchInputs()[i].getVal());
-  } 
-  if (inputController.fetchInputs()[0].getVal()!=diff) {
-    println("changed");
-  } */
+
   inputController.refresh();
-  diff=inputController.fetchInputs()[0].getVal();
   superShape.display(inputController.fetchInputs());
 }
 
@@ -87,7 +95,23 @@ void controllerChange(int channel, int number, int value) {
   println("Value:"+value);
 
   if (KNOB_MAP.get(number) != null){
-    myBus.sendControllerChange(channel,number,0);
+    int knobIndex = MIDI_MAP.get(KNOB_MAP.get(number));
+    println("didthis");
+    boolean isListening = midiSwitches[knobIndex];
+    println("didthat");
+    if (value==127){
+      println("pre_turningON");
+      if (!isListening){
+        println("turningON");
+        myBus.sendControllerChange(channel,number,value);
+      }
+      midiSwitches[knobIndex] = !isListening;
+    }
+    else if (!isListening){
+      println("turningOFF");
+      myBus.sendControllerChange(channel,number,value);
+    }
   }
+  
   inputController.updateModel(number,(float)value);
 }

@@ -32,7 +32,7 @@ class SoundDecorator extends InputDecorator{
     public void setDecorateVal(){
       if (isOn){
         fftAvg = getAvgFFT();
-        decorateVal = map(fftAvg,0,60,0,255);
+        decorateVal = map(fftAvg,0,60,0,INPUT_MAX*2);
       }else {
         decorateVal = 0;
       }
@@ -49,7 +49,7 @@ class SoundDecorator extends InputDecorator{
     }
 
     public void setSmoother(float smoothRaw) {
-      smoothMapped = map(smoothRaw,0,127,0.0,1.0); //FIX EXPLICIT REFERENCE TO MIDI
+      smoothMapped = map(smoothRaw,INPUT_MIN,INPUT_MAX,0.0,1.0);
     }
 
     public void setTargetFreq(boolean isMin) {
