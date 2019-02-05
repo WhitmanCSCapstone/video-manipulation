@@ -33,7 +33,7 @@ boolean bb[] = new boolean[256]; //array representing "on" state of board
 import ddf.minim.analysis.*;
 import ddf.minim.*;
 Minim       minim;
-                                                   AudioInput  in;
+AudioInput  in;
 FFT         fft;
 float deadzone = 4; //This is the deadzone for the controller. This gives a range of 8 where the controller will read 63.5.
 MidiBus myBus;
@@ -85,7 +85,7 @@ void setup() {
 
   
   vid = createGraphics(1280,720,P3D);
-  img = loadImage("background.png"); 
+  //img = loadImage("background.png"); 
   
   noStroke();
   background(0);

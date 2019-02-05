@@ -52,7 +52,7 @@ class Supershape {
   }
 
   private float supershape(float theta, float m, float n1, float n2, float n3){
-    float t1 = abs((1/a) * cos( m * theta /4));
+    float t1 = abs((1/a) * cos( (m * theta /4)));
     t1 = pow(t1,n2);
     float t2 = abs((1/b)*sin(m * theta/4));
     t2 = pow(t2,n3);
@@ -65,10 +65,10 @@ class Supershape {
     //g: for all sketches, save cc to variables for clarity before doing stuff on them
     
     //Identify variables:
-    polycount = inputs[0].getVal();
-    vibrations = inputs[1].getVal();
-    period = inputs[2].getVal();
-    timestep = inputs[3].getVal();
+    polycount = (float)inputs[0].getVal();
+    vibrations = (float)inputs[1].getVal();
+    period = (float)inputs[2].getVal();
+    timestep = (float)inputs[3].getVal();
     
     l = map(timestep,0,127,1,127);
     m = map(sin(mchange),-1,1,0,l);

@@ -4,27 +4,30 @@
 * such as sound, midi, or keyboard.
 */
 class input {
-
-    /* UML DIAGRAM
-    public int value;
-    public int mapMin;
-    public int mapMax;
-    public void updateVal(){}xq
+  
+    //Base value
+    public double value;
+    
+    /**
+    * Constructor sets initial value
     */
-    
-    public float value;
-    //private double mapMin;
-    //private double mapMax;
-    
     input(){
       value = 0;
     }
     
-    public void updateVal(float inputVal) {
+    /**
+    * Sets value
+    * @param inputVal : new value
+    */
+    public void updateVal(double inputVal) {
       value = inputVal;
     }
     
-    public float getVal(){
+    /**
+    * Returns value
+    * @return value
+    */
+    public double getVal(){
       return value;
     }
 }
