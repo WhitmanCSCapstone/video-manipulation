@@ -6,15 +6,20 @@
 
 class SoundDecorator extends InputDecorator{
   
+    //NEEDS COMMENTS
     private int specSize;
     private int targetFreq; // Low is for lower frequencies
     private int bandwidth; //Width of frequency band, larger is a smoother responce
-    private float fftAvg;
+    private double fftAvg;
     private boolean isOn;
-    private float smoothMapped;
-    private float[] fftSmooth;
+    private double smoothMapped;
+    private double[] fftSmooth;
     private FFT fft;
 
+    /**
+    * Constructor initializes field values
+    * @param inputComp : reference to base input value
+    */
     SoundDecorator(input inputComp) {
       super(inputComp);
       targetFreq = 10;
@@ -24,34 +29,56 @@ class SoundDecorator extends InputDecorator{
       isOn=false;
     }
 
-    public void updateVal(float inputVal) {
-      setDecorateVal();
+    /**
+    * Update base value, overloads super class method
+    * @param inputVal : raw input value
+    */
+    public void updateVal(double inputVal) {
+      //setDecorateVal();
       inputComponent.updateVal(inputVal);
     }
 
+    /**
+    * Update decorate value
+    */
     public void setDecorateVal(){
       if (isOn){
         fftAvg = getAvgFFT();
-        decorateVal = map(fftAvg,0,60,0,INPUT_MAX*2);
+        decorateVal = (double) map((float)fftAvg,(float)0,60,0,INPUT_MAX*2);
       }else {
         decorateVal = 0;
       }
     }
 
-    public void toggleFFT(FFT fourierTrans) {
+    /**
+    * Update FFT-related fields with new FFT object
+    * @param fourierTrans : new FFT object
+    */
+    public void updateFFT(FFT fourierTrans) {
       fft = fourierTrans;
       specSize = fft.specSize();
-      fftSmooth = new float[specSize];
+      fftSmooth = new double[specSize];
     }
 
+    /**
+    * Flip active switch
+    */
     public void toggleOn() {
       isOn = !isOn;
     }
 
-    public void setSmoother(float smoothRaw) {
-      smoothMapped = map(smoothRaw,INPUT_MIN,INPUT_MAX,0.0,1.0);
+    /**
+    * Set new smoothing value
+    * @param smoothRaw : raw smoothing value
+    */
+    public void setSmoother(double smoothRaw) {
+      smoothMapped = (double) map((float) smoothRaw,INPUT_MIN,INPUT_MAX,0.0,1.0);
     }
 
+    /**
+    * Handle change in min or max target frequency
+    * @param isMin : is change in min or max target freq
+    */
     public void setTargetFreq(boolean isMin) {
       if (isMin){
         targetFreq = min(500, targetFreq+10);
@@ -60,46 +87,21 @@ class SoundDecorator extends InputDecorator{
       }
     }
 
-    private float getAvgFFT() {
+    /**
+    * @return 
+    */
+    private double getAvgFFT() {
       //Controls FFT smoothing
       for(int i = 0; i < specSize; i++) {
-        float band = fft.getBand(i);
+        double band = fft.getBand(i);
         fftSmooth[i] *= smoothMapped;
         if(fftSmooth[i] < band) 
           fftSmooth[i] = band;
       }
-      float sum = 0;
+      double sum = 0;
       for(int i = max(targetFreq - bandwidth/2,0); i <= targetFreq+bandwidth/2 || i>=specSize;i++) {
         sum += fftSmooth[i];
       }
       return sum/bandwidth;
     }
-
-
-    /* UML DIAGRAM
-    private int freqMin;
-    private int freqMax;
-    private int frequency;
-    private int soundSource;
-    private FFT fft;
-    
-    
-    public double getRawValue(){}
-    public int mapValue(double inputVal)
-    */
-    
-    
-    /* CHANGED FROM UML DIAGRAM
-    private double freqMin;
-    private double freqMax;
-    private double frequency;
-    private double soundSource;
-    private FFT fft;
-    
-    
-    public double getRawValue(){}
-    * mapVal already exists in MidiInput,
-    * maybe should be moved to Input parent class
-    */
-
 }

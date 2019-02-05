@@ -4,18 +4,30 @@
 * such as sound, midi, or keyboard.
 */
 class input {
+  
+    //Base value
+    public double value;
     
-    public float value;
-    
+    /**
+    * Constructor sets initial value
+    */
     input(){
       value = 0;
     }
     
-    public void updateVal(float inputVal) {
+    /**
+    * Sets value
+    * @param inputVal : new value
+    */
+    public void updateVal(double inputVal) {
       value = inputVal;
     }
     
-    public float getVal(){
+    /**
+    * Returns value
+    * @return value
+    */
+    public double getVal(){
       return value;
     }
 }
