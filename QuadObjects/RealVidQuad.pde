@@ -1,21 +1,22 @@
 public class RealVidQuad extends VideoQuad{
 
-    private Camera cam;
+    private Capture cam;
     
-    RealVidQuad(){
+    RealVidQuad(PApplet app){
         //TODO fix resolution thingy
         String[] cameras = Capture.list();
         cam = new Capture(app, cameras[0]);
         tempBuffer = createGraphics(buffer.width,buffer.height);
     }
-    readData(){
+    void readData(){
         if (cam.available())
             cam.read();
     }
-    applyFilters(){
+    void applyFilters(){
         tempBuffer.image(cam,0,0);
     }
-    drawToBuffer(PGraphics buffer, ArrayList<double> params){
+    //Draw to final buffer, currently not using params
+    void drawToBuffer(PGraphics buffer, double[] params){
         buffer.image(tempBuffer,0,0,buffer.width,buffer.height);
     }
 }
