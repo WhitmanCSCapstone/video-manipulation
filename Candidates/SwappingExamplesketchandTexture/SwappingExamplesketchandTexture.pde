@@ -83,6 +83,8 @@ void loadBoard()
 }
 void setup() {
   size(3800,2100, P3D);
+  String[] cameras = Capture.list();
+    print(cameras);
   //fullScreen(P3D);
   MidiBus.list();  // Shows controllers in the console
   myBus = new MidiBus(this, "nanoKONTROL2","nanoKONTROL2");  // input and output
