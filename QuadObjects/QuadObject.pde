@@ -8,7 +8,7 @@ public abstract class QuadObject {
 	 * An array of objects which are used to manipulate how this quad gets drawn to the screen.
 	 * Allows for quick swapping behavior of sketches.
 	 */
-	private PropertyHandler handlers[];
+	//private PropertyHandler handlers[];
 	/*
 	*  Temporary buffer for intermediate filters.
 	*/
@@ -18,12 +18,12 @@ public abstract class QuadObject {
 	 * @param buffer Buffer to draw the quad contents too.
 	 * @param params array of values that should be used to manipulate quad content parameters
 	 */
-	public void drawToBuffer(PGraphics buffer, ArrayList<double> params);
+	public void drawToBuffer(PGraphics buffer, double[] params){}
 
 	/*
 	 * Run the PropertyHandler objects to maniuplate this quad sketch.
 	 */
-	private void executeHandlers();
+	private void executeHandlers(){}
 
 
 }
