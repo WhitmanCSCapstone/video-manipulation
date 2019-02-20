@@ -15,11 +15,10 @@ QuadContainer quadCont;
 void setup() {
   size(1280,720,P3D);
   quadCont = new QuadContainer(this);
-  System.out.println("setup");
   quadCont.selectNewQuad(0);
 }
 
 void draw() {
   quadCont.drawToBuffer(new ArrayList<Float>());
-
+  System.out.println("update");
 }

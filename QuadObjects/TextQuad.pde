@@ -38,6 +38,7 @@ public class TextQuad extends QuadObject {
     public TextQuad (PGraphics buffer) {
         constructorHelper(buffer);
         loadDefaultWords();
+        loadDefaultFonts();
     }
 
     /*
@@ -59,11 +60,11 @@ public class TextQuad extends QuadObject {
         fonts = new ArrayList<PFont>();
         xPos = 400;
         yPos = 400;
-        textAlign(CENTER, CENTER);
+        curFont = 0;
+        curWord = 0;
         tempBuffer = createGraphics(buffer.width, buffer.height);
 
         noStroke();
-        noCursor();
     }
 
     /*
@@ -81,7 +82,11 @@ public class TextQuad extends QuadObject {
      */
     public void loadDefaultFonts() {
         String[] fontNames = {"Helvetica-500.vlw", "Impact-500.vlw"};
-        loadFonts(fontNames);
+        try {
+            loadFonts(fontNames);
+        } catch (Exception e) {
+            System.out.println("problem loading fonts");
+        }
     }
  
     /*
@@ -130,32 +135,52 @@ public class TextQuad extends QuadObject {
      */ 
     @Override
     public void drawToBuffer(PGraphics buffer, ArrayList<Float> params){
+        tempBuffer.beginShape();
+
         executeHandlers();
-        buffer.image(tempBuffer,0,0,buffer.width,buffer.height);
+
+        buffer.texture(tempBuffer);
+        buffer.vertex(-BUFFERWIDTH, -BUFFERHEIGHT, 0, 0, 0);
+		buffer.vertex(BUFFERWIDTH, -BUFFERHEIGHT, 0, tempBuffer.width, 0);
+		buffer.vertex(BUFFERWIDTH, BUFFERHEIGHT, 0, tempBuffer.width, tempBuffer.height);
+		buffer.vertex(-BUFFERWIDTH, BUFFERHEIGHT, 0, 0, tempBuffer.height);
+
+        tempBuffer.endShape();
+
+        // buffer.image(tempBuffer,0,0,buffer.width,buffer.height);
     }
 
     /*
-     *
+     * 
      */
-     protected void executeHandlers(){
+     protected void executeHandlers(){    
+            /* simple code to test with */
         tempBuffer.beginDraw();
-        float fontSize = 100;   // arbitrary, just for calculating correct size below
-        float fintSizeControl = 100; //hardcode input value
-        float boxSizeControl = 100;  //hardcode input value
-        float BG_AlphaControl = 100; //hardcode input value
-        float fontSizeControl = 100; //hardcode input value
-
-        textFont(fonts.get(curFont), fontSize);   // Tell the computer that size for the following calculations
-        float maxSizeW = fontSize/textWidth(words.get(curWord)) * (width*boxSizeControl);
-        float maxSizeH = fontSize/(textDescent()+textAscent()) * (height*boxSizeControl);
-        fill(255, BG_AlphaControl);  // fills screen-sized rectangle (below) with white w/ opacity determined by midi
-        rect(0,0,width,height);
-        fill(0);
-        fontSize = (min(maxSizeW, maxSizeH));   // Reset fontSize to be the smaller of the two possible maximums for height and width
-        fontSize = min(fontSize, fontSizeControl*height*boxSizeControl);
-        textSize(fontSize);
-        text(words.get(curWord), xPos, yPos);
+        tempBuffer.fill(#000044);
+        tempBuffer.rect(random(width), random(height), 40, 40);
         tempBuffer.endDraw();
+        // image(tempBuffer, 0, 0); //works if draw to main buffer here
      }
 
 }
+
+
+
+
+/*Ignore this section. Will put in executeHandlers() later
+        tempBuffer.beginDraw();
+        float fontSize = random(1, 100);   // arbitrary, just for calculating correct size below
+        float boxSizeControl = random(1, 100);  //hardcode input value
+        float BG_AlphaControl = random(1, 100); //hardcode input value
+        float fontSizeControl = random(1, 100); //hardcode input value
+        tempBuffer.textFont(fonts.get(curFont), fontSize);   // Tell the computer that size for the following calculations
+        float maxSizeW = fontSize/tempBuffer.textWidth(words.get(curWord)) * (tempBuffer.width*boxSizeControl);
+        float maxSizeH = fontSize/(textDescent()+tempBuffer.textAscent()) * (tempBuffer.height*boxSizeControl);
+        tempBuffer.fill(255, BG_AlphaControl);  // fills screen-sized rectangle (below) with white w/ opacity determined by midi
+        tempBuffer.rect(0,0,tempBuffer.width, tempBuffer.height);
+        tempBuffer.fill(0);
+        fontSize = (min(maxSizeW, maxSizeH));   // Reset fontSize to be the smaller of the two possible maximums for height and width
+        fontSize = min(fontSize, fontSizeControl*height*boxSizeControl);
+        tempBuffer.textSize(fontSize);
+        tempBuffer.text(words.get(curWord), mouseX, mouseY);
+        */
