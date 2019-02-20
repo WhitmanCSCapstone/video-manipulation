@@ -20,6 +20,6 @@ public class RealVidQuad extends VideoQuad{
         buffer.image(tempBuffer,0,0,buffer.width,buffer.height);
     }
 
-    public void executeHandlers(){}
+    protected void executeHandlers(){}
 
 }

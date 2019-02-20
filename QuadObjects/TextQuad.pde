@@ -25,6 +25,12 @@ public class TextQuad extends QuadObject {
      */
     boolean pauseFlag = false;
 
+    /*
+     * Current X and Y position of the text.   
+     */
+     float xPos;
+     float yPos;
+
 
     /*
      * Default constructor populates using hard-coded parameters.
@@ -51,6 +57,9 @@ public class TextQuad extends QuadObject {
     private void constructorHelper(PGraphics buffer) {
         words = new ArrayList<String>();
         fonts = new ArrayList<PFont>();
+        xPos = 400;
+        yPos = 400;
+        textAlign(CENTER, CENTER);
         tempBuffer = createGraphics(buffer.width, buffer.height);
 
         noStroke();
@@ -115,18 +124,38 @@ public class TextQuad extends QuadObject {
       }
 
     /* 
-     * Final draw to real buffer - currently not using params
-     * 
+     * Final draw to real buffer
+     * @arg buffer - the buffer that this quad should draw to when finished
+     * @arg params - ArrayList of parameters that represent the input values for given frame
      */ 
+    @Override
     public void drawToBuffer(PGraphics buffer, ArrayList<Float> params){
+        executeHandlers();
         buffer.image(tempBuffer,0,0,buffer.width,buffer.height);
     }
 
     /*
      *
      */
-     public void executeHandlers(){
-         
+     protected void executeHandlers(){
+        tempBuffer.beginDraw();
+        float fontSize = 100;   // arbitrary, just for calculating correct size below
+        float fintSizeControl = 100; //hardcode input value
+        float boxSizeControl = 100;  //hardcode input value
+        float BG_AlphaControl = 100; //hardcode input value
+        float fontSizeControl = 100; //hardcode input value
+
+        textFont(fonts.get(curFont), fontSize);   // Tell the computer that size for the following calculations
+        float maxSizeW = fontSize/textWidth(words.get(curWord)) * (width*boxSizeControl);
+        float maxSizeH = fontSize/(textDescent()+textAscent()) * (height*boxSizeControl);
+        fill(255, BG_AlphaControl);  // fills screen-sized rectangle (below) with white w/ opacity determined by midi
+        rect(0,0,width,height);
+        fill(0);
+        fontSize = (min(maxSizeW, maxSizeH));   // Reset fontSize to be the smaller of the two possible maximums for height and width
+        fontSize = min(fontSize, fontSizeControl*height*boxSizeControl);
+        textSize(fontSize);
+        text(words.get(curWord), xPos, yPos);
+        tempBuffer.endDraw();
      }
 
 }

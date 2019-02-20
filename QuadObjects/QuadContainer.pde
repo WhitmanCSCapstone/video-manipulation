@@ -47,7 +47,16 @@ public class QuadContainer {
 	 */
 	public void drawToBuffer(ArrayList<Float> params)
 	{
+		beginShape();
 		selectedQuad.drawToBuffer(buffer,params);
+		texture(buffer);
+
+		vertex(-640, -400, 0, 0, 0);
+		vertex(640, -400, 0, buffer.width, 0);
+		vertex(640, 400, 0, buffer.width, buffer.height);
+		vertex(-640, 400, 0, 0, buffer.height);
+
+		endShape();
 	}
 
 	/*
