@@ -62,7 +62,7 @@ public class TextQuad extends QuadObject {
         yPos = 400;
         curFont = 0;
         curWord = 0;
-        tempBuffer = createGraphics(buffer.width, buffer.height);
+        tempBuffer = createGraphics(buffer.width, buffer.height, P3D);
 
         noStroke();
     }
@@ -139,15 +139,15 @@ public class TextQuad extends QuadObject {
 
         executeHandlers();
 
-        buffer.texture(tempBuffer);
-        buffer.vertex(-BUFFERWIDTH, -BUFFERHEIGHT, 0, 0, 0);
-		buffer.vertex(BUFFERWIDTH, -BUFFERHEIGHT, 0, tempBuffer.width, 0);
-		buffer.vertex(BUFFERWIDTH, BUFFERHEIGHT, 0, tempBuffer.width, tempBuffer.height);
-		buffer.vertex(-BUFFERWIDTH, BUFFERHEIGHT, 0, 0, tempBuffer.height);
+        // buffer.texture(tempBuffer);
+        // buffer.vertex(-BUFFERWIDTH/2, -BUFFERHEIGHT/2, 0, 0, 0);
+		// buffer.vertex(BUFFERWIDTH/2, -BUFFERHEIGHT/2, 0, tempBuffer.width, 0);
+		// buffer.vertex(BUFFERWIDTH/2, BUFFERHEIGHT/2, 0, tempBuffer.width, tempBuffer.height);
+		// buffer.vertex(-BUFFERWIDTH/2, BUFFERHEIGHT/2, 0, 0, tempBuffer.height);
 
         tempBuffer.endShape();
-
-        // buffer.image(tempBuffer,0,0,buffer.width,buffer.height);
+        // image(buffer, 0, 0);
+        buffer.image(tempBuffer,0,0,buffer.width,buffer.height);
     }
 
     /*
