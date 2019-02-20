@@ -4,15 +4,23 @@
  */
 public abstract class QuadObject {
 
-	/*
+	/* NOT THIS ANYMORE ----->>> SEE NEW DESIGN
 	 * An array of objects which are used to manipulate how this quad gets drawn to the screen.
 	 * Allows for quick swapping behavior of sketches.
 	 */
 	//private PropertyHandler handlers[];
+
 	/*
 	*  Temporary buffer for intermediate filters.
 	*/
 	private PGraphics tempBuffer;
+
+	//NEW DESIGN
+	/*
+	 * Every QuadObject has an object that it can use to do basic universal calculations
+	 * involved in the handling of certin universal properties such as rotateX, zoom, rotateY.
+	 */
+	private PropertyHandler propHandler;
 	/*
 	 *Use given params to draw this object to the given buffer.
 	 * @param buffer Buffer to draw the quad contents too.
