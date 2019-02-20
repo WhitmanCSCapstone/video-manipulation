@@ -15,11 +15,14 @@ public class RealVidQuad extends VideoQuad{
     void applyFilters(){
         tempBuffer.image(cam,0,0);
     }
+
     //Draw to final buffer, currently not using params
+    @Override
     void drawToBuffer(PGraphics buffer, ArrayList<Float> params){
         buffer.image(tempBuffer,0,0,buffer.width,buffer.height);
     }
 
+    @Override
     protected void executeHandlers(){}
 
 }

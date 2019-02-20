@@ -10,7 +10,7 @@ public class QuadContainer {
 	 */
 	private PGraphics buffer;
 	QuadContainer(PApplet app){
-		buffer = createGraphics(BUFFERWIDTH, BUFFERHEIGHT, P3D);
+		buffer = createGraphics(BUFFERWIDTH, BUFFERHEIGHT, P3D); //BUFFERWIDTH and HEIGHT are temporary testing constants
 		quads = new ArrayList<QuadObject>();
 		createAllQuads(app);
 	}
@@ -48,7 +48,7 @@ public class QuadContainer {
 	public void drawToBuffer(ArrayList<Float> params)
 	{
 		beginShape();
-		
+
 		buffer.beginDraw();
 		selectedQuad.drawToBuffer(buffer,params);
 		buffer.endDraw();

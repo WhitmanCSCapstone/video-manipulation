@@ -143,6 +143,7 @@ public class TextQuad extends QuadObject {
     /*
      * Handle all behavior to get the sketch drawn to tempBuffer.
      */
+     @Override
      protected void executeHandlers(){   
         tempBuffer.beginShape();
  
