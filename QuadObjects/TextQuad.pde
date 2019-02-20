@@ -135,44 +135,23 @@ public class TextQuad extends QuadObject {
      */ 
     @Override
     public void drawToBuffer(PGraphics buffer, ArrayList<Float> params){
-        tempBuffer.beginShape();
+        executeHandlers(params);
 
-        executeHandlers();
-
-        // buffer.texture(tempBuffer);
-        // buffer.vertex(-BUFFERWIDTH/2, -BUFFERHEIGHT/2, 0, 0, 0);
-		// buffer.vertex(BUFFERWIDTH/2, -BUFFERHEIGHT/2, 0, tempBuffer.width, 0);
-		// buffer.vertex(BUFFERWIDTH/2, BUFFERHEIGHT/2, 0, tempBuffer.width, tempBuffer.height);
-		// buffer.vertex(-BUFFERWIDTH/2, BUFFERHEIGHT/2, 0, 0, tempBuffer.height);
-
-        tempBuffer.endShape();
-        // image(buffer, 0, 0);
         buffer.image(tempBuffer,0,0,buffer.width,buffer.height);
     }
 
     /*
-     * 
+     * Handle all behavior to get the sketch drawn to tempBuffer.
      */
-     protected void executeHandlers(){    
-            /* simple code to test with */
+     @Override
+     public void executeHandlers(ArrayList<Float> params){   
+        tempBuffer.beginShape();
+ 
         tempBuffer.beginDraw();
-        tempBuffer.fill(#000044);
-        tempBuffer.rect(random(width), random(height), 40, 40);
-        tempBuffer.endDraw();
-        // image(tempBuffer, 0, 0); //works if draw to main buffer here
-     }
-
-}
-
-
-
-
-/*Ignore this section. Will put in executeHandlers() later
-        tempBuffer.beginDraw();
-        float fontSize = random(1, 100);   // arbitrary, just for calculating correct size below
-        float boxSizeControl = random(1, 100);  //hardcode input value
-        float BG_AlphaControl = random(1, 100); //hardcode input value
-        float fontSizeControl = random(1, 100); //hardcode input value
+        float fontSize = random(0,1);   // arbitrary, just for calculating correct size below
+        float boxSizeControl = random(0, 1);  //hardcode input value
+        float BG_AlphaControl = random(0, 1); //hardcode input value
+        float fontSizeControl = random(0, 1); //hardcode input value
         tempBuffer.textFont(fonts.get(curFont), fontSize);   // Tell the computer that size for the following calculations
         float maxSizeW = fontSize/tempBuffer.textWidth(words.get(curWord)) * (tempBuffer.width*boxSizeControl);
         float maxSizeH = fontSize/(textDescent()+tempBuffer.textAscent()) * (tempBuffer.height*boxSizeControl);
@@ -183,4 +162,22 @@ public class TextQuad extends QuadObject {
         fontSize = min(fontSize, fontSizeControl*height*boxSizeControl);
         tempBuffer.textSize(fontSize);
         tempBuffer.text(words.get(curWord), mouseX, mouseY);
-        */
+        tempBuffer.endDraw();
+        curWord = (curWord + 1) % words.size();
+        curFont = (curFont + 1) % fonts.size();
+        
+        
+        //simple code to test drawing with
+        // tempBuffer.beginDraw();
+        // tempBuffer.fill(#000044);
+        // tempBuffer.rect(random(width), random(height), 40, 40);
+        // tempBuffer.endDraw();
+
+        tempBuffer.endShape();
+     }
+
+}
+
+
+
+
