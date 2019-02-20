@@ -11,16 +11,14 @@ String RECORDED_VIDEO = "less.mp4";
 int BUFFERHEIGHT = 720;
 int BUFFERWIDTH = 1280;
 
-QuadContainer quadcontainer;
+QuadContainer quadCont;
 void setup() {
   size(1280,720,P3D);
-  quadcontainer = new QuadContainer(this);
-  
-  //TextQuad q = new TextQuad();
-  System.out.println("good");
-
+  quadCont = new QuadContainer(this);
+  quadCont.selectNewQuad(0);
 }
 
 void draw() {
-  
+  quadCont.drawToBuffer(new ArrayList<Float>());
+  System.out.println("update");
 }

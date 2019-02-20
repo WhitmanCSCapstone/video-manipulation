@@ -47,7 +47,24 @@ public class QuadContainer {
 	 */
 	public void drawToBuffer(ArrayList<Float> params)
 	{
+		beginShape();
+		buffer.beginDraw();
 		selectedQuad.drawToBuffer(buffer,params);
+		buffer.endDraw();
+
+        // buffer.beginDraw();
+        // buffer.fill(#000044);
+        // buffer.rect(random(width), random(height), 40, 40);
+        // buffer.endDraw();
+
+		texture(buffer);
+		vertex(-BUFFERWIDTH/2, -BUFFERHEIGHT/2, 0, 0, 0);
+		vertex(BUFFERWIDTH/2, -BUFFERHEIGHT/2, 0, buffer.width, 0);
+		vertex(BUFFERWIDTH/2, BUFFERHEIGHT/2, 0, buffer.width, buffer.height);
+		vertex(-BUFFERWIDTH/2, BUFFERHEIGHT/2, 0, 0, buffer.height);
+
+		endShape();
+
 	}
 
 	/*
@@ -57,8 +74,8 @@ public class QuadContainer {
 	public void createAllQuads(PApplet app)
 	{
 		quads.add(new TextQuad(buffer));
-		quads.add(new RealVidQuad(app, buffer));
-		quads.add(new RecordedVideoQuad(app, buffer));
+		// quads.add(new RealVidQuad(app, buffer));
+		// quads.add(new RecordedVideoQuad(app, buffer));
 	}
 
 }

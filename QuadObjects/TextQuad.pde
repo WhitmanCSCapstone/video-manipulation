@@ -25,6 +25,12 @@ public class TextQuad extends QuadObject {
      */
     boolean pauseFlag = false;
 
+    /*
+     * Current X and Y position of the text.   
+     */
+     float xPos;
+     float yPos;
+
 
     /*
      * Default constructor populates using hard-coded parameters.
@@ -32,6 +38,7 @@ public class TextQuad extends QuadObject {
     public TextQuad (PGraphics buffer) {
         constructorHelper(buffer);
         loadDefaultWords();
+        loadDefaultFonts();
     }
 
     /*
@@ -51,10 +58,13 @@ public class TextQuad extends QuadObject {
     private void constructorHelper(PGraphics buffer) {
         words = new ArrayList<String>();
         fonts = new ArrayList<PFont>();
-        tempBuffer = createGraphics(buffer.width, buffer.height);
+        xPos = 400;
+        yPos = 400;
+        curFont = 0;
+        curWord = 0;
+        tempBuffer = createGraphics(buffer.width, buffer.height, P3D);
 
         noStroke();
-        noCursor();
     }
 
     /*
@@ -72,7 +82,11 @@ public class TextQuad extends QuadObject {
      */
     public void loadDefaultFonts() {
         String[] fontNames = {"Helvetica-500.vlw", "Impact-500.vlw"};
-        loadFonts(fontNames);
+        try {
+            loadFonts(fontNames);
+        } catch (Exception e) {
+            System.out.println("problem loading fonts");
+        }
     }
  
     /*
@@ -115,18 +129,58 @@ public class TextQuad extends QuadObject {
       }
 
     /* 
-     * Final draw to real buffer - currently not using params
-     * 
+     * Final draw to real buffer
+     * @arg buffer - the buffer that this quad should draw to when finished
+     * @arg params - ArrayList of parameters that represent the input values for given frame
      */ 
+    @Override
     public void drawToBuffer(PGraphics buffer, ArrayList<Float> params){
+        tempBuffer.beginShape();
+
+        executeHandlers();
+
+        // buffer.texture(tempBuffer);
+        // buffer.vertex(-BUFFERWIDTH/2, -BUFFERHEIGHT/2, 0, 0, 0);
+		// buffer.vertex(BUFFERWIDTH/2, -BUFFERHEIGHT/2, 0, tempBuffer.width, 0);
+		// buffer.vertex(BUFFERWIDTH/2, BUFFERHEIGHT/2, 0, tempBuffer.width, tempBuffer.height);
+		// buffer.vertex(-BUFFERWIDTH/2, BUFFERHEIGHT/2, 0, 0, tempBuffer.height);
+
+        tempBuffer.endShape();
+        // image(buffer, 0, 0);
         buffer.image(tempBuffer,0,0,buffer.width,buffer.height);
     }
 
     /*
-     *
+     * 
      */
-     public void executeHandlers(){
-         
+     protected void executeHandlers(){    
+            /* simple code to test with */
+        tempBuffer.beginDraw();
+        tempBuffer.fill(#000044);
+        tempBuffer.rect(random(width), random(height), 40, 40);
+        tempBuffer.endDraw();
+        // image(tempBuffer, 0, 0); //works if draw to main buffer here
      }
 
 }
+
+
+
+
+/*Ignore this section. Will put in executeHandlers() later
+        tempBuffer.beginDraw();
+        float fontSize = random(1, 100);   // arbitrary, just for calculating correct size below
+        float boxSizeControl = random(1, 100);  //hardcode input value
+        float BG_AlphaControl = random(1, 100); //hardcode input value
+        float fontSizeControl = random(1, 100); //hardcode input value
+        tempBuffer.textFont(fonts.get(curFont), fontSize);   // Tell the computer that size for the following calculations
+        float maxSizeW = fontSize/tempBuffer.textWidth(words.get(curWord)) * (tempBuffer.width*boxSizeControl);
+        float maxSizeH = fontSize/(textDescent()+tempBuffer.textAscent()) * (tempBuffer.height*boxSizeControl);
+        tempBuffer.fill(255, BG_AlphaControl);  // fills screen-sized rectangle (below) with white w/ opacity determined by midi
+        tempBuffer.rect(0,0,tempBuffer.width, tempBuffer.height);
+        tempBuffer.fill(0);
+        fontSize = (min(maxSizeW, maxSizeH));   // Reset fontSize to be the smaller of the two possible maximums for height and width
+        fontSize = min(fontSize, fontSizeControl*height*boxSizeControl);
+        tempBuffer.textSize(fontSize);
+        tempBuffer.text(words.get(curWord), mouseX, mouseY);
+        */

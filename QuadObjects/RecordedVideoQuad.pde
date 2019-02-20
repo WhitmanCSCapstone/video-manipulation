@@ -23,6 +23,6 @@ public class RecordedVideoQuad extends VideoQuad{
         buffer.image(tempBuffer,0,0,buffer.width,buffer.height);
     }
 
-    public void executeHandlers(){}
+    protected void executeHandlers(){}
 
 }
