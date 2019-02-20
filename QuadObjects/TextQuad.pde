@@ -154,7 +154,27 @@ public class TextQuad extends QuadObject {
      * 
      */
      protected void executeHandlers(){    
-            /* simple code to test with */
+        tempBuffer.beginDraw();
+        float fontSize = random(0,1);   // arbitrary, just for calculating correct size below
+        float boxSizeControl = random(0, 1);  //hardcode input value
+        float BG_AlphaControl = random(0, 1); //hardcode input value
+        float fontSizeControl = random(0, 1); //hardcode input value
+        tempBuffer.textFont(fonts.get(curFont), fontSize);   // Tell the computer that size for the following calculations
+        float maxSizeW = fontSize/tempBuffer.textWidth(words.get(curWord)) * (tempBuffer.width*boxSizeControl);
+        float maxSizeH = fontSize/(textDescent()+tempBuffer.textAscent()) * (tempBuffer.height*boxSizeControl);
+        tempBuffer.fill(255, BG_AlphaControl);  // fills screen-sized rectangle (below) with white w/ opacity determined by midi
+        tempBuffer.rect(0,0,tempBuffer.width, tempBuffer.height);
+        tempBuffer.fill(0);
+        fontSize = (min(maxSizeW, maxSizeH));   // Reset fontSize to be the smaller of the two possible maximums for height and width
+        fontSize = min(fontSize, fontSizeControl*height*boxSizeControl);
+        tempBuffer.textSize(fontSize);
+        tempBuffer.text(words.get(curWord), mouseX, mouseY);
+        tempBuffer.endDraw();
+        curWord = (curWord + 1) % words.size();
+        curFont = (curFont + 1) % fonts.size();
+        
+        
+            //simple code to test with
         tempBuffer.beginDraw();
         tempBuffer.fill(#000044);
         tempBuffer.rect(random(width), random(height), 40, 40);
@@ -167,20 +187,3 @@ public class TextQuad extends QuadObject {
 
 
 
-/*Ignore this section. Will put in executeHandlers() later
-        tempBuffer.beginDraw();
-        float fontSize = random(1, 100);   // arbitrary, just for calculating correct size below
-        float boxSizeControl = random(1, 100);  //hardcode input value
-        float BG_AlphaControl = random(1, 100); //hardcode input value
-        float fontSizeControl = random(1, 100); //hardcode input value
-        tempBuffer.textFont(fonts.get(curFont), fontSize);   // Tell the computer that size for the following calculations
-        float maxSizeW = fontSize/tempBuffer.textWidth(words.get(curWord)) * (tempBuffer.width*boxSizeControl);
-        float maxSizeH = fontSize/(textDescent()+tempBuffer.textAscent()) * (tempBuffer.height*boxSizeControl);
-        tempBuffer.fill(255, BG_AlphaControl);  // fills screen-sized rectangle (below) with white w/ opacity determined by midi
-        tempBuffer.rect(0,0,tempBuffer.width, tempBuffer.height);
-        tempBuffer.fill(0);
-        fontSize = (min(maxSizeW, maxSizeH));   // Reset fontSize to be the smaller of the two possible maximums for height and width
-        fontSize = min(fontSize, fontSizeControl*height*boxSizeControl);
-        tempBuffer.textSize(fontSize);
-        tempBuffer.text(words.get(curWord), mouseX, mouseY);
-        */
