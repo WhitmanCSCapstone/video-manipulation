@@ -44,15 +44,18 @@ public class MasterController {
 
     // /* 
     // * Request the input state as an array of values.
-    // * @return array of doubles containing all the input state values
+    // * @return array of floats containing all the input state values
     // */
-    // private double[] fetchParams();
+    // private ArrayList<Float> fetchParams();
 
     // /* 
     // * Tell the input object to update all its inputs. Some input types are not automatically
     // * updated and must be provoked to do so.
+    // * Useful to refresh inputs without quad drawing quad to screen.
     // */
-    // public void updateInputs();
+    // public void updateInputs() {
+    //     inputControl.refresh();
+    // }
 
     // /* 
     // * ?
@@ -94,7 +97,7 @@ public class MasterController {
     * QuadContainer and have it draw with them.
     */
     public void drawQuad() {
-        // inputControl.refresh();
+        // updateInputs();
         // quadCont.drawToBuffer(inputControl.fetchInputs());
 
         //for testing without Input module
