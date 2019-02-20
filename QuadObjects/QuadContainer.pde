@@ -48,17 +48,14 @@ public class QuadContainer {
 	public void drawToBuffer(ArrayList<Float> params)
 	{
 		beginShape();
+		
 		buffer.beginDraw();
 		selectedQuad.drawToBuffer(buffer,params);
 		buffer.endDraw();
 
-        // buffer.beginDraw();
-        // buffer.fill(#000044);
-        // buffer.rect(random(width), random(height), 40, 40);
-        // buffer.endDraw();
-
+		//map contents of buffer to screen
 		texture(buffer);
-		vertex(-BUFFERWIDTH, -BUFFERHEIGHT, 0, 0, 0);
+		vertex(-BUFFERWIDTH, -BUFFERHEIGHT, 0, 0, 0); //params: x, y, z, u, v
 		vertex(BUFFERWIDTH, -BUFFERHEIGHT, 0, buffer.width, 0);
 		vertex(BUFFERWIDTH, BUFFERHEIGHT, 0, buffer.width, buffer.height);
 		vertex(-BUFFERWIDTH, BUFFERHEIGHT, 0, 0, buffer.height);
