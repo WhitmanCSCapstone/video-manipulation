@@ -1,4 +1,6 @@
-
+/*
+ * QuadObject for sketches that manipulate text.
+ */
 public class TextQuad extends QuadObject {
 
     /*
@@ -50,7 +52,7 @@ public class TextQuad extends QuadObject {
      * Helper function for constructors to call field constructors.
      * Does not populate arrays with data.
      */
-    private constructorHelper() {
+    private void constructorHelper() {
         words = new ArrayList<String>();
         fonts = new ArrayList<PFont>();
 
@@ -62,7 +64,7 @@ public class TextQuad extends QuadObject {
      * Helper function to populate the words field with some sample data.
      * words must be constructed prior to call.
      */
-    public loadDefaultWords() {
+    public void loadDefaultWords() {
         words.add("hi");
         words.add("there");
         words.add("world");
@@ -71,7 +73,7 @@ public class TextQuad extends QuadObject {
     /*
      * Constructor helper function to load two default fonts.
      */
-    public loadDefaultFonts() {
+    public void loadDefaultFonts() {
         String[] fontNames = {"Helvetica-500.vlw", "Impact-500.vlw"};
         loadFonts(fontNames);
     }
@@ -80,11 +82,11 @@ public class TextQuad extends QuadObject {
      * Helper function to load given font files into fonts array.
      * Clears the fonts array before populating with given fonts.
      */
-     public loadFonts(String[] fontNames) {
-        fonts.clear()
+     public void loadFonts(String[] fontNames) {
+        fonts.clear();
         for (int i = 0; i < fontNames.length; i++) {
             PFont f = loadFont(fontNames[i]);
-            if f != Null {
+            if (f != null) {
                 fonts.add(f);
             }
         }
@@ -97,19 +99,19 @@ public class TextQuad extends QuadObject {
       * Text will be delimited by spaces.
       * If file read fails, then array will contain default words.
       */
-      public loadText(String wordFilePath) {
+      public void loadText(String wordFilePath) {
         try {
-            words.clear()
+            words.clear();
             //load document and split it by spaces
             String[] doc = loadStrings(wordFilePath);
             String bigString = join(doc, " "); 
-            words(split(joinlines, " "));
+            words = new ArrayList<String>(Arrays.asList(split(bigString, " ")));
         }
-        catch (FileNotFoundException e) {
-            e.printStackTrace()
-            console.log.print("TextQuad could not find given file: '");
-            console.log.println("' " + wordFilePath);
-            console.log.println("Default data was loaded instead");
+        catch (Exception e) {
+            e.printStackTrace();
+            System.out.print("TextQuad could not load given file: '");
+            System.out.println("' " + wordFilePath);
+            System.out.println("Default data was loaded instead");
             loadDefaultWords();
         }
         words.trimToSize();
@@ -117,9 +119,10 @@ public class TextQuad extends QuadObject {
 
     /* 
      * Final draw to real buffer - currently not using params
-     * Params will be important here I think
+     * 
      */ 
-    void drawToBuffer(PGraphics buffer, double[] params){
+    public void drawToBuffer(PGraphics buffer, ArrayList<Float> params){
         buffer.image(tempBuffer,0,0,buffer.width,buffer.height);
     }
+
 }

@@ -2,7 +2,7 @@ public class RealVidQuad extends VideoQuad{
 
     private Capture cam;
     
-    RealVidQuad(PApplet app){
+    RealVidQuad(PApplet app, PGraphics buffer){
         //TODO fix resolution thingy
         String[] cameras = Capture.list();
         cam = new Capture(app, cameras[0]);
@@ -16,7 +16,7 @@ public class RealVidQuad extends VideoQuad{
         tempBuffer.image(cam,0,0);
     }
     //Draw to final buffer, currently not using params
-    void drawToBuffer(PGraphics buffer, double[] params){
+    void drawToBuffer(PGraphics buffer, ArrayList<Float> params){
         buffer.image(tempBuffer,0,0,buffer.width,buffer.height);
     }
 }

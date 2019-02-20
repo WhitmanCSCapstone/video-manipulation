@@ -11,6 +11,7 @@ public class QuadContainer {
 	private PGraphics buffer;
 	QuadContainer(PApplet app){
 		createAllQuads(app);
+		buffer = createGraphics(BUFFERWIDTH, BUFFERHEIGHT, P3D);
 	}
 	/*
 	 * The quad that is currently selected to draw to the screen.
@@ -20,7 +21,7 @@ public class QuadContainer {
 	/*
 	 * Array of Quad objects that can be selected and drawn to to screen independently of each other.
 	 */
-	public QuadObject quads[];
+	public ArrayList<QuadObject> quads;
 
 	/*
 	 * The ID of the quad that shoudl be selected and drawn from now on.
@@ -29,20 +30,20 @@ public class QuadContainer {
 	 */
 	public void selectNewQuad(int selectID)
 	{
-		selectedQuad = quads[selectID];
+		selectedQuad = quads.get(selectID);
 	}
 
 	/*
 	 * Deprecated: Update the properties using the values in a given list of Input objects
 	 * @param params Array of input objects to pull update values from.
 	 */
-	public void updateProps(double[] params){};
+	public void updateProps(ArrayList<Float> params){}
 
 	/*
 	 * Use given params to tell selected quad to draw to a specific buffer
 	 * @param params array of doubles containing the paramaters the quad should use to draw.
 	 */
-	public void drawToBuffer(double[] params)
+	public void drawToBuffer(ArrayList<Float> params)
 	{
 		selectedQuad.drawToBuffer(buffer,params);
 	}
@@ -54,9 +55,9 @@ public class QuadContainer {
 	public void createAllQuads(PApplet app)
 	{
 		// quads = {new TextQuad(),new RealVidQuad(),new RecordedVideoQuad()};
-		quads.append(new TextQuad());
-		quads.append(new RealVidQuad(app));
-		quads.append(new RecordedVideoQuad(app));
+		quads.add(new TextQuad());
+		quads.add(new RealVidQuad(app, buffer));
+		quads.add(new RecordedVideoQuad(app, buffer));
 	}
 
 }

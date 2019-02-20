@@ -13,25 +13,25 @@ public abstract class QuadObject {
 	/*
 	*  Temporary buffer for intermediate filters.
 	*/
-	private PGraphics tempBuffer;
+	protected PGraphics tempBuffer;
 
 	//NEW DESIGN
 	/*
 	 * Every QuadObject has an object that it can use to do basic universal calculations
 	 * involved in the handling of certin universal properties such as rotateX, zoom, rotateY.
 	 */
-	private PropertyHandler propHandler;
+	protected PropertyHandler propHandler;
 	/*
 	 *Use given params to draw this object to the given buffer.
 	 * @param buffer Buffer to draw the quad contents too.
 	 * @param params array of values that should be used to manipulate quad content parameters
 	 */
-	public void drawToBuffer(PGraphics buffer, double[] params){}
+	public void drawToBuffer(PGraphics buffer, ArrayList<Float> params){}
 
 	/*
 	 * Run the PropertyHandler objects to maniuplate this quad sketch.
 	 */
-	private void executeHandlers(){}
+	protected void executeHandlers(){}
 
 
 }

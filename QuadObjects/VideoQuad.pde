@@ -4,5 +4,5 @@ public class VideoQuad extends QuadObject{
     //Also draw to tempbuffer
     void applyFilters(){}
     //Final draw to real buffer
-    void drawToBuffer(PGraphics buffer, double[] params){}
+    void drawToBuffer(PGraphics buffer, ArrayList<Float> params){}
 }
