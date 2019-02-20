@@ -135,7 +135,7 @@ public class TextQuad extends QuadObject {
      */ 
     @Override
     public void drawToBuffer(PGraphics buffer, ArrayList<Float> params){
-        executeHandlers();
+        executeHandlers(params);
 
         buffer.image(tempBuffer,0,0,buffer.width,buffer.height);
     }
@@ -144,7 +144,7 @@ public class TextQuad extends QuadObject {
      * Handle all behavior to get the sketch drawn to tempBuffer.
      */
      @Override
-     protected void executeHandlers(){   
+     public void executeHandlers(ArrayList<Float> params){   
         tempBuffer.beginShape();
  
         tempBuffer.beginDraw();

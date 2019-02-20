@@ -23,6 +23,6 @@ public class RealVidQuad extends VideoQuad{
     }
 
     @Override
-    protected void executeHandlers(){}
+    public void executeHandlers(ArrayList<Float> params){}
 
 }
