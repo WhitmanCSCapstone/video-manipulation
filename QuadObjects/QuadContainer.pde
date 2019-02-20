@@ -10,9 +10,11 @@ public class QuadContainer {
 	 */
 	private PGraphics buffer;
 	QuadContainer(PApplet app){
-		createAllQuads(app);
 		buffer = createGraphics(BUFFERWIDTH, BUFFERHEIGHT, P3D);
+		quads = new ArrayList<QuadObject>();
+		createAllQuads(app);
 	}
+
 	/*
 	 * The quad that is currently selected to draw to the screen.
 	 */
@@ -54,8 +56,7 @@ public class QuadContainer {
 	 */
 	public void createAllQuads(PApplet app)
 	{
-		// quads = {new TextQuad(),new RealVidQuad(),new RecordedVideoQuad()};
-		quads.add(new TextQuad());
+		quads.add(new TextQuad(buffer));
 		quads.add(new RealVidQuad(app, buffer));
 		quads.add(new RecordedVideoQuad(app, buffer));
 	}

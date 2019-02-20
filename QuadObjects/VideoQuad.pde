@@ -1,8 +1,11 @@
 //I removed abstract here because our quad array needs quadobjects
-public class VideoQuad extends QuadObject{
-    void readData(){}
+public abstract class VideoQuad extends QuadObject{
+    public abstract void readData();
     //Also draw to tempbuffer
-    void applyFilters(){}
+    public abstract void applyFilters();
     //Final draw to real buffer
-    void drawToBuffer(PGraphics buffer, ArrayList<Float> params){}
+    // abstract void drawToBuffer(PGraphics buffer, ArrayList<Float> params);
+
+    // public abstract void executeHandlers(){}
+
 }

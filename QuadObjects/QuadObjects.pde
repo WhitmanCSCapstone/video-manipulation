@@ -8,13 +8,15 @@ import java.io.FileNotFoundException;
 import processing.video.*;
 
 String RECORDED_VIDEO = "less.mp4";
-int BUFFERHEIGHT = 1280;
+int BUFFERHEIGHT = 720;
 int BUFFERWIDTH = 1280;
 
-//QuadContainer quadcontainer;
+QuadContainer quadcontainer;
 void setup() {
-  // quadcontainer = new QuadContainer(this);
-  TextQuad q = new TextQuad();
+  size(1280,720,P3D);
+  quadcontainer = new QuadContainer(this);
+  
+  //TextQuad q = new TextQuad();
   System.out.println("good");
 
 }

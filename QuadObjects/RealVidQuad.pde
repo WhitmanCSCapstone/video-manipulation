@@ -19,4 +19,7 @@ public class RealVidQuad extends VideoQuad{
     void drawToBuffer(PGraphics buffer, ArrayList<Float> params){
         buffer.image(tempBuffer,0,0,buffer.width,buffer.height);
     }
+
+    public void executeHandlers(){}
+
 }

@@ -26,12 +26,12 @@ public abstract class QuadObject {
 	 * @param buffer Buffer to draw the quad contents too.
 	 * @param params array of values that should be used to manipulate quad content parameters
 	 */
-	public void drawToBuffer(PGraphics buffer, ArrayList<Float> params){}
+	public abstract void drawToBuffer(PGraphics buffer, ArrayList<Float> params);
 
 	/*
 	 * Run the PropertyHandler objects to maniuplate this quad sketch.
 	 */
-	protected void executeHandlers(){}
+	protected abstract void executeHandlers();
 
 
 }

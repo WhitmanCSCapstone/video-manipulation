@@ -7,22 +7,18 @@ public class TextQuad extends QuadObject {
      * Array of words to use in the sketch.
      */
     ArrayList<String> words;
-
     /*
      * Array of fonts for use in the sketch
      */
     ArrayList<PFont> fonts;
-
     /*
      * Index of current selected word in words array
      */
     int curWord = 0;
-
     /*
      * Index of current selected font in fonts array
      */
     int curFont = 0;
-
     /*
      * Flag used for pausing the sketch.
      * false if not paused, true if paused
@@ -33,8 +29,8 @@ public class TextQuad extends QuadObject {
     /*
      * Default constructor populates using hard-coded parameters.
      */
-    public TextQuad () {
-        constructorHelper();
+    public TextQuad (PGraphics buffer) {
+        constructorHelper(buffer);
         loadDefaultWords();
     }
 
@@ -42,8 +38,8 @@ public class TextQuad extends QuadObject {
      * Constructor to load words from a given file path.
      * @param wordFilePath - string containing path to file with text data
      */
-    public TextQuad(String wordFilePath) {
-        constructorHelper();
+    public TextQuad(String wordFilePath, PGraphics buffer) {
+        constructorHelper(buffer);
         loadText(wordFilePath);
         loadDefaultFonts();
     }
@@ -52,9 +48,10 @@ public class TextQuad extends QuadObject {
      * Helper function for constructors to call field constructors.
      * Does not populate arrays with data.
      */
-    private void constructorHelper() {
+    private void constructorHelper(PGraphics buffer) {
         words = new ArrayList<String>();
         fonts = new ArrayList<PFont>();
+        tempBuffer = createGraphics(buffer.width, buffer.height);
 
         noStroke();
         noCursor();
@@ -124,5 +121,12 @@ public class TextQuad extends QuadObject {
     public void drawToBuffer(PGraphics buffer, ArrayList<Float> params){
         buffer.image(tempBuffer,0,0,buffer.width,buffer.height);
     }
+
+    /*
+     *
+     */
+     public void executeHandlers(){
+         
+     }
 
 }
