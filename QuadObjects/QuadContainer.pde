@@ -58,10 +58,10 @@ public class QuadContainer {
         // buffer.endDraw();
 
 		texture(buffer);
-		vertex(-BUFFERWIDTH/2, -BUFFERHEIGHT/2, 0, 0, 0);
-		vertex(BUFFERWIDTH/2, -BUFFERHEIGHT/2, 0, buffer.width, 0);
-		vertex(BUFFERWIDTH/2, BUFFERHEIGHT/2, 0, buffer.width, buffer.height);
-		vertex(-BUFFERWIDTH/2, BUFFERHEIGHT/2, 0, 0, buffer.height);
+		vertex(-BUFFERWIDTH, -BUFFERHEIGHT, 0, 0, 0);
+		vertex(BUFFERWIDTH, -BUFFERHEIGHT, 0, buffer.width, 0);
+		vertex(BUFFERWIDTH, BUFFERHEIGHT, 0, buffer.width, buffer.height);
+		vertex(-BUFFERWIDTH, BUFFERHEIGHT, 0, 0, buffer.height);
 
 		endShape();
 
