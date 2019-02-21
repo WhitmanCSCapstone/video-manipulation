@@ -57,7 +57,6 @@ MasterController master;
 void setup() {
   //temp setup behavior
   inputSetup();
-  System.out.println(KNOB_MAP.get(32));
 
   size(1280,720,P3D);
   master = new MasterController(this);
@@ -67,37 +66,42 @@ void setup() {
 
 void draw() {
   master.drawQuad();
-  System.out.println("update");
+//   System.out.println("draw call");
 }
 
 
-// void controllerChange(int channel, int number, int value) {
-//   println("Controller Update:");
-//   println("  Controller Change:");
-//   println("  --------");
-//   println("  Channel:"+channel);
-//   println("  Number:"+number);
-//   println("  Value:"+value);
+void controllerChange(int channel, int number, int value) {
+  println("Controller Update:");
+  println("  Controller Change:");
+  println("  --------");
+  println("  Channel:"+channel);
+  println("  Number:"+number);
+  println("  Value:"+value);
 
-//   //Turn FFT buttons on or off, light up controller
-//   if (KNOB_MAP.get(number) != null){ //if button maps to knob
-//     int knobIndex = MIDI_MAP.get(KNOB_MAP.get(number)); //get knobs array slot
-//     boolean isListening = midiSwitches[knobIndex]; 
-//     if (value==127){
-//       if (!isListening){
-//         myBus.sendControllerChange(channel,number,value);
-//       }
-//       midiSwitches[knobIndex] = !isListening;
-//     }
-//     else if (!isListening){
-//       myBus.sendControllerChange(channel,number,value);
-//     }
-//   }
+  fakeMidiView(channel, number, value); // when real midiview is made, put this call to mastercontroller
   
-//   //Update state of program
+  //Update state of program
 //   inputController.updateModel(number,(double)value);
-// }
+  master.handleControllerChange(channel, number, value);
+}
 
+
+void fakeMidiView(int channel, int number, int value) {
+  //Turn FFT buttons on or off, light up controller
+  if (KNOB_MAP.get(number) != null){ //if button maps to knob
+    int knobIndex = MIDI_MAP.get(KNOB_MAP.get(number)); //get knobs array slot
+    boolean isListening = midiSwitches[knobIndex]; 
+    if (value==127){
+      if (!isListening){
+        myBus.sendControllerChange(channel,number,value);
+      }
+      midiSwitches[knobIndex] = !isListening;
+    }
+    else if (!isListening){
+      myBus.sendControllerChange(channel,number,value);
+    }
+  }
+}
 
 void inputSetup() {
   MidiBus.list();  // Shows controllers in the console

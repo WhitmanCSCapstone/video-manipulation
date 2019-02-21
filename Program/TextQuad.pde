@@ -146,7 +146,8 @@ public class TextQuad extends QuadObject {
      @Override
      public void executeHandlers(ArrayList<Float> params){   
         tempBuffer.beginShape();
- 
+        System.out.print("print: ");
+        System.out.println(params.toString());
         tempBuffer.beginDraw();
         float fontSize = random(0,1);   // arbitrary, just for calculating correct size below
         float boxSizeControl = random(0, 1);  //hardcode input value
