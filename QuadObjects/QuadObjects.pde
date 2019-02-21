@@ -12,13 +12,17 @@ int BUFFERHEIGHT = 720;
 int BUFFERWIDTH = 1280;
 
 QuadContainer quadCont;
+MasterController master;
 void setup() {
   size(1280,720,P3D);
-  quadCont = new QuadContainer(this);
-  quadCont.selectNewQuad(0);
+  master = new MasterController(this);
+  master.switchQuad(0);
+  // quadCont = new QuadContainer(this);
+  // quadCont.selectNewQuad(0);
 }
 
 void draw() {
-  quadCont.drawToBuffer(new ArrayList<Float>());
+  // quadCont.drawToBuffer(new ArrayList<Float>());
+  master.drawQuad();
   System.out.println("update");
 }
