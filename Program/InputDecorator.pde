@@ -1,21 +1,21 @@
 /**
 * The Input Decorator is an abstract class that contains a
-* reference to the base input object.  Specific decorators
+* reference to the base InputObj.  Specific decorators
 * like SoundDecorator add additional decorating behavior.
 */
-class InputDecorator extends input {
+class InputDecorator extends InputObj {
 
-    //Reference to base input object
-    public input inputComponent;
+    //Reference to base InputObj object
+    public InputObj inputComponent;
 
     //Value used to decorate 
     public double decorateVal;
     
     /**
-    * Constructor initializes reference to base input
+    * Constructor initializes reference to base InputObj
     * @param inputCom : reference to base input object
     */
-    InputDecorator(input inputComp) {   
+    InputDecorator(InputObj inputComp) {   
       inputComponent = inputComp;
       decorateVal = 0; 
     }

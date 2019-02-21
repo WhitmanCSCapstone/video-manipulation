@@ -68,14 +68,14 @@ class FFTController {
 
     /**
     * Returns state of program
-    * @return inputArray : input objects
+    * @return inputArray : InputObj objects
     */
-    public input[] fetchInputs(){
+    public InputObj[] fetchInputs(){
         return inputArray;
     }
 
     /**
-    * Updates sound decorate values for all input objects
+    * Updates sound decorate values for all InputObj objects
     */
     public void refresh(){
         driveFFT();
@@ -85,7 +85,7 @@ class FFTController {
     }
 
     /**
-    * Advance FFT forward and update spec values in all input objects
+    * Advance FFT forward and update spec values in all InputObj objects
     */
     private void driveFFT(){
         if(isLive) {

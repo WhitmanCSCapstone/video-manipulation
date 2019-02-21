@@ -1,8 +1,8 @@
 /**
 * The MidiInput class is the concrete implementation of
-* an input that is specific to mapping Midi inputs.
+* InputObj that is specific to mapping Midi inputs.
 */
-class MidiInput extends input{
+class MidiInput extends InputObj{
 
     //Midi input minimum
     private double midiMin;

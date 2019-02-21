@@ -3,7 +3,7 @@
 * a continuous value translate from one or multiple inputs
 * such as sound, midi, or keyboard.
 */
-class input {
+class InputObj {
   
     //Base value
     public double value;
@@ -11,7 +11,7 @@ class input {
     /**
     * Constructor sets initial value
     */
-    input(){
+    InputObj(){
       value = 0;
     }
     

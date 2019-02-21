@@ -6,7 +6,7 @@
 class InputController {
   
     //inputArray: state of inputs
-    private input inputArray[];
+    private InputObj inputArray[];
     //fftController: manages sound input
     private FFTController fftController;
     
@@ -15,16 +15,19 @@ class InputController {
     //midiFlag: takes midi input
     boolean midiFlag;
     
+    //for testing
+    InputController(){}
+
     /**
     * Constructor initializes fields and constructs fftController
     * @param app : used by fftController to create Minim object
-    * @param inputNum : the number of input objects to create
+    * @param inputNum : the number of InputObj objects to create
     * @param isMidi : flag says if MidiPlayer is found
     * @param isSound : flag says if sound input decorating is on
     */
     InputController(PApplet app, int inputNum, boolean isMidi, boolean isSound) {
       
-      inputArray = new input[inputNum];
+      inputArray = new InputObj[inputNum];
 
       soundFlag = isSound;
       midiFlag = isMidi;
@@ -69,7 +72,7 @@ class InputController {
     * Returns the state of the program
     * @return inputArray : array of values that are sent to the sketch
     */
-    public input[] fetchInputs() {
+    public InputObj[] fetchInputs() {
       /*
       if (soundFlag){
         return fftController.fetchInputs();

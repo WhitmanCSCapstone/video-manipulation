@@ -1,6 +1,6 @@
 /**
 * Sound Input is an implemented decorator that uses a Fast Fourier
-* Transformation to update (decorate) input values without being
+* Transformation to update (decorate) InputObj values without being
 * noticed by the clien (InputController)
 */
 
@@ -18,9 +18,9 @@ class SoundDecorator extends InputDecorator{
 
     /**
     * Constructor initializes field values
-    * @param inputComp : reference to base input value
+    * @param inputComp : reference to base InputObj value
     */
-    SoundDecorator(input inputComp) {
+    SoundDecorator(InputObj inputComp) {
       super(inputComp);
       targetFreq = 10;
       bandwidth = 20;
@@ -31,7 +31,7 @@ class SoundDecorator extends InputDecorator{
 
     /**
     * Update base value, overloads super class method
-    * @param inputVal : raw input value
+    * @param inputVal : raw InputObj value
     */
     public void updateVal(double inputVal) {
       //setDecorateVal();

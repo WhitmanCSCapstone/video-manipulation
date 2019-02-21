@@ -61,7 +61,7 @@ class Supershape {
     return r;
   }
 
-  public void display(input inputs[]){
+  public void display(InputObj inputs[]){
     //g: for all sketches, save cc to variables for clarity before doing stuff on them
     
     //Identify variables:
