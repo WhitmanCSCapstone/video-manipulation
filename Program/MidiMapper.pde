@@ -1,4 +1,4 @@
-public class MidiMapper {
+public static class MidiMapper {
 
     /*
      * Map buttons to the knobs they are closely connected to.
