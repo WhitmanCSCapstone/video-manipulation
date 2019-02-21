@@ -70,14 +70,29 @@ class InputController {
     
     /**
     * Returns the state of the program
-    * @return inputArray : array of values that are sent to the sketch
+    * @return inputArray : array of InputObj to use. Not reccomended to 
+    *                       use outside of the input classes.
     */
-    public InputObj[] fetchInputs() {
+    public InputObj[] fetchInputObjects() {
       /*
       if (soundFlag){
         return fftController.fetchInputs();
       } */
       return inputArray;
+    }
+
+    /*
+     * Get the values form the InputObj's and put them into an ArrayList.
+     * @return ArrayList representation of the state of inputArray.
+     */
+    public ArrayList<Float> fetchInputs() {
+      ArrayList<Float> arr = new ArrayList<Float>();
+      for (int i = 0; i < inputArray.length; i++) {
+        arr.add((float)inputArray[i].getVal());
+      }
+      // System.out.println(arr.size());
+      // System.out.println(inputArray.length);
+      return arr;
     }
 
     /**

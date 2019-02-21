@@ -92,7 +92,11 @@ public class MasterController {
     * responsibilities depending on the input sources.
     */
     public void handleControllerChange(int channel, int number, int value){
-
+        // System.out.print("handleControllerChange:");
+        // System.out.print(channel);
+        // System.out.print(number);
+        // System.out.println(value);
+        inputControl.updateModel(number,value);
     }
 
     /* 
@@ -100,11 +104,11 @@ public class MasterController {
     * QuadContainer and have it draw with them.
     */
     public void drawQuad() {
-        // updateInputs();
-        // quadCont.drawToBuffer(inputControl.fetchInputs());
+        updateInputs();
+        quadCont.drawToBuffer(inputControl.fetchInputs());
 
         //for testing without Input module
-        quadCont.drawToBuffer(new ArrayList<Float>());
+        // quadCont.drawToBuffer(new ArrayList<Float>());
     }
 
 }
