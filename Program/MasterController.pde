@@ -9,10 +9,10 @@ public class MasterController {
     */
     private QuadContainer quadCont;
 
-    // /*
-    // * The InputController that stores input states.
-    // */
-    // private InputController inputControl;
+    /*
+    * The InputController that stores input states.
+    */
+    private InputController inputControl;
 
     // /*
     // * The MidiView that controls the lighting on the Midi board.
@@ -26,8 +26,7 @@ public class MasterController {
     public MasterController(PApplet app) {
         quadCont = new QuadContainer(app, app.width, app.height);
         quadCont.createAllQuads(app);
-        inputController = new InputController();
-        // inputController = new InputController(app, MIDI_MAP.size(), midiFlag, soundFlag);
+        inputControl = new InputController(app, true, true); //(PApplet, isMidi, isSound)
     }
 
     /*
@@ -39,7 +38,7 @@ public class MasterController {
         quadCont = new QuadContainer(app, bufferWidth, bufferHeight);
         quadCont.createAllQuads(app);
 
-        // inputController = new InputController(app, MIDI_MAP.size(), midiFlag, soundFlag);
+        // inputControl = new InputController(app, midiFlag, soundFlag);
     }
 
     // /* 
@@ -48,14 +47,14 @@ public class MasterController {
     // */
     // private ArrayList<Float> fetchParams();
 
-    // /* 
-    // * Tell the input object to update all its inputs. Some input types are not automatically
-    // * updated and must be provoked to do so.
-    // * Useful to refresh inputs without quad drawing quad to screen.
-    // */
-    // public void updateInputs() {
-    //     inputControl.refresh();
-    // }
+    /* 
+    * Tell the input object to update all its inputs. Some input types are not automatically
+    * updated and must be provoked to do so.
+    * Useful to refresh inputs without quad drawing quad to screen.
+    */
+    public void updateInputs() {
+        inputControl.refresh();
+    }
 
     // /* 
     // * ?
@@ -81,16 +80,20 @@ public class MasterController {
         }
     }
 
-    // /* 
-    // * Setup the InputController object to hold input states.
-    // */
-    // public void createInputs();
+    /* 
+    * Setup the InputController object to hold input states.
+    */
+    public void createInputs() {
 
-    // /* 
-    // * When processing recieves a controller change, it gets passed here which delegates 
-    // * responsibilities depending on the input sources.
-    // */
-    // public void handleControllerChange(int, int, int);
+    }
+
+    /* 
+    * When processing recieves a controller change, it gets passed here which delegates 
+    * responsibilities depending on the input sources.
+    */
+    public void handleControllerChange(int channel, int number, int value){
+
+    }
 
     /* 
     * Handle everything neccesarry to draw the quad. Make inputs update, fetch inputs, pass to 

@@ -53,16 +53,68 @@ int BUFFERWIDTH = 1280;
 
 QuadContainer quadCont;
 MasterController master;
+
 void setup() {
+  //temp setup behavior
+  inputSetup();
+  System.out.println(KNOB_MAP.get(32));
+
   size(1280,720,P3D);
   master = new MasterController(this);
   master.switchQuad(0);
-  // quadCont = new QuadContainer(this);
-  // quadCont.selectNewQuad(0);
+
 }
 
 void draw() {
-  // quadCont.drawToBuffer(new ArrayList<Float>());
   master.drawQuad();
   System.out.println("update");
+}
+
+
+// void controllerChange(int channel, int number, int value) {
+//   println("Controller Update:");
+//   println("  Controller Change:");
+//   println("  --------");
+//   println("  Channel:"+channel);
+//   println("  Number:"+number);
+//   println("  Value:"+value);
+
+//   //Turn FFT buttons on or off, light up controller
+//   if (KNOB_MAP.get(number) != null){ //if button maps to knob
+//     int knobIndex = MIDI_MAP.get(KNOB_MAP.get(number)); //get knobs array slot
+//     boolean isListening = midiSwitches[knobIndex]; 
+//     if (value==127){
+//       if (!isListening){
+//         myBus.sendControllerChange(channel,number,value);
+//       }
+//       midiSwitches[knobIndex] = !isListening;
+//     }
+//     else if (!isListening){
+//       myBus.sendControllerChange(channel,number,value);
+//     }
+//   }
+  
+//   //Update state of program
+//   inputController.updateModel(number,(double)value);
+// }
+
+
+void inputSetup() {
+  MidiBus.list();  // Shows controllers in the console
+  myBus = new MidiBus(this, "SLIDER/KNOB","CTRL");
+  //myBus = new MidiBus(this, "nanoKONTROL2","nanoKONTROL2"); //For Windows
+
+  //Initialize sound buttons to input knobs
+  KNOB_MAP = MidiMapper.buttonToKnob();
+  MIDI_MAP = MidiMapper.buttonToArray();
+
+
+  midiFlag = true; //Should depend on whether Midi Controller is found
+  soundFlag = true;
+  //Initialize sound buttons off
+  midiSwitches = new boolean[MIDI_MAP.size()];
+  for (int i=0; i<midiSwitches.length; i++){
+    midiSwitches[i] = false;
+  }
+
 }

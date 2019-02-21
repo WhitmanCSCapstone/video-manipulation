@@ -25,8 +25,8 @@ class InputController {
     * @param isMidi : flag says if MidiPlayer is found
     * @param isSound : flag says if sound input decorating is on
     */
-    InputController(PApplet app, int inputNum, boolean isMidi, boolean isSound) {
-      
+    InputController(PApplet app, boolean isMidi, boolean isSound) {
+      int inputNum = MidiMapper.buttonToArray().size();
       inputArray = new InputObj[inputNum];
 
       soundFlag = isSound;
