@@ -31,7 +31,7 @@ public class MasterController {
 
     /*
      * Setup the object by creating the objects it references.
-     * Pass in the desired values for the size of the buffer. AKA the dimentions of the app window.
+     * Pass in the desired values for the size of the buffer. AKA the dimensions of the app window.
      * Only use this if you want custom quad dimensions.
      */
     public MasterController(PApplet app, int bufferWidth, int bufferHeight) {

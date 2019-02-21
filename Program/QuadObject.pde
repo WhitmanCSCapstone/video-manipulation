@@ -29,7 +29,7 @@ public abstract class QuadObject {
 	public abstract void drawToBuffer(PGraphics buffer, ArrayList<Float> params);
 
 	/*
-	 * Run the PropertyHandler methods to maniuplate this quad sketch.
+	 * Run the PropertyHandler methods to manipulate this quad sketch.
 	 */
 	protected void executeHandlers() {
 		//pass an empty ArrayList

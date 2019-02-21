@@ -1,18 +1,16 @@
 /*
- * These objects are for containing the behavior of manipulating a quad.
- * They should be able to conenct to some quads and modify the way they are drawn to the screen.
+ * Quad Objects contain a reference to a Property Handler object that helps them
+ * do calculations that are common such as rotateX, rotateY, or zoom.
+ * If you find any repeatable behavior, add it into a method in PropertyHandler so
+ * that all quad objects have access to it.
  */
-public interface PropertyHandler {
+public class PropertyHandler {
 	/*
-	 * The value of the slot that this parameter object is fit into.
-	 * Useful for checking which parameter value should be sent to this object.
+	 * PropertyHandler methods will take this form
+	 * @param val the input value that will be manipulated
 	 */
-	//public int paramSlot;
-
-	/*
-	 * Call this function to tell this object to modify the behavior of the QuadObject its connected to.
-	 * @param val the input value that this object will use to maniuplate the QuadObject from its current state.
-	 */
-	public void handleInput(double val);
+	public void handleProperty(float val){
+		//return some calculation done on val
+	}
 
 }
