@@ -47,7 +47,8 @@ Supershape superShape;
 
 //boolean flags for turning on midi input or sound decorating
 boolean midiFlag;
-boolean soundFlag;String RECORDED_VIDEO = "less.mp4";
+boolean soundFlag;
+String RECORDED_VIDEO = "less.mp4";
 int BUFFERHEIGHT = 720;
 int BUFFERWIDTH = 1280;
 

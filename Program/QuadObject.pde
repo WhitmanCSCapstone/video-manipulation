@@ -40,7 +40,7 @@ public abstract class QuadObject {
 	 * Run the PropertyHandler methods to manipulate the quad.
 	 * @param params - array of values to use when manipulating sketch
 	 */
-	 public abstract void executeHandlers(ArrayList<Float> params);
+	 protected abstract void executeHandlers(ArrayList<Float> params);
 
 
 }

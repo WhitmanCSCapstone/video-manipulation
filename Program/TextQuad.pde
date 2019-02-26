@@ -64,7 +64,7 @@ public class TextQuad extends QuadObject {
         curWord = 0;
         tempBuffer = createGraphics(buffer.width, buffer.height, P3D);
 
-        noStroke();
+        tempBuffer.noStroke(); //Should this be changed?
     }
 
     /*
@@ -136,7 +136,6 @@ public class TextQuad extends QuadObject {
     @Override
     public void drawToBuffer(PGraphics buffer, ArrayList<Float> params){
         executeHandlers(params);
-
         buffer.image(tempBuffer,0,0,buffer.width,buffer.height);
     }
 
@@ -144,7 +143,7 @@ public class TextQuad extends QuadObject {
      * Handle all behavior to get the sketch drawn to tempBuffer.
      */
      @Override
-     public void executeHandlers(ArrayList<Float> params){   
+     protected void executeHandlers(ArrayList<Float> params){
         // System.out.print("print: ");
         // System.out.println(params.toString());
 
