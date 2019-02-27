@@ -33,7 +33,8 @@ PImage img;
 void setup() {
   size(1280, 720, P3D);
   MidiBus.list();  // Shows controllers in the console
-  myBus = new MidiBus(this, "nanoKONTROL2","CTRL");  // input and output
+  //myBus = new MidiBus(this, "nanoKONTROL2","CTRL");  // input and output
+  myBus = new MidiBus(this, "SLIDER/KNOB","CTRL");
   // g: nanoKONTROL2 is something I added here. Previously it said SLIDER/KNOB. Possible need for WINdows compatibility and checking OS at launch.
   
   for (int i = 16; i < 24; i++) {  // Sets only the knobs (16-23) to be max @ start

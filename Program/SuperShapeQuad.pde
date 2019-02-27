@@ -17,10 +17,12 @@ public class SuperShapeQuad extends QuadObject {
     float a;
     float b;
 
-    public SuperShapeQuad(PGraphics buffer){
+    SuperShapeQuad(PGraphics buffer){
+
+        tempBuffer = createGraphics(buffer.width, buffer.height, P3D);
         
-        int total = 200;
-        float m = 0.0;
+        total = 200;
+        m = 0.0;
         mchange = 0.0;
         sm = 0.0;
         l = 0.0;
@@ -35,8 +37,6 @@ public class SuperShapeQuad extends QuadObject {
 
         a = 1;
         b = 1;
-
-        tempBuffer = createGraphics(buffer.width, buffer.height, P3D);
     
         tempBuffer.colorMode(HSB);
         globe = new PVector[total+ 1][total+ 1];
@@ -54,19 +54,6 @@ public class SuperShapeQuad extends QuadObject {
         return r;
     }
 
-    /* 
-     * Final draw to real buffer
-     * @arg buffer - the buffer that this quad should draw to when finished
-     * @arg params - ArrayList of parameters that represent the input values for given frame
-     */ 
-    @Override
-    public void drawToBuffer(PGraphics buffer, ArrayList<Float> params){
-
-        executeHandlers(params);
-
-        buffer.image(tempBuffer,0,0,buffer.width,buffer.height);
-    }
-
     /*
      * Handle all behavior to get the sketch drawn to tempBuffer.
      */
@@ -75,6 +62,8 @@ public class SuperShapeQuad extends QuadObject {
         //g: for all sketches, save cc to variables for clarity before doing stuff on them
     
         //Identify variables:
+
+        tempBuffer.beginDraw();
 
         polycount = params.get(0);
         vibrations = params.get(1);
@@ -127,6 +116,7 @@ public class SuperShapeQuad extends QuadObject {
             }
             tempBuffer.endShape();
         }
+        tempBuffer.endDraw();
      }
 
 }

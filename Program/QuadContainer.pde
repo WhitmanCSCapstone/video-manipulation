@@ -74,10 +74,12 @@ public class QuadContainer {
 
 		//map contents of buffer to screen
 		texture(buffer);
-		vertex(-BUFFERWIDTH, -BUFFERHEIGHT, 0, 0, 0); //params: x, y, z, u, v
-		vertex(BUFFERWIDTH, -BUFFERHEIGHT, 0, buffer.width, 0);
-		vertex(BUFFERWIDTH, BUFFERHEIGHT, 0, buffer.width, buffer.height);
-		vertex(-BUFFERWIDTH, BUFFERHEIGHT, 0, 0, buffer.height);
+		float quadHeight = BUFFERHEIGHT;
+		float quadWidth = BUFFERWIDTH;
+		vertex(-quadWidth, -quadHeight, 0, 0, 0); //params: x, y, z, u, v
+		vertex(quadWidth, -quadHeight, 0, buffer.width, 0);
+		vertex(quadWidth, quadHeight, 0, buffer.width, buffer.height);
+		vertex(-quadWidth, quadHeight, 0, 0, buffer.height);
 
 		endShape();
 
@@ -90,6 +92,7 @@ public class QuadContainer {
 	public void createAllQuads(PApplet app)
 	{
 		//quads.add(new TextQuad(buffer));
+		//quads.add(new TestSketch(buffer));
 		quads.add(new SuperShapeQuad(buffer));
 		// quads.add(new RealVidQuad(app, buffer));
 		// quads.add(new RecordedVideoQuad(app, buffer));

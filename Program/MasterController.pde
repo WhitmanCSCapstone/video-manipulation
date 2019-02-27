@@ -26,7 +26,7 @@ public class MasterController {
     public MasterController(PApplet app) {
         quadCont = new QuadContainer(app, app.width, app.height);
         quadCont.createAllQuads(app);
-        inputControl = new InputController(app, true, true); //(PApplet, isMidi, isSound)
+        inputControl = new InputController(app, true, false); //(PApplet, isMidi, isSound)
     }
 
     /*

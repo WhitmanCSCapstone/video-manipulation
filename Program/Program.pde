@@ -49,17 +49,16 @@ Supershape superShape;
 boolean midiFlag;
 boolean soundFlag;
 String RECORDED_VIDEO = "less.mp4";
-int BUFFERHEIGHT = 720;
+int BUFFERHEIGHT = 800;
 int BUFFERWIDTH = 1280;
 
 QuadContainer quadCont;
 MasterController master;
 
 void setup() {
+  size(1280,800,P3D);
   //temp setup behavior
   inputSetup();
-
-  size(1280,720,P3D);
   master = new MasterController(this);
   master.switchQuad(0);
 

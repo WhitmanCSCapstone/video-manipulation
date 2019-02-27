@@ -21,12 +21,16 @@ public abstract class QuadObject {
 	 * involved in the handling of certin universal properties such as rotateX, zoom, rotateY.
 	 */
 	protected PropertyHandler propHandler;
+
 	/*
 	 *Use given params to draw this object to the given buffer.
 	 * @param buffer Buffer to draw the quad contents too.
 	 * @param params array of values that should be used to manipulate quad content parameters
 	 */
-	public abstract void drawToBuffer(PGraphics buffer, ArrayList<Float> params);
+	public void drawToBuffer(PGraphics buffer, ArrayList<Float> params) {
+		executeHandlers(params);
+        buffer.image(tempBuffer,0,0,buffer.width,buffer.height);
+	}
 
 	/*
 	 * Run the PropertyHandler methods to manipulate this quad sketch.

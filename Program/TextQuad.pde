@@ -36,7 +36,8 @@ public class TextQuad extends QuadObject {
      * Default constructor populates using hard-coded parameters.
      */
     public TextQuad (PGraphics buffer) {
-        constructorHelper(buffer);
+        tempBuffer = createGraphics(buffer.width, buffer.height, P3D);
+        constructorHelper();
         loadDefaultWords();
         loadDefaultFonts();
     }
@@ -46,7 +47,8 @@ public class TextQuad extends QuadObject {
      * @param wordFilePath - string containing path to file with text data
      */
     public TextQuad(String wordFilePath, PGraphics buffer) {
-        constructorHelper(buffer);
+        super();
+        constructorHelper();
         loadText(wordFilePath);
         loadDefaultFonts();
     }
@@ -55,15 +57,13 @@ public class TextQuad extends QuadObject {
      * Helper function for constructors to call field constructors.
      * Does not populate arrays with data.
      */
-    private void constructorHelper(PGraphics buffer) {
+    private void constructorHelper() {
         words = new ArrayList<String>();
         fonts = new ArrayList<PFont>();
         xPos = 400;
         yPos = 400;
         curFont = 0;
         curWord = 0;
-        tempBuffer = createGraphics(buffer.width, buffer.height, P3D);
-
         tempBuffer.noStroke(); //Should this be changed?
     }
 
@@ -128,16 +128,6 @@ public class TextQuad extends QuadObject {
         words.trimToSize();
       }
 
-    /* 
-     * Final draw to real buffer
-     * @arg buffer - the buffer that this quad should draw to when finished
-     * @arg params - ArrayList of parameters that represent the input values for given frame
-     */ 
-    @Override
-    public void drawToBuffer(PGraphics buffer, ArrayList<Float> params){
-        executeHandlers(params);
-        buffer.image(tempBuffer,0,0,buffer.width,buffer.height);
-    }
 
     /*
      * Handle all behavior to get the sketch drawn to tempBuffer.
