@@ -28,8 +28,22 @@ public abstract class QuadObject {
 	 * @param params array of values that should be used to manipulate quad content parameters
 	 */
 	public void drawToBuffer(PGraphics buffer, ArrayList<Float> params) {
+		buffer.beginShape();
+
 		executeHandlers(params);
-        buffer.image(tempBuffer,0,0,buffer.width,buffer.height);
+
+		buffer.texture(tempBuffer);
+		//topleft, topright, botright, botleft
+		float quadHeight = buffer.height;
+		float quadWidth = buffer.width;
+		buffer.vertex(0,0, 0, 0, 0); //params: x, y, z, u, v
+		buffer.vertex(quadWidth, 0, 0, quadWidth, 0);
+		buffer.vertex(quadWidth, quadHeight, 0, quadWidth, quadHeight);
+		buffer.vertex(0, quadHeight, 0, 0, quadHeight);
+
+		buffer.endShape();
+
+        // buffer.image(tempBuffer,0,0,buffer.width,buffer.height);
 	}
 
 	/*

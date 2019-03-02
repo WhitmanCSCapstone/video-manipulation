@@ -72,17 +72,19 @@ public class QuadContainer {
 		selectedQuad.drawToBuffer(buffer,params);
 		buffer.endDraw();
 
-		//map contents of buffer to screen
+		// //map contents of buffer to screen
 		texture(buffer);
-		float quadHeight = BUFFERHEIGHT;
-		float quadWidth = BUFFERWIDTH;
-		vertex(-quadWidth, -quadHeight, 0, 0, 0); //params: x, y, z, u, v
-		vertex(quadWidth, -quadHeight, 0, buffer.width, 0);
-		vertex(quadWidth, quadHeight, 0, buffer.width, buffer.height);
-		vertex(-quadWidth, quadHeight, 0, 0, buffer.height);
+		//topleft, topright, botright, botleft
+		float quadHeight = height;
+		float quadWidth = width;
+		vertex(0,0, 0, 0, 0); //params: x, y, z, u, v
+		vertex(quadWidth, 0, 0, quadWidth, 0);
+		vertex(quadWidth, quadHeight, 0, quadWidth, quadHeight);
+		vertex(0, quadHeight, 0, 0, quadHeight);
 
 		endShape();
 
+		// image(buffer,0,0,buffer.width,buffer.height);
 	}
 
 	/*
