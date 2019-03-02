@@ -107,6 +107,7 @@ class Supershape {
     for(int i = 0; i< total; i++){
       beginShape(TRIANGLE_STRIP);
       float hu = map(i,0,total,0,255* 6);
+      print(hu);
       fill((hu+offset) % 255,255,255);
       for(int j = 0; j < total+ 1; j++){
         PVector v1 = globe[i][j];

@@ -1,5 +1,6 @@
 /*
-  Comments go here.
+ SKIP RIGHT  is pause and play toggle, starts out paused. takes a sec to scale the picture. 
+ should probably start leftmost knob in far left position, rest in middle. 
 */
 import themidibus.*;
 import java.util.*;
@@ -34,27 +35,27 @@ int targetFreq = 10; // Low is for lower frequencies
 int bandwidth = 20; //Width of frequency band, larger is a smoother responce
 float fftAvg = 0;
 boolean soundLive = true;
-boolean camLive = true;
+boolean camLive = false;
 float rx = 0.0;
 float ry = 0.0;
 float mx = 0.0;
 float my = 0.0;
 
 //This begins by displaying No sketches.
-boolean s1 = false;
+boolean s1 = true;
 boolean s2 = false;
-boolean s3 = true;
+boolean s3 = false;
 boolean s4 = false;
 PImage img;
 //BIT b;
 CHANGINGFONTS cf;
 RAINBOW r;
-SLATS s;
+Supershape s;
 UCAM uc;
 CIRCLE cir;
 MIDINOISEWALK mnw;
 List<QUAD> quads;
-
+boolean pauseplay = false;
 boolean reset = false;
 boolean resumespin = false;
 void loadBoard()
@@ -67,6 +68,7 @@ void loadBoard()
   bb[33] = s2;
   bb[34] = s3;
   bb[35] = s4;
+  bb[44] = pauseplay;
   for(int i = 32; i < 72;i++) // Update sketches to reflect true state
   {
     if(bb[i])
@@ -77,15 +79,19 @@ void loadBoard()
   for (int i = 16; i < 20; i++) {  // Sets only the knobs (16-19) to be med @ start
    cc[i] = 63.5;
   }
+  cc[16] = 0; //starts upright
   cc[20] = 127;//fade off to start
   //Last 3 knobs start at 0
   cc[18]=63.5;
+  cc[0] = 120; //zoom
 }
 void setup() {
   size(3800,2100, P3D);
+  String[] cameras = Capture.list();
+    print(cameras);
   //fullScreen(P3D);
   MidiBus.list();  // Shows controllers in the console
-  myBus = new MidiBus(this, "nanoKONTROL2","nanoKONTROL2");  // input and output
+  myBus = new MidiBus(this, "SLIDER/KNOB","CTRL");  // input and output
   // g: nanoKONTROL2 is something I added here. Previously it said SLIDER/KNOB, CTRL. Possible need for WINdows compatibility and checking OS at launch.
   // Second parameter is output, necessary for setting lights of the knob.
   
@@ -97,20 +103,23 @@ void setup() {
 
   //Here are some objects which represent sketches being drawn to the quad.
   //b = new BIT();
-  cf = new CHANGINGFONTS();
-  r = new RAINBOW();
-  //s = new SLATS();
-  cir = new CIRCLE();
+  //cf = new CHANGINGFONTS();
+  //r = new RAINBOW();
+  s = new Supershape();
+  //cir = new CIRCLE();
   uc = new UCAM();
-  mnw = new MIDINOISEWALK();
+  //mnw = new MIDINOISEWALK();
   //We add them to the quad array to call them in the same way.
   quads = new ArrayList<QUAD>();
   //quads.add(b);
-  quads.add(cf);
-  quads.add(cir);
-  quads.add(mnw);
-  quads.add(r);
-  //quads.add(s);
+  //quads.add(cf);
+  //quads.add(cir);
+  //quads.add(mnw);
+  //quads.add(r);
+  quads.add(uc);
+  quads.add(s);
+
+
   
   for(int i = 0;i<quads.size();i++)
   {
@@ -136,6 +145,9 @@ void setup() {
   fftSmooth = new float[specSize];
   fftReal   = new float[specSize];
   loadBoard();
+  //SETUP NEEDS TO BE CALLED IN CAM FOR THIS TO WORK BAD CODE!
+  //if(camLive == false)
+  //  mov.play();
 }
 
 float doFFT(){
@@ -211,27 +223,27 @@ void draw() {
   if(s1)
   {
     vid.beginDraw();
-    quads.get(0).update(vid);
+    quads.get(0).update(vid,fftAvg);
     vid.endDraw();  
   }
   if(s2)
   {
    vid.beginDraw();
-   quads.get(1).update(vid);
+   quads.get(1).update(vid,fftAvg);
    vid.endDraw();
   }
-  if(s3)
-  {
-   vid.beginDraw();
-   quads.get(2).update(vid);
-   vid.endDraw();
-  }
-  if(s4)
-  {
-   vid.beginDraw();
-   quads.get(3).update(vid);
-   vid.endDraw();
-  }
+  //if(s3)
+  //{
+  // vid.beginDraw();
+  // quads.get(2).update(vid,fftAvg);
+  // vid.endDraw();
+  //}
+  //if(s4)
+  //{
+  // vid.beginDraw();
+  // quads.get(3).update(vid,fftAvg);
+  // vid.endDraw();
+  //}
   texture(vid);
   if(!reset){
     //CHANGE THESE FOR A BIGGER GRAPHICS BUFFER
@@ -294,6 +306,15 @@ void controllerChange(int channel, int number, int value) {
      s4 = !s4;
      //s1 = false;
      //s2=false;
+    }
+    else if(number==44)
+    {
+     pauseplay = !pauseplay; 
+     if(pauseplay)
+       mov.play();
+      else
+      mov.pause();
+       
     }
     else if(number == 41){
      camLive = bb[number];

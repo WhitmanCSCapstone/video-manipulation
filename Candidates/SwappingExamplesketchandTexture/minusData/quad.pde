@@ -1,5 +1,5 @@
 class QUAD {
-    void update( PGraphics p)
+    void update( PGraphics p, float fft)
     {
 
     }
