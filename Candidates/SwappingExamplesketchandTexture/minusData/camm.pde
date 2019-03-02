@@ -6,8 +6,8 @@
  */
 class UCAM extends QUAD{
   void setup(PApplet app, PGraphics p) {
-    mov = new Movie(app,"GG45.mov");
-    mov.loop();
+    mov = new Movie(app,"ben_clip2.mp4");
+    mov.noLoop();
     noStroke();
     mov.pause();
     String[] cameras = Capture.list();
@@ -15,7 +15,7 @@ class UCAM extends QUAD{
     cam.start();
   }
   
-  void update(PGraphics p) {
+  void update(PGraphics p, float fft) {
     
     if(camLive){//Camera
       if (cam.available() == true) {
@@ -26,7 +26,7 @@ class UCAM extends QUAD{
       if (mov.available() == true) {
         mov.read();
       }
-      p.image(mov,0,0);
+      p.image(mov,0,0,p.width,p.height);
     } 
 }
   

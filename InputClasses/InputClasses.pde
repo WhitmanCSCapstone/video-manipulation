@@ -19,7 +19,7 @@ public static final int INPUT_MIN = 0;
 public static final int INPUT_MAX = 127;
 
 //LIVE VIDEO FILE
-public static final String MP3_NAME = "dog.mp3";
+public static final String MP3_NAME = "s.mp3";
 
 //Mapping of FFT buttons to corresponding knobs
 Map<Integer, Integer> KNOB_MAP;
@@ -59,7 +59,7 @@ void setup(){
   //Initialize Midi controller
   size(1280,800,P3D);
   MidiBus.list();  // Shows controllers in the console
-  myBus = new MidiBus(this, "SLIDER/KNOB","CTRL");
+  myBus = new MidiBus(this, "nanoKONTROL2","nanoKONTROL2");
   //myBus = new MidiBus(this, "nanoKONTROL2","nanoKONTROL2"); //For Windows
   
   superShape = new Supershape();
