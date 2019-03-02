@@ -66,22 +66,30 @@ public class QuadContainer {
 	 */
 	public void drawToBuffer(ArrayList<Float> params)
 	{
+		translate(width/2, height/2);
+		float xskew = map(params.get(0),0,127,radians(0),radians(360));
+		//float mx = map(cc[17], 0,127,-.09,.09);
+		rotateX (xskew);
+		float yskew = map(params.get(2), 0,127,radians(0),radians(360));
+		// my = map(cc[19], 0,127,-.09,.09);
+		// if(bb[50])
+		// yskew += map(fftAvg,0,20,0,PI/16); //offset for fft y 
+		// if(bb[51])
+		// adjust = map(fftAvg,0,20,0,PI/64); //y rotation
+		rotateY(yskew);
+		// //map contents of buffer to screen
 		beginShape();
-
 		buffer.beginDraw();
 		selectedQuad.drawToBuffer(buffer,params);
 		buffer.endDraw();
-
-		// //map contents of buffer to screen
 		texture(buffer);
 		//topleft, topright, botright, botleft
-		float quadHeight = height;
-		float quadWidth = width;
-		vertex(0,0, 0, 0, 0); //params: x, y, z, u, v
-		vertex(quadWidth, 0, 0, quadWidth, 0);
-		vertex(quadWidth, quadHeight, 0, quadWidth, quadHeight);
-		vertex(0, quadHeight, 0, 0, quadHeight);
-
+		float quadHeight = buffer.height;
+		float quadWidth = buffer.width;
+		vertex(-quadWidth/2,-quadHeight/2, 0, 0, 0); //params: x, y, z, u, v
+		vertex(quadWidth/2, -quadHeight/2, 0, quadWidth, 0);
+		vertex(quadWidth/2, quadHeight/2, 0, quadWidth, quadHeight);
+		vertex(-quadWidth/2, quadHeight/2, 0, 0, quadHeight);
 		endShape();
 
 		// image(buffer,0,0,buffer.width,buffer.height);

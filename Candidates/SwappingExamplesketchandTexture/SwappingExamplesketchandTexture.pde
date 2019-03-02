@@ -91,7 +91,7 @@ void setup() {
     print(cameras);
   //fullScreen(P3D);
   MidiBus.list();  // Shows controllers in the console
-  myBus = new MidiBus(this, "SLIDER/KNOB","CTRL");  // input and output
+  myBus = new MidiBus(this, "nanoKONTROL2","nanoKONTROL2");  // input and output
   // g: nanoKONTROL2 is something I added here. Previously it said SLIDER/KNOB, CTRL. Possible need for WINdows compatibility and checking OS at launch.
   // Second parameter is output, necessary for setting lights of the knob.
   
