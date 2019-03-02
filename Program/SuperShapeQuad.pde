@@ -66,7 +66,7 @@ public class SuperShapeQuad extends QuadObject {
         tempBuffer.beginDraw();
 
         polycount = params.get(21);
-        vibrations = params.get(25);
+        vibrations = params.get(26);
         period = params.get(31);
         timestep = params.get(36);
         
