@@ -28,7 +28,7 @@ public static final int INPUT_MAX = 127;
 
 
 //LIVE VIDEO FILE
-public static final String MP3_NAME = "dog.mp3";
+public static final String MP3_NAME = "s.mp3";
 
 //Mapping of FFT buttons to corresponding knobs
 Map<Integer, Integer> KNOB_MAP;
@@ -58,6 +58,7 @@ MasterController master;
 void setup() {
   size(1280,800,P3D);
   //temp setup behavior
+  
   inputSetup();
   master = new MasterController(this);
   master.switchQuad(0);
@@ -66,7 +67,6 @@ void setup() {
 
 void draw() {
   master.drawQuad();
-//   System.out.println("draw call");
 }
 
 
@@ -81,7 +81,7 @@ void controllerChange(int channel, int number, int value) {
   fakeMidiView(channel, number, value); // when real midiview is made, put this call to mastercontroller
   
   //Update state of program
-//   inputController.updateModel(number,(double)value);
+  //inputController.updateModel(number,(double)value);
   master.handleControllerChange(channel, number, value);
 }
 
@@ -105,13 +105,19 @@ void fakeMidiView(int channel, int number, int value) {
 
 void inputSetup() {
   MidiBus.list();  // Shows controllers in the console
-  myBus = new MidiBus(this, "SLIDER/KNOB","CTRL");
-  //myBus = new MidiBus(this, "nanoKONTROL2","nanoKONTROL2"); //For Windows
-
+  String osName = System.getProperty("os.name").toLowerCase();
+  boolean isMacOs = osName.startsWith("mac");
+  if (isMacOs) 
+  {
+    myBus = new MidiBus(this, "SLIDER/KNOB","CTRL");
+  }
+  else
+  {
+    myBus = new MidiBus(this, "nanoKONTROL2","nanoKONTROL2");
+  }
   //Initialize sound buttons to input knobs
   KNOB_MAP = MidiMapper.buttonToKnob();
   MIDI_MAP = MidiMapper.buttonToArray();
-
 
   midiFlag = true; //Should depend on whether Midi Controller is found
   soundFlag = true;
