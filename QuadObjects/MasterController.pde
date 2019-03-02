@@ -27,7 +27,7 @@ public class MasterController {
         quadCont = new QuadContainer(app, app.width, app.height);
         quadCont.createAllQuads(app);
 
-        // inputController = new InputController(app, MIDI_MAP.size(), midiFlag, soundFlag);
+        // inputController = new InputController(app, MidiMapper.buttonToArray().size(), midiFlag, soundFlag);
     }
 
     /*
@@ -39,7 +39,7 @@ public class MasterController {
         quadCont = new QuadContainer(app, bufferWidth, bufferHeight);
         quadCont.createAllQuads(app);
 
-        // inputController = new InputController(app, MIDI_MAP.size(), midiFlag, soundFlag);
+        // inputController = new InputController(app, MidiMapper.buttonToArray().size(), midiFlag, soundFlag);
     }
 
     // /* 

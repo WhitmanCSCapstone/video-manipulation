@@ -30,11 +30,11 @@ public static final int INPUT_MAX = 127;
 //LIVE VIDEO FILE
 public static final String MP3_NAME = "s.mp3";
 
-//Mapping of FFT buttons to corresponding knobs
-Map<Integer, Integer> KNOB_MAP;
+// //Mapping of FFT buttons to corresponding knobs
+// Map<Integer, Integer> KNOB_MAP;
 
-//Mapping of MIDI knobs to input array indices
-Map<Integer, Integer> MIDI_MAP;
+// //Mapping of MIDI knobs to input array indices
+// Map<Integer, Integer> MIDI_MAP;
 
 //Used for button lighting
 boolean midiSwitches[];
@@ -88,8 +88,8 @@ void controllerChange(int channel, int number, int value) {
 
 void fakeMidiView(int channel, int number, int value) {
   //Turn FFT buttons on or off, light up controller
-  if (KNOB_MAP.get(number) != null){ //if button maps to knob
-    int knobIndex = MIDI_MAP.get(KNOB_MAP.get(number)); //get knobs array slot
+  if (MidiMapper.buttonToKnob().get(number) != null){ //if button maps to knob
+    int knobIndex = MidiMapper.buttonToArray().get(MidiMapper.buttonToKnob().get(number)); //get knobs array slot
     boolean isListening = midiSwitches[knobIndex]; 
     if (value==127){
       if (!isListening){
@@ -116,13 +116,13 @@ void inputSetup() {
     myBus = new MidiBus(this, "nanoKONTROL2","nanoKONTROL2");
   }
   //Initialize sound buttons to input knobs
-  KNOB_MAP = MidiMapper.buttonToKnob();
-  MIDI_MAP = MidiMapper.buttonToArray();
+  // KNOB_MAP = MidiMapper.buttonToKnob();
+  // MIDI_MAP = MidiMapper.buttonToArray();
 
   midiFlag = true; //Should depend on whether Midi Controller is found
   soundFlag = true;
   //Initialize sound buttons off
-  midiSwitches = new boolean[MIDI_MAP.size()];
+  midiSwitches = new boolean[MidiMapper.buttonToArray().size()];
   for (int i=0; i<midiSwitches.length; i++){
     midiSwitches[i] = false;
   }

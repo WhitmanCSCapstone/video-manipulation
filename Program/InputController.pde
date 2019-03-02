@@ -63,8 +63,8 @@ class InputController {
     public void updateModel(int number, double value) {
       if (soundFlag) {
         fftController.updateModel(number, value);
-      } else if (MIDI_MAP.get(number)!=null){
-        inputArray[MIDI_MAP.get(number)].updateVal(value);
+      } else if (MidiMapper.buttonToArray().get(number)!=null){
+        inputArray[MidiMapper.buttonToArray().get(number)].updateVal(value);
       }
     }
     

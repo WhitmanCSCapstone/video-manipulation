@@ -27,7 +27,7 @@ public class QuadContainer {
 	 * The buffer size is also hardcoded to global constants
 	 */
 	QuadContainer(PApplet app){
-		buffer = createGraphics(BUFFERWIDTH, BUFFERHEIGHT, P3D); //BUFFERWIDTH and HEIGHT are temporary testing constants
+		buffer = createGraphics(app.width, app.height, P3D); //BUFFERWIDTH and HEIGHT are temporary testing constants
 		quads = new ArrayList<QuadObject>();
 		createAllQuads(app);
 		selectedQuad = quads.get(0);
