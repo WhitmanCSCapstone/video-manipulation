@@ -12,7 +12,7 @@ public class TestSketch extends QuadObject{
     @Override
     protected void executeHandlers(ArrayList<Float> params){
         tempBuffer.beginDraw();
-        tempBuffer.ellipse(mouseX,mouseY,params.get(1),params.get(2));
+        tempBuffer.ellipse(mouseX,mouseY,params.get(21),params.get(26));
         tempBuffer.endDraw();
     }
 }

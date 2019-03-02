@@ -67,10 +67,10 @@ public class QuadContainer {
 	public void drawToBuffer(ArrayList<Float> params)
 	{
 		translate(width/2, height/2);
-		float xskew = map(params.get(0),0,127,radians(0),radians(360));
+		float xskew = map(params.get(11),0,127,radians(0),radians(360));
 		//float mx = map(cc[17], 0,127,-.09,.09);
 		rotateX (xskew);
-		float yskew = map(params.get(2), 0,127,radians(0),radians(360));
+		float yskew = map(params.get(16), 0,127,radians(0),radians(360));
 		// my = map(cc[19], 0,127,-.09,.09);
 		// if(bb[50])
 		// yskew += map(fftAvg,0,20,0,PI/16); //offset for fft y 
