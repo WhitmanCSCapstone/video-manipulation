@@ -21,15 +21,33 @@ public abstract class QuadObject {
 	 * involved in the handling of certin universal properties such as rotateX, zoom, rotateY.
 	 */
 	protected PropertyHandler propHandler;
+
 	/*
 	 *Use given params to draw this object to the given buffer.
 	 * @param buffer Buffer to draw the quad contents too.
 	 * @param params array of values that should be used to manipulate quad content parameters
 	 */
-	public abstract void drawToBuffer(PGraphics buffer, ArrayList<Float> params);
+	public void drawToBuffer(PGraphics buffer, ArrayList<Float> params) {
+		buffer.beginShape();
+
+		executeHandlers(params);
+
+		buffer.texture(tempBuffer);
+		//topleft, topright, botright, botleft
+		float quadHeight = buffer.height;
+		float quadWidth = buffer.width;
+		buffer.vertex(0,0, 0, 0, 0); //params: x, y, z, u, v
+		buffer.vertex(quadWidth, 0, 0, quadWidth, 0);
+		buffer.vertex(quadWidth, quadHeight, 0, quadWidth, quadHeight);
+		buffer.vertex(0, quadHeight, 0, 0, quadHeight);
+
+		buffer.endShape();
+
+        // buffer.image(tempBuffer,0,0,buffer.width,buffer.height);
+	}
 
 	/*
-	 * Run the PropertyHandler methods to maniuplate this quad sketch.
+	 * Run the PropertyHandler methods to manipulate this quad sketch.
 	 */
 	protected void executeHandlers() {
 		//pass an empty ArrayList
@@ -40,7 +58,7 @@ public abstract class QuadObject {
 	 * Run the PropertyHandler methods to manipulate the quad.
 	 * @param params - array of values to use when manipulating sketch
 	 */
-	 public abstract void executeHandlers(ArrayList<Float> params);
+	 protected abstract void executeHandlers(ArrayList<Float> params);
 
 
 }

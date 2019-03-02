@@ -19,7 +19,7 @@ public static final int INPUT_MIN = 0;
 public static final int INPUT_MAX = 127;
 
 //LIVE VIDEO FILE
-public static final String MP3_NAME = "groove.mp3";
+public static final String MP3_NAME = "dog.mp3";
 
 //Mapping of FFT buttons to corresponding knobs
 Map<Integer, Integer> KNOB_MAP;
