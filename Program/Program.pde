@@ -30,12 +30,6 @@ public static final int INPUT_MAX = 127;
 //LIVE VIDEO FILE
 public static final String MP3_NAME = "s.mp3";
 
-// //Mapping of FFT buttons to corresponding knobs
-// Map<Integer, Integer> KNOB_MAP;
-
-// //Mapping of MIDI knobs to input array indices
-// Map<Integer, Integer> MIDI_MAP;
-
 //Used for button lighting
 boolean midiSwitches[];
 
@@ -115,9 +109,6 @@ void inputSetup() {
   {
     myBus = new MidiBus(this, "nanoKONTROL2","nanoKONTROL2");
   }
-  //Initialize sound buttons to input knobs
-  // KNOB_MAP = MidiMapper.buttonToKnob();
-  // MIDI_MAP = MidiMapper.buttonToArray();
 
   midiFlag = true; //Should depend on whether Midi Controller is found
   soundFlag = true;
