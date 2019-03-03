@@ -23,7 +23,11 @@ public class MasterController {
     /*
      * The Midibus object that the program uses
      */
-    MidiBus myBus;
+    private MidiBus myBus;
+
+    /*
+     * The object that toggles the button lighting on the Midi controller.
+     */
     MidiView myMidiView;
 
     /*
@@ -32,7 +36,6 @@ public class MasterController {
      */
     public MasterController(PApplet app) {
         quadCont = new QuadContainer(app, app.width, app.height);
-        quadCont.createAllQuads(app);
         inputControl = new InputController(app, true, false); //(PApplet, isMidi, isSound)
         setupMidi();
     }
@@ -45,7 +48,6 @@ public class MasterController {
      */
     public MasterController(PApplet app, int bufferWidth, int bufferHeight) {
         quadCont = new QuadContainer(app, bufferWidth, bufferHeight);
-        quadCont.createAllQuads(app);
         setupMidi();
         // inputControl = new InputController(app, midiFlag, soundFlag);
     }
@@ -55,22 +57,37 @@ public class MasterController {
     * When processing recieves a controller change, it calls this method first.
     * This call delegates responsibilities depending on the input sources.
     */
-    void controllerChange(int channel, int number, int value) {
+    public void controllerChange(int channel, int number, int value) {
         println("Controller Update:");
         println("  Controller Change:");
         println("  --------");
-        println("  Channel:"+channel);
+        // println("  Channel:"+channel);
         println("  Number:"+number);
         println("  Value:"+value);
+
+        int map = MidiMapper.buttonToArray().get(number);
+        if (map == 6) { //'previous quad' button pressed
+            if (value == 127) {
+                quadCont.selectPrevQuad();
+            }
+        }
+        if (map == 7) { //'next quad' button pressed
+            if (value == 127) {
+                quadCont.selectNextQuad();
+            }
+        }
+
         inputControl.updateModel(number,value);
         myMidiView.lightingChange(channel, number, value);
     }
 
-    // /* 
-    // * Request the input state as an array of values.
-    // * @return array of floats containing all the input state values
-    // */
-    // private ArrayList<Float> fetchParams();
+    /* 
+    * Request the input state as an array of values.
+    * @return array of floats containing all the input state values
+    */
+    private ArrayList<Float> fetchParams(){
+        return inputControl.fetchInputs();
+    }
 
     /* 
     * Tell the input object to update all its inputs. Some input types are not automatically
@@ -115,10 +132,7 @@ public class MasterController {
     */
     public void drawQuad() {
         updateInputs();
-        quadCont.drawToScreen(inputControl.fetchInputs());
-
-        //for testing without Input module
-        // quadCont.drawToBuffer(new ArrayList<Float>());
+        quadCont.drawToScreen(fetchParams());
     }
 
     /*

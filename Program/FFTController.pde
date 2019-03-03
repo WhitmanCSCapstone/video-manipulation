@@ -6,6 +6,11 @@
 
 class FFTController {
 
+    public static final int LIVE_AUDIO = 45;
+    public static final int TARGET_FREQ_MIN = 62;
+    public static final int TARGET_FREQ_MAX = 61;
+    public static final int SMOOTHER = 7;
+
     //nonLiveAudio: created from mp3 file loaded in
     private AudioPlayer nonLiveAudio;
     //liveAudio: loaded in from mic
