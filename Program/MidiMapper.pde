@@ -109,7 +109,6 @@ public static class MidiMapper {
      */
     public static Map<Integer,Integer> buttonToArray() {
         return buttonIDtoArrayIndexMap;
-
     }
 
 
@@ -158,7 +157,7 @@ Array Index ID,   Index Assignment,               ButtonID, ButtonName
   28               fft toggle for 26                35        lot4-s
   29                                                51        slot4-m
   30               fft toggle for 27                67        slot4-r
-  31                                                20        slot5-knob
+  31               fade                             20        slot5-knob
   32                                                04        slot5-slider
   33               fft toggle for 31                36        slot5-s
   34                                                52        slot5-m

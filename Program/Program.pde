@@ -37,7 +37,6 @@ MasterController master;
 
 void setup() {
   size(1280, 800, P3D);
-  
   master = new MasterController(this);
   master.switchQuad(0);
 
@@ -46,6 +45,4 @@ void setup() {
 void draw() {
   master.drawQuad();
 }
-
-
 

@@ -38,7 +38,6 @@ public class MasterController {
         quadCont = new QuadContainer(app, app.width, app.height);
         inputControl = new InputController(app, true, false); //(PApplet, isMidi, isSound)
         setupMidi();
-
     }
 
 
@@ -80,7 +79,6 @@ public class MasterController {
 
         inputControl.updateModel(number,value);
         myMidiView.lightingChange(channel, number, value);
-
     }
 
     /* 
@@ -153,7 +151,7 @@ public class MasterController {
             myBus = new MidiBus(this, "nanoKONTROL2","nanoKONTROL2");
         }
 
-        MidiView myMidiView= new MidiView(myBus);
+        myMidiView= new MidiView(myBus);
         // midiFlag = true; //Should depend on whether Midi Controller is found
         // soundFlag = true;
     }
