@@ -15,7 +15,6 @@ import ddf.minim.analysis.*;
 import processing.sound.Amplitude;
 import processing.sound.SoundFile;
 
-MidiBus myBus;
 
 //MAGIC CONSTANT VILLAGE (SPECIAL MIDI BUTTONS)
 public static final int LIVE_AUDIO = 45;
@@ -53,7 +52,7 @@ void setup() {
   size(1280,800,P3D);
   //temp setup behavior
   
-  inputSetup();
+  // inputSetup();
   master = new MasterController(this);
   master.switchQuad(0);
 
@@ -72,7 +71,7 @@ void controllerChange(int channel, int number, int value) {
   println("  Number:"+number);
   println("  Value:"+value);
 
-  fakeMidiView(channel, number, value); // when real midiview is made, put this call to mastercontroller
+  // fakeMidiView(channel, number, value); // when real midiview is made, put this call to mastercontroller
   
   //Update state of program
   //inputController.updateModel(number,(double)value);
@@ -80,42 +79,20 @@ void controllerChange(int channel, int number, int value) {
 }
 
 
-void fakeMidiView(int channel, int number, int value) {
-  //Turn FFT buttons on or off, light up controller
-  if (MidiMapper.buttonToKnob().get(number) != null){ //if button maps to knob
-    int knobIndex = MidiMapper.buttonToArray().get(MidiMapper.buttonToKnob().get(number)); //get knobs array slot
-    boolean isListening = midiSwitches[knobIndex]; 
-    if (value==127){
-      if (!isListening){
-        myBus.sendControllerChange(channel,number,value);
-      }
-      midiSwitches[knobIndex] = !isListening;
-    }
-    else if (!isListening){
-      myBus.sendControllerChange(channel,number,value);
-    }
-  }
-}
+// void fakeMidiView(int channel, int number, int value) {
+//   //Turn FFT buttons on or off, light up controller
+//   if (MidiMapper.buttonToKnob().get(number) != null){ //if button maps to knob
+//     int knobIndex = MidiMapper.buttonToArray().get(MidiMapper.buttonToKnob().get(number)); //get knobs array slot
+//     boolean isListening = midiSwitches[knobIndex]; 
+//     if (value==127){
+//       if (!isListening){
+//         myBus.sendControllerChange(channel,number,value);
+//       }
+//       midiSwitches[knobIndex] = !isListening;
+//     }
+//     else if (!isListening){
+//       myBus.sendControllerChange(channel,number,value);
+//     }
+//   }
+// }
 
-void inputSetup() {
-  MidiBus.list();  // Shows controllers in the console
-  String osName = System.getProperty("os.name").toLowerCase();
-  boolean isMacOs = osName.startsWith("mac");
-  if (isMacOs) 
-  {
-    myBus = new MidiBus(this, "SLIDER/KNOB","CTRL");
-  }
-  else
-  {
-    myBus = new MidiBus(this, "nanoKONTROL2","nanoKONTROL2");
-  }
-
-  midiFlag = true; //Should depend on whether Midi Controller is found
-  soundFlag = true;
-  //Initialize sound buttons off
-  midiSwitches = new boolean[MidiMapper.buttonToArray().size()];
-  for (int i=0; i<midiSwitches.length; i++){
-    midiSwitches[i] = false;
-  }
-
-}

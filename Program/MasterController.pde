@@ -19,6 +19,12 @@ public class MasterController {
     // */
     // private MidiView midi;
 
+
+    /*
+     * The Midibus object that the program uses
+     */
+    MidiBus myBus;
+
     /*
      * Setup the object by creating the objects it references.
      * QuadContainer will use buffers that are the size of the app's window.
@@ -27,7 +33,10 @@ public class MasterController {
         quadCont = new QuadContainer(app, app.width, app.height);
         quadCont.createAllQuads(app);
         inputControl = new InputController(app, true, false); //(PApplet, isMidi, isSound)
+        setupMidi();
+
     }
+
 
     /*
      * Setup the object by creating the objects it references.
@@ -37,8 +46,23 @@ public class MasterController {
     public MasterController(PApplet app, int bufferWidth, int bufferHeight) {
         quadCont = new QuadContainer(app, bufferWidth, bufferHeight);
         quadCont.createAllQuads(app);
-
+        setupMidi();
         // inputControl = new InputController(app, midiFlag, soundFlag);
+    }
+
+
+    /* 
+    * When processing recieves a controller change, it calls this method first.
+    * This call delegates responsibilities depending on the input sources.
+    */
+    void controllerChange(int channel, int number, int value) {
+        println("Controller Update:");
+        println("  Controller Change:");
+        println("  --------");
+        println("  Channel:"+channel);
+        println("  Number:"+number);
+        println("  Value:"+value);
+        inputControl.updateModel(number,value);
     }
 
     // /* 
@@ -56,10 +80,6 @@ public class MasterController {
         inputControl.refresh();
     }
 
-    // /* 
-    // * ?
-    // */
-    // private void notifyInputController(Input []);
 
     // /* 
     // * Used to create an FFT object. 
@@ -111,4 +131,23 @@ public class MasterController {
         // quadCont.drawToBuffer(new ArrayList<Float>());
     }
 
+    /*
+     * Help the constructors of MasterController setup the MidiBus object.
+     */
+    void setupMidi() {
+        MidiBus.list();  // Shows controllers in the console
+        String osName = System.getProperty("os.name").toLowerCase();
+        boolean isMacOs = osName.startsWith("mac");
+        if (isMacOs) 
+        {
+            myBus = new MidiBus(this, "SLIDER/KNOB","CTRL");
+        }
+        else
+        {
+            myBus = new MidiBus(this, "nanoKONTROL2","nanoKONTROL2");
+        }
+
+        // midiFlag = true; //Should depend on whether Midi Controller is found
+        // soundFlag = true;
+    }
 }
