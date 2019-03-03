@@ -14,12 +14,12 @@ public class QuadContainer {
 	/*
 	 * The quad that is currently selected to draw to the screen.
 	 */
-	public QuadObject selectedQuad;
+	private QuadObject selectedQuad;
 
 	/*
 	 * Array of Quad objects that can be selected and drawn to to screen independently of each other.
 	 */
-	public ArrayList<QuadObject> quads;
+	private ArrayList<QuadObject> quads;
 
 	/*
 	 * Constructor to setup QuadContainer and the quads it will hold.
@@ -41,6 +41,7 @@ public class QuadContainer {
 		buffer = createGraphics(bufferWidth, bufferHeight, P3D); //BUFFERWIDTH and HEIGHT are temporary testing constants
 		quads = new ArrayList<QuadObject>();
 		createAllQuads(app);
+
 		selectedQuad = quads.get(0);
 	}
 
@@ -48,11 +49,55 @@ public class QuadContainer {
 	 * The ID of the quad that shoudl be selected and drawn from now on.
 	 * @param selectID the id of the quad that should now be drawn on the screen
 	 * Also calls start/stop on video/camera quads
+	 * Negative arguments will not change the selectedQuad.
 	 */
-	public void selectNewQuad(int selectID)
-	{
-		selectedQuad = quads.get(selectID);
+	public void selectNewQuad(int selectID) {
+		int n = selectID;
+		if (n >= quads.size()) {
+			n = n % quads.size();
+		}
+		selectedQuad = quads.get(n);
 	}
+
+	/*
+	 * In the array of quads, select the next one.
+	 * If at the end of the array, start at index 0.
+	 */
+	public void selectNextQuad(){
+		if (quads.size() <= 1) {
+			return;
+		}
+		for (int i = 0; i < quads.size(); i++) {
+			if (quads.get(i) == selectedQuad) {
+				if (i == quads.size()-1) {
+					selectNewQuad(0);
+				} else{
+					selectNewQuad(i+1);
+				}
+				return;
+			}
+		}
+	} 
+
+	/*
+	 * In the array of quads, select the previous one.
+	 * If at the start of the array, select the last element in quad.
+	 */
+	public void selectPrevQuad(){
+		if (quads.size() <= 1) {
+			return;
+		}
+		for (int i = 0; i < quads.size(); i++) {
+			if (quads.get(i) == selectedQuad) {
+				if (i == 0) {
+					selectNewQuad(quads.size()-1);
+				} else {
+					selectNewQuad(i-1);
+				}
+				return;
+			}
+		}
+	} 
 
 	/*
 	 * Deprecated: Update the properties using the values in a given list of Input objects
@@ -101,11 +146,12 @@ public class QuadContainer {
 	 */
 	public void createAllQuads(PApplet app)
 	{
-		//quads.add(new TextQuad(buffer));
+		quads.add(new TextQuad(buffer));
 		//quads.add(new TestSketch(buffer));
 		quads.add(new SuperShapeQuad(buffer));
 		// quads.add(new RealVidQuad(app, buffer));
 		// quads.add(new RecordedVideoQuad(app, buffer));
+		quads.trimToSize();
 	}
 
 }
