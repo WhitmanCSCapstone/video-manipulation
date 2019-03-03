@@ -55,14 +55,14 @@ class FFTController {
             changeTargetFreq(number);
         }
         //Handles change in FFT listening button
-        else if(KNOB_MAP.get(number) != null) {
+        else if(MidiMapper.buttonToKnob().get(number) != null) {
             if (value==INPUT_MAX){
-              inputArray[MIDI_MAP.get(KNOB_MAP.get(number))].toggleOn();
+              inputArray[MidiMapper.buttonToArray().get(MidiMapper.buttonToKnob().get(number))].toggleOn();
             }
         }
         //Handles normal input change
-        if (MIDI_MAP.get(number)!=null){
-          inputArray[MIDI_MAP.get(number)].updateVal(value);
+        if (MidiMapper.buttonToArray().get(number)!=null){
+          inputArray[MidiMapper.buttonToArray().get(number)].updateVal(value);
         }
     }
 
