@@ -50,7 +50,6 @@ MasterController master;
 
 void setup() {
   size(1280,800,P3D);
-  //temp setup behavior
   
   // inputSetup();
   master = new MasterController(this);
@@ -61,38 +60,3 @@ void setup() {
 void draw() {
   master.drawQuad();
 }
-
-
-void controllerChange(int channel, int number, int value) {
-  println("Controller Update:");
-  println("  Controller Change:");
-  println("  --------");
-  println("  Channel:"+channel);
-  println("  Number:"+number);
-  println("  Value:"+value);
-
-  // fakeMidiView(channel, number, value); // when real midiview is made, put this call to mastercontroller
-  
-  //Update state of program
-  //inputController.updateModel(number,(double)value);
-  master.handleControllerChange(channel, number, value);
-}
-
-
-// void fakeMidiView(int channel, int number, int value) {
-//   //Turn FFT buttons on or off, light up controller
-//   if (MidiMapper.buttonToKnob().get(number) != null){ //if button maps to knob
-//     int knobIndex = MidiMapper.buttonToArray().get(MidiMapper.buttonToKnob().get(number)); //get knobs array slot
-//     boolean isListening = midiSwitches[knobIndex]; 
-//     if (value==127){
-//       if (!isListening){
-//         myBus.sendControllerChange(channel,number,value);
-//       }
-//       midiSwitches[knobIndex] = !isListening;
-//     }
-//     else if (!isListening){
-//       myBus.sendControllerChange(channel,number,value);
-//     }
-//   }
-// }
-

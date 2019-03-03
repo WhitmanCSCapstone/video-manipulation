@@ -35,7 +35,6 @@ public class MasterController {
         quadCont.createAllQuads(app);
         inputControl = new InputController(app, true, false); //(PApplet, isMidi, isSound)
         setupMidi();
-
     }
 
 
@@ -64,6 +63,7 @@ public class MasterController {
         println("  Number:"+number);
         println("  Value:"+value);
         inputControl.updateModel(number,value);
+        myMidiView.lightingChange(channel, number, value);
     }
 
     // /* 
@@ -108,18 +108,6 @@ public class MasterController {
 
     }
 
-    /* 
-    * When processing recieves a controller change, it gets passed here which delegates 
-    * responsibilities depending on the input sources.
-    */
-    public void handleControllerChange(int channel, int number, int value){
-        // System.out.print("handleControllerChange:");
-        // System.out.print(channel);
-        // System.out.print(number);
-        // System.out.println(value);
-        inputControl.updateModel(number,value);
-        myMidiView.lightingChange(channel, number, value);
-    }
 
     /* 
     * Handle everything neccesarry to draw the quad. Make inputs update, fetch inputs, pass to 
@@ -149,7 +137,7 @@ public class MasterController {
             myBus = new MidiBus(this, "nanoKONTROL2","nanoKONTROL2");
         }
 
-        MidiView myMidiView= new MidiView(myBus);
+        myMidiView= new MidiView(myBus);
         // midiFlag = true; //Should depend on whether Midi Controller is found
         // soundFlag = true;
     }

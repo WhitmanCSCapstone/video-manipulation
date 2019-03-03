@@ -76,7 +76,7 @@ class Supershape {
     
     //timestep
     mchange += sm;
-    background(0);
+    //background(0);
     noStroke();
     //Generates shadows underfolds of polygons
     lights();
