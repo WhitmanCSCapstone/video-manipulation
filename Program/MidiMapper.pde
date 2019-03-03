@@ -138,22 +138,22 @@ Array Index ID,   Index Assignment,               ButtonID, ButtonName
   08               Cycle through input source       42        stop
   09               Stop sound                       41        play
   10                                                45        record
-  11               quad x-axis rotation speed       16        slot1-knob
+  11               quad x-axis offset               16        slot1-knob
   12               quad zoom                        00        slot1-slider
   13               fft toggle for 11                32        slot1-s
   14                                                48        slot1-m
   15               fft toggle for 12                64        slot1-r
-  16               quad y-axis rotation speed       17        slot2-knob
+  16               x-axis rotation                  17        slot2-knob
   17                                                01        slot2-slider
   18               fft toggle for 16                33        slot2-s
   19                                                49        slot2-m
   20               fft toggle for 17                65        slot2-r
-  21                                                18        slot3-knob
+  21               quad y-axis offset               18        slot3-knob
   22                                                02        slot3-slider
   23               fft toggle for 21                34        slot3-s
   24                                                50        slot3-m
   25               fft toggle for 22                66        slot3-r
-  26                                                19        slot4-knob
+  26               y-axis rotation                  19        slot4-knob
   27                                                03        slot4-slider
   28               fft toggle for 26                35        lot4-s
   29                                                51        slot4-m

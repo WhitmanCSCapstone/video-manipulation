@@ -22,6 +22,12 @@ public class QuadContainer {
 	private ArrayList<QuadObject> quads;
 
 	/*
+	 * Current rotation positions of the quad.
+	 * Allows the quad to continuously spin
+	 */
+	private float xsave = 0,ysave = 0;
+
+	/*
 	 * Constructor to setup QuadContainer and the quads it will hold.
 	 * By default, the first quad constructed is selected.
 	 * The buffer size is also hardcoded to global constants
@@ -109,19 +115,20 @@ public class QuadContainer {
 	 * Use given params to tell selected quad to draw to a specific buffer
 	 * @param params array of doubles containing the paramaters the quad should use to draw.
 	 */
-	public void drawToBuffer(ArrayList<Float> params)
+	public void drawToScreen(ArrayList<Float> params)
 	{
+		noStroke();
+		float fillOpacity = map(params.get(31), 0, 127,0, 255);
+		tint(255,fillOpacity);
 		translate(width/2, height/2);
 		float xskew = map(params.get(11),0,127,radians(0),radians(360));
-		//float mx = map(cc[17], 0,127,-.09,.09);
-		rotateX (xskew);
-		float yskew = map(params.get(16), 0,127,radians(0),radians(360));
-		// my = map(cc[19], 0,127,-.09,.09);
-		// if(bb[50])
-		// yskew += map(fftAvg,0,20,0,PI/16); //offset for fft y 
-		// if(bb[51])
-		// adjust = map(fftAvg,0,20,0,PI/64); //y rotation
-		rotateY(yskew);
+		float mx = map(params.get(16), 0,127,-.09,.09);
+		xsave += mx;
+		rotateX (xskew + xsave);
+		float yskew = map(params.get(21), 0,127,radians(0),radians(360));
+		float my = map(params.get(26), 0,127,-.09,.09);
+		ysave += my;
+		rotateY(yskew+ysave);
 		// //map contents of buffer to screen
 		beginShape();
 		buffer.beginDraw();

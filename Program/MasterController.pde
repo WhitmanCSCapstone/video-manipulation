@@ -26,6 +26,11 @@ public class MasterController {
     private MidiBus myBus;
 
     /*
+     * The object that toggles the button lighting on the Midi controller.
+     */
+    MidiView myMidiView;
+
+    /*
      * Setup the object by creating the objects it references.
      * QuadContainer will use buffers that are the size of the app's window.
      */
@@ -74,6 +79,8 @@ public class MasterController {
         }
 
         inputControl.updateModel(number,value);
+        myMidiView.lightingChange(channel, number, value);
+
     }
 
     /* 
@@ -127,10 +134,7 @@ public class MasterController {
     */
     public void drawQuad() {
         updateInputs();
-        quadCont.drawToBuffer(fetchParams());
-
-        //for testing without Input module
-        // quadCont.drawToBuffer(new ArrayList<Float>());
+        quadCont.drawToScreen(fetchParams());
     }
 
     /*
@@ -149,6 +153,7 @@ public class MasterController {
             myBus = new MidiBus(this, "nanoKONTROL2","nanoKONTROL2");
         }
 
+        MidiView myMidiView= new MidiView(myBus);
         // midiFlag = true; //Should depend on whether Midi Controller is found
         // soundFlag = true;
     }
