@@ -64,7 +64,7 @@ public class QuadContainer {
 	 * Use given params to tell selected quad to draw to a specific buffer
 	 * @param params array of doubles containing the paramaters the quad should use to draw.
 	 */
-	public void drawToBuffer(ArrayList<Float> params)
+	public void drawToScreen(ArrayList<Float> params)
 	{
 		noStroke();
 		float fillOpacity = map(params.get(31), 0, 127,0, 255);

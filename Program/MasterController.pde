@@ -127,7 +127,7 @@ public class MasterController {
     */
     public void drawQuad() {
         updateInputs();
-        quadCont.drawToBuffer(inputControl.fetchInputs());
+        quadCont.drawToScreen(inputControl.fetchInputs());
 
         //for testing without Input module
         // quadCont.drawToBuffer(new ArrayList<Float>());
