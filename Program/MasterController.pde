@@ -24,6 +24,7 @@ public class MasterController {
      * The Midibus object that the program uses
      */
     MidiBus myBus;
+    MidiView myMidiView;
 
     /*
      * Setup the object by creating the objects it references.
@@ -117,6 +118,7 @@ public class MasterController {
         // System.out.print(number);
         // System.out.println(value);
         inputControl.updateModel(number,value);
+        myMidiView.lightingChange(channel, number, value);
     }
 
     /* 
@@ -148,8 +150,6 @@ public class MasterController {
         }
 
         MidiView myMidiView= new MidiView(myBus);
-        myMidiView.lightingChange(myBus);
-
         // midiFlag = true; //Should depend on whether Midi Controller is found
         // soundFlag = true;
     }
