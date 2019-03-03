@@ -147,6 +147,9 @@ public class MasterController {
             myBus = new MidiBus(this, "nanoKONTROL2","nanoKONTROL2");
         }
 
+        MidiView myMidiView= new MidiView(myBus);
+        myMidiView.lightingChange(myBus);
+
         // midiFlag = true; //Should depend on whether Midi Controller is found
         // soundFlag = true;
     }
