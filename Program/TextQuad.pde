@@ -81,7 +81,7 @@ public class TextQuad extends QuadObject {
      * Constructor helper function to load two default fonts.
      */
     public void loadDefaultFonts() {
-        String[] fontNames = {"Helvetica-500.vlw", "Impact-500.vlw"};
+        String[] fontNames = FONT_FILES;
         try {
             loadFonts(fontNames);
         } catch (Exception e) {
