@@ -30,7 +30,7 @@ public abstract class QuadObject {
 	public void drawToBuffer(PGraphics buffer, ArrayList<Float> params) {
 		buffer.beginShape();
 
-		executeHandlers(params);
+		runSketch(params);
 
 		buffer.texture(tempBuffer);
 		//topleft, topright, botright, botleft
@@ -49,16 +49,16 @@ public abstract class QuadObject {
 	/*
 	 * Run the PropertyHandler methods to manipulate this quad sketch.
 	 */
-	protected void executeHandlers() {
+	protected void runSketch() {
 		//pass an empty ArrayList
-		executeHandlers(new ArrayList<Float>());
+		runSketch(new ArrayList<Float>());
 	}
 
 	/*
 	 * Run the PropertyHandler methods to manipulate the quad.
 	 * @param params - array of values to use when manipulating sketch
 	 */
-	 protected abstract void executeHandlers(ArrayList<Float> params);
+	 protected abstract void runSketch(ArrayList<Float> params);
 
 
 }

@@ -153,8 +153,8 @@ public class QuadContainer {
 	 */
 	public void createAllQuads(PApplet app)
 	{
-		quads.add(new TextQuad(buffer));
-		//quads.add(new TestSketch(buffer));
+		//quads.add(new TextQuad(buffer));
+		quads.add(new SketchNameQuad(buffer));
 		quads.add(new SuperShapeQuad(buffer));
 		// quads.add(new RealVidQuad(app, buffer));
 		// quads.add(new RecordedVideoQuad(app, buffer));

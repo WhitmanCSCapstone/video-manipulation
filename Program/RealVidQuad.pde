@@ -17,6 +17,6 @@ public class RealVidQuad extends VideoQuad{
     }
 
     @Override
-    protected void executeHandlers(ArrayList<Float> params){}
+    protected void runSketch(ArrayList<Float> params){}
 
 }

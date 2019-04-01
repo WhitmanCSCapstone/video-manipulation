@@ -21,6 +21,6 @@ public class RecordedVideoQuad extends VideoQuad{
     }
 
     @Override
-    public void executeHandlers(ArrayList<Float> params){}
+    public void runSketch(ArrayList<Float> params){}
 
 }

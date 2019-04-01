@@ -133,7 +133,7 @@ public class TextQuad extends QuadObject {
      * Handle all behavior to get the sketch drawn to tempBuffer.
      */
      @Override
-     protected void executeHandlers(ArrayList<Float> params){
+     protected void runSketch(ArrayList<Float> params){
         // System.out.print("print: ");
         // System.out.println(params.toString());
 
