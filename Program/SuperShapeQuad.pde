@@ -58,7 +58,7 @@ public class SuperShapeQuad extends QuadObject {
      * Handle all behavior to get the sketch drawn to tempBuffer.
      */
      @Override
-     protected void executeHandlers(ArrayList<Float> params){   
+     protected void runSketch(ArrayList<Float> params){   
         //g: for all sketches, save cc to variables for clarity before doing stuff on them
     
         //Identify variables:
