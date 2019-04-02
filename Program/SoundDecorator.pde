@@ -44,7 +44,7 @@ class SoundDecorator extends InputDecorator{
     public void setDecorateVal(){
       if (isOn){
         fftAvg = getAvgFFT();
-        decorateVal = (double) map((float)fftAvg,(float)0,60,0,INPUT_MAX*2);
+        decorateVal = (double) map((float)fftAvg,(float)0,60,0,inputMap.INPUT_MAX*2);
       }else {
         decorateVal = 0;
       }
@@ -72,7 +72,7 @@ class SoundDecorator extends InputDecorator{
     * @param smoothRaw : raw smoothing value
     */
     public void setSmoother(double smoothRaw) {
-      smoothMapped = (double) map((float) smoothRaw,INPUT_MIN,INPUT_MAX,0.0,1.0);
+      smoothMapped = (double) map((float) smoothRaw,inputMap.INPUT_MIN,inputMap.INPUT_MAX,0.0,1.0);
     }
 
     /**

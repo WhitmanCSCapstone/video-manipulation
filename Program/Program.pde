@@ -17,10 +17,8 @@ import processing.sound.SoundFile;
 
 
 
-//THE MIN AND MAX VALUES THAT INPUT VALUES MUST FALL BETWEEN
-//Different input sources may be read in at different sizes, they must be mapped to fall in this range
-public static final int INPUT_MIN = 0;
-public static final int INPUT_MAX = 127;
+
+public static final MidiMapper inputMap = new MidiMapper();
 
 
 //input filenames. Change which files are used for video, audio, text, fonts, etc.
@@ -45,4 +43,3 @@ void setup() {
 void draw() {
   master.drawQuad();
 }
-
