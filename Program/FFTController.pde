@@ -61,7 +61,7 @@ class FFTController {
         }
         //Handles change in FFT listening button
         else if(MidiMapper.buttonToKnob().get(number) != null) {
-            if (value==INPUT_MAX){
+            if (value==MidiMapper.INPUT_MAX){
               inputArray[MidiMapper.buttonToArray().get(MidiMapper.buttonToKnob().get(number))].toggleOn();
             }
         }

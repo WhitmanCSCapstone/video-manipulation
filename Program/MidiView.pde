@@ -11,7 +11,7 @@ class MidiView {
 		myBus=my_Bus;
 		//Initialize sound buttons to input knobs
 		//KNOB_MAP = MidiMapper.buttonToKnob();
-		MIDIINDEX_MAP = MidiMapper.buttonToArray();
+		MIDIINDEX_MAP = inputMap.buttonToArray();
 		//SLIDER_MAP= MidiMapper.buttonToSlider();
 
 		//Initialize sound buttons off

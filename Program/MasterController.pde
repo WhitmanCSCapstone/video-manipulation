@@ -65,7 +65,7 @@ public class MasterController {
         println("  Number:"+number);
         println("  Value:"+value);
 
-        int map = MidiMapper.buttonToArray().get(number);
+        int map = inputMap.buttonToArray().get(number);
         if (map == 6) { //'previous quad' button pressed
             if (value == 127) {
                 quadCont.selectPrevQuad();
@@ -75,6 +75,14 @@ public class MasterController {
             if (value == 127) {
                 quadCont.selectNextQuad();
             }
+        }
+        if (map == 8) { //'freeze quad' button pressed
+            if (value == 127)
+                quadCont.fixQuad();
+        }
+        if (inputMap.buttonToRotation().containsValue(number)){
+            println("Value is "+number);
+            quadCont.rotationChange(number);
         }
 
         inputControl.updateModel(number,value);

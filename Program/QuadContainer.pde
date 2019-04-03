@@ -25,7 +25,24 @@ public class QuadContainer {
 	 * Current rotation positions of the quad.
 	 * Allows the quad to continuously spin
 	 */
-	private float xsave = 0,ysave = 0;
+	private float xPrev = 0,yPrev = 0;
+
+	private Map<Integer,Integer> INDEX_MAP = inputMap.buttonToArray();
+	private Map<String,Integer> ROTATION_MAP = inputMap.buttonToRotation();
+
+	private float inputMin = inputMap.INPUT_MIN;
+	private float inputMax = inputMap.INPUT_MAX;
+
+	private float fadeInput;
+	private float xSkewInput;
+	private float ySkewInput;
+	private float xRotationInput;
+	private float yRotationInput;
+	private float zoomInput;
+
+	private boolean isFixed;
+
+	private boolean[] propChanged = new boolean[6];
 
 	/*
 	 * Constructor to setup QuadContainer and the quads it will hold.
@@ -37,6 +54,8 @@ public class QuadContainer {
 		quads = new ArrayList<QuadObject>();
 		createAllQuads(app);
 		selectedQuad = quads.get(0);
+		isFixed = false;
+		initializeProps();
 	}
 
 	/*
@@ -47,8 +66,9 @@ public class QuadContainer {
 		buffer = createGraphics(bufferWidth, bufferHeight, P3D); //BUFFERWIDTH and HEIGHT are temporary testing constants
 		quads = new ArrayList<QuadObject>();
 		createAllQuads(app);
-
 		selectedQuad = quads.get(0);
+		isFixed = false;
+		initializeProps();
 	}
 
 	/*
@@ -105,11 +125,63 @@ public class QuadContainer {
 		}
 	} 
 
+	public void fixQuad(){
+		isFixed = !isFixed;
+		if (isFixed)
+			initializeProps();
+	}
+
+	public void rotationChange(int inputNum){
+
+		if (ROTATION_MAP.get("Fade") == inputNum)
+			propChanged[0] = true;
+		if (ROTATION_MAP.get("Zoom") == inputNum)
+			propChanged[1] = true;
+		if (ROTATION_MAP.get("X_Skew") == inputNum)
+			propChanged[2] = true;
+		if (ROTATION_MAP.get("Y_Skew") == inputNum)
+			propChanged[3] = true;
+		if (ROTATION_MAP.get("X_Rotation") == inputNum)
+			propChanged[4] = true;
+		if (ROTATION_MAP.get("Y_Rotation") == inputNum)
+			propChanged[5] = true;
+	}
+
+	private void initializeProps(){
+		println("initializing");
+		float middle = inputMax - ((inputMax - inputMin)/2.0);
+		xSkewInput = middle;
+		ySkewInput = middle;
+		xRotationInput = middle;
+		yRotationInput = middle;
+		fadeInput = inputMax;
+		zoomInput = 60;
+		xPrev = 0;
+		yPrev = 0;
+		handleRotateX();
+		handleRotateY();
+		handleZoom();
+		if (!isFixed){
+			handleOpacity();
+		}
+	}
+
 	/*
 	 * Deprecated: Update the properties using the values in a given list of Input objects
 	 * @param params Array of input objects to pull update values from.
 	 */
-	public void updateProps(ArrayList<Float> params){}
+	private void updateProps(ArrayList<Float> params){
+
+		if (propChanged[0]) fadeInput = params.get(INDEX_MAP.get(ROTATION_MAP.get("Fade")));
+		if (propChanged[1]) zoomInput = params.get(INDEX_MAP.get(ROTATION_MAP.get("Zoom")));
+		if (propChanged[2]) xSkewInput = params.get(INDEX_MAP.get(ROTATION_MAP.get("X_Skew")));
+		if (propChanged[3]) ySkewInput = params.get(INDEX_MAP.get(ROTATION_MAP.get("Y_Skew")));
+		if (propChanged[4]) xRotationInput = params.get(INDEX_MAP.get(ROTATION_MAP.get("X_Rotation")));
+		if (propChanged[5]) yRotationInput = params.get(INDEX_MAP.get(ROTATION_MAP.get("Y_Rotation")));
+
+		//println(propChanged);
+
+	}
 
 	/*
 	 * Use given params to tell selected quad to draw to a specific buffer
@@ -117,18 +189,14 @@ public class QuadContainer {
 	 */
 	public void drawToScreen(ArrayList<Float> params)
 	{
+		updateProps(params);
 		noStroke();
-		float fillOpacity = map(params.get(31), 0, 127,0, 255);
-		tint(255,fillOpacity);
+		handleOpacity();
 		translate(width/2, height/2);
-		float xskew = map(params.get(11),0,127,radians(0),radians(360));
-		float mx = map(params.get(16), 0,127,-.09,.09);
-		xsave += mx;
-		rotateX (xskew + xsave);
-		float yskew = map(params.get(21), 0,127,radians(0),radians(360));
-		float my = map(params.get(26), 0,127,-.09,.09);
-		ysave += my;
-		rotateY(yskew+ysave);
+		if (!isFixed){
+			handleRotateX();
+			handleRotateY();
+		}
 		// //map contents of buffer to screen
 		beginShape();
 		buffer.beginDraw();
@@ -144,6 +212,8 @@ public class QuadContainer {
 		vertex(-quadWidth/2, quadHeight/2, 0, 0, quadHeight);
 		endShape();
 
+		handleZoom();
+
 		// image(buffer,0,0,buffer.width,buffer.height);
 	}
 
@@ -154,11 +224,35 @@ public class QuadContainer {
 	public void createAllQuads(PApplet app)
 	{
 		//quads.add(new TextQuad(buffer));
-		quads.add(new SketchNameQuad(buffer));
 		quads.add(new SuperShapeQuad(buffer));
+		quads.add(new SketchNameQuad(buffer));
 		// quads.add(new RealVidQuad(app, buffer));
 		// quads.add(new RecordedVideoQuad(app, buffer));
 		quads.trimToSize();
+	}
+
+	private void handleRotateX() {
+		float xSkew = map(xSkewInput,inputMin,inputMax,radians(0),radians(360));
+		float xSlope = map(xRotationInput,inputMin,inputMax,-.09,.09);
+		xPrev += xSlope;
+		rotateX(xSkew+xPrev);
+	}
+
+	private void handleRotateY() {
+		float ySkew = map(ySkewInput,inputMin,inputMax,radians(0),radians(360));
+		float ySlope = map(yRotationInput,inputMin,inputMax,-.09,.09);
+		yPrev += ySlope;
+		rotateY(ySkew+yPrev);
+	}
+
+	public void handleOpacity() {
+		float fillOpacity = map(fadeInput,inputMin,inputMax,0,255);
+		tint(255,fillOpacity);
+	}
+
+	public void handleZoom() {
+		float zoom = map(zoomInput,inputMin,inputMax,8,4);
+		camera(width/2, height/2, (height/2) / tan(PI/zoom), width/2, height/2, 0, 0, 1, 0);
 	}
 
 }

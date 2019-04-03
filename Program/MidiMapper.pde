@@ -1,8 +1,12 @@
-public static class MidiMapper {
+public static class MidiMapper{
 
     final static HashMap<Integer, Integer> buttonToKnobMap;
     final static HashMap<Integer, Integer> buttonToSliderMap;
     final static HashMap<Integer, Integer> buttonIDtoArrayIndexMap;
+    final static HashMap<String, Integer> buttonIDtoRotationMap;
+
+    final static float INPUT_MIN = 0;
+    final static float INPUT_MAX = 127;
 
     //Static block is run when this object is pulled into memory.
     //These blocks will initialize the mapping fields above
@@ -84,6 +88,17 @@ public static class MidiMapper {
         buttonIDtoArrayIndexMap.put(55, 49);
         buttonIDtoArrayIndexMap.put(71, 50);
     }
+
+    static{
+        buttonIDtoRotationMap = new HashMap<String, Integer>();
+        buttonIDtoRotationMap.put("Fade", 16); //fade
+        buttonIDtoRotationMap.put("X_Skew", 17); //x skew
+        buttonIDtoRotationMap.put("Y_Skew", 18); //y skew
+        buttonIDtoRotationMap.put("Zoom", 0); //zoom
+        buttonIDtoRotationMap.put("X_Rotation", 1); //x rotation
+        buttonIDtoRotationMap.put("Y_Rotation", 2); //y rotation
+    }
+
     /*
      * Map buttons to the knobs they are closely connected to.
      * Mostly used to keep track of the buttons that control FFT for knobs.
@@ -111,6 +126,10 @@ public static class MidiMapper {
         return buttonIDtoArrayIndexMap;
     }
 
+    public static Map<String,Integer> buttonToRotation() {
+        return buttonIDtoRotationMap;
+    }
+
 
 }
 
@@ -134,30 +153,30 @@ Array Index ID,   Index Assignment,               ButtonID, ButtonName
   05                                                62        marker-right
   06               Switch to previous sketch        43        rewind
   07               Switch to next sketch            44        fastworward
-  08               Cycle through input source       42        stop
+  08               freeze quad                      42        stop
   09               Stop sound                       41        play
   10                                                45        record
-  11               quad x-axis offset               16        slot1-knob
-  12               quad zoom                        00        slot1-slider
+  11               fade                             16        slot1-knob
+  12               zoom                             00        slot1-slider
   13               fft toggle for 11                32        slot1-s
   14                                                48        slot1-m
   15               fft toggle for 12                64        slot1-r
-  16               x-axis rotation                  17        slot2-knob
-  17                                                01        slot2-slider
+  16               quad x-axis skew                 17        slot2-knob
+  17               x-axis rotation speed            01        slot2-slider
   18               fft toggle for 16                33        slot2-s
   19                                                49        slot2-m
   20               fft toggle for 17                65        slot2-r
-  21               quad y-axis offset               18        slot3-knob
-  22                                                02        slot3-slider
+  21               quad y-axis skew                 18        slot3-knob
+  22               y-axis rotation speed            02        slot3-slider
   23               fft toggle for 21                34        slot3-s
   24                                                50        slot3-m
   25               fft toggle for 22                66        slot3-r
-  26               y-axis rotation                  19        slot4-knob
+  26                                                19        slot4-knob
   27                                                03        slot4-slider
   28               fft toggle for 26                35        lot4-s
   29                                                51        slot4-m
   30               fft toggle for 27                67        slot4-r
-  31               fade                             20        slot5-knob
+  31                                                20        slot5-knob
   32                                                04        slot5-slider
   33               fft toggle for 31                36        slot5-s
   34                                                52        slot5-m
