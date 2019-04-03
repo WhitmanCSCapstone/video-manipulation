@@ -7,7 +7,6 @@ public class QuadContainer {
 
 	/*
 	 * Buffer that quads should be drawn to. What eventually gets drawn to screen.
-
 	 */
 	private PGraphics buffer;
 
