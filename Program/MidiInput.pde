@@ -21,9 +21,9 @@ class MidiInput extends InputObj{
     */
     MidiInput(boolean hasDZone){
         super();
-        deadzone = 4;
-        midiMin = 0;
-        midiMax = 127;
+        deadzone = 4.0;
+        midiMin = 0.0;
+        midiMax = 127.0;
         midiMid = 63.5;
         hasDeadZone = hasDZone;
     }
@@ -33,7 +33,7 @@ class MidiInput extends InputObj{
     * @param val : raw input value
     */
     public void updateVal(double val){
-        if(hasDeadZone && (val > midiMid-deadzone && value < deadzone + midiMid)){
+        if(hasDeadZone && val > (midiMid-deadzone) && val < (deadzone + midiMid)){
             value = midiMid;
         } else if (val < midiMin) {
             value = midiMin;

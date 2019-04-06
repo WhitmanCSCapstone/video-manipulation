@@ -14,12 +14,6 @@ public class MasterController {
     */
     private InputController inputControl;
 
-    // /*
-    // * The MidiView that controls the lighting on the Midi board.
-    // */
-    // private MidiView midi;
-
-
     /*
      * The Midibus object that the program uses
      */
@@ -38,7 +32,6 @@ public class MasterController {
      * QuadContainer will use buffers that are the size of the app's window.
      */
     public MasterController(PApplet app) {
-
         SPECIAL_MAP = inputMap.getSpecialButtons();
         quadCont = new QuadContainer(app, app.width, app.height);
         inputControl = new InputController(app, true, true); //(PApplet, isMidi, isSound)
@@ -54,7 +47,6 @@ public class MasterController {
     public MasterController(PApplet app, int bufferWidth, int bufferHeight) {
         quadCont = new QuadContainer(app, bufferWidth, bufferHeight);
         setupMidi();
-        // inputControl = new InputController(app, midiFlag, soundFlag);
     }
 
 
@@ -86,7 +78,6 @@ public class MasterController {
         }
         else if (SPECIAL_MAP.containsValue(number)){
             println("Value is "+number);
-            quadCont.rotationChange(number);
         }
 
         inputControl.updateModel(number, (float) value);
@@ -109,14 +100,6 @@ public class MasterController {
     public void updateInputs() {
         inputControl.refresh();
     }
-
-
-    // /* 
-    // * Used to create an FFT object. 
-    // * @arg AudioDevice an object that contains the audio source to FFT
-    // * @return FFT object created from the AudioDevice input
-    // */
-    // public FFT setupFFT(AudioDevice);
 
     /*
     * Tell QuadContainer to switch the currently selected quad
