@@ -27,7 +27,7 @@ public class QuadContainer {
 	private float xPrev = 0,yPrev = 0;
 
 	private Map<Integer,Integer> INDEX_MAP = inputMap.buttonToArray();
-	private Map<String,Integer> ROTATION_MAP = inputMap.buttonToRotation();
+	private Map<String,Integer> SPECIAL_MAP = inputMap.getSpecialButtons();
 
 	private float inputMin = inputMap.INPUT_MIN;
 	private float inputMax = inputMap.INPUT_MAX;
@@ -132,17 +132,17 @@ public class QuadContainer {
 
 	public void rotationChange(int inputNum){
 
-		if (ROTATION_MAP.get("Fade") == inputNum)
+		if (SPECIAL_MAP.get("Fade") == inputNum)
 			propChanged[0] = true;
-		if (ROTATION_MAP.get("Zoom") == inputNum)
+		if (SPECIAL_MAP.get("Zoom") == inputNum)
 			propChanged[1] = true;
-		if (ROTATION_MAP.get("X_Skew") == inputNum)
+		if (SPECIAL_MAP.get("X_Skew") == inputNum)
 			propChanged[2] = true;
-		if (ROTATION_MAP.get("Y_Skew") == inputNum)
+		if (SPECIAL_MAP.get("Y_Skew") == inputNum)
 			propChanged[3] = true;
-		if (ROTATION_MAP.get("X_Rotation") == inputNum)
+		if (SPECIAL_MAP.get("X_Rotation") == inputNum)
 			propChanged[4] = true;
-		if (ROTATION_MAP.get("Y_Rotation") == inputNum)
+		if (SPECIAL_MAP.get("Y_Rotation") == inputNum)
 			propChanged[5] = true;
 	}
 
@@ -171,12 +171,12 @@ public class QuadContainer {
 	 */
 	private void updateProps(ArrayList<Float> params){
 
-		if (propChanged[0]) fadeInput = params.get(INDEX_MAP.get(ROTATION_MAP.get("Fade")));
-		if (propChanged[1]) zoomInput = params.get(INDEX_MAP.get(ROTATION_MAP.get("Zoom")));
-		if (propChanged[2]) xSkewInput = params.get(INDEX_MAP.get(ROTATION_MAP.get("X_Skew")));
-		if (propChanged[3]) ySkewInput = params.get(INDEX_MAP.get(ROTATION_MAP.get("Y_Skew")));
-		if (propChanged[4]) xRotationInput = params.get(INDEX_MAP.get(ROTATION_MAP.get("X_Rotation")));
-		if (propChanged[5]) yRotationInput = params.get(INDEX_MAP.get(ROTATION_MAP.get("Y_Rotation")));
+		if (propChanged[0]) fadeInput = params.get(INDEX_MAP.get(SPECIAL_MAP.get("Fade")));
+		if (propChanged[1]) zoomInput = params.get(INDEX_MAP.get(SPECIAL_MAP.get("Zoom")));
+		if (propChanged[2]) xSkewInput = params.get(INDEX_MAP.get(SPECIAL_MAP.get("X_Skew")));
+		if (propChanged[3]) ySkewInput = params.get(INDEX_MAP.get(SPECIAL_MAP.get("Y_Skew")));
+		if (propChanged[4]) xRotationInput = params.get(INDEX_MAP.get(SPECIAL_MAP.get("X_Rotation")));
+		if (propChanged[5]) yRotationInput = params.get(INDEX_MAP.get(SPECIAL_MAP.get("Y_Rotation")));
 
 		//println(propChanged);
 
@@ -223,8 +223,9 @@ public class QuadContainer {
 	public void createAllQuads(PApplet app)
 	{
 		//quads.add(new TextQuad(buffer));
-		quads.add(new SuperShapeQuad(buffer));
-		quads.add(new SketchNameQuad(buffer));
+		quads.add(new CylinderQuad(app,buffer));
+		quads.add(new SuperShapeQuad(app,buffer));
+		quads.add(new SketchNameQuad(app,buffer));
 		// quads.add(new RealVidQuad(app, buffer));
 		// quads.add(new RecordedVideoQuad(app, buffer));
 		quads.trimToSize();
@@ -245,6 +246,7 @@ public class QuadContainer {
 	}
 
 	public void handleOpacity() {
+		
 		float fillOpacity = map(fadeInput,inputMin,inputMax,0,255);
 		tint(255,fillOpacity);
 	}

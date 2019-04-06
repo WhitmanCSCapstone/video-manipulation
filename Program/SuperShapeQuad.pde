@@ -17,7 +17,7 @@ public class SuperShapeQuad extends QuadObject {
     float a;
     float b;
 
-    SuperShapeQuad(PGraphics buffer){
+    SuperShapeQuad(PApplet app, PGraphics buffer){
 
         tempBuffer = createGraphics(buffer.width, buffer.height, P3D);
         
@@ -65,14 +65,16 @@ public class SuperShapeQuad extends QuadObject {
 
         tempBuffer.beginDraw();
 
-        polycount = params.get(21);
-        vibrations = params.get(26);
-        period = params.get(31);
-        timestep = params.get(36);
+        tempBuffer.background(255,params.get(0));
+
+        polycount = params.get(1);
+        vibrations = params.get(2);
+        period = params.get(3);
+        timestep = params.get(4);
         
-        l = map(timestep,0,127,1,127);
+        l = map(timestep,inputMin,inputMax,1,127);
         m = map(sin(mchange),-1,1,0,l);
-        sm = map(period,0,127,0.0, 0.009);
+        sm = map(period,inputMin,inputMax,0.0, 0.009);
         
         //timestep
         mchange += sm;
@@ -82,7 +84,7 @@ public class SuperShapeQuad extends QuadObject {
         tempBuffer.lights();
         
         float r = 200;
-        total = round(map(polycount,0,127,2,128));
+        total = round(map(polycount,inputMin,inputMax,2,128));
 
         for(int i = 0; i< total+1; i++){
             float lat = map( i,0, total,- HALF_PI,HALF_PI);
@@ -96,7 +98,7 @@ public class SuperShapeQuad extends QuadObject {
                 globe[i][j] = new PVector(x,y,z);
 
                 PVector v = PVector.random3D();
-                int u = round(map(vibrations,0,127,0,127));
+                int u = round(map(vibrations,inputMin,inputMax,0,127));
                 v.mult(u);
                 globe[i][j].add(v);
             }

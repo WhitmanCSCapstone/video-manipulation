@@ -29,14 +29,19 @@ public class MasterController {
      * The object that toggles the button lighting on the Midi controller.
      */
     MidiView myMidiView;
+    
+
+    Map<String,Integer> SPECIAL_MAP;
 
     /*
      * Setup the object by creating the objects it references.
      * QuadContainer will use buffers that are the size of the app's window.
      */
     public MasterController(PApplet app) {
+
+        SPECIAL_MAP = inputMap.getSpecialButtons();
         quadCont = new QuadContainer(app, app.width, app.height);
-        inputControl = new InputController(app, true, false); //(PApplet, isMidi, isSound)
+        inputControl = new InputController(app, true, true); //(PApplet, isMidi, isSound)
         setupMidi();
     }
 
@@ -65,27 +70,26 @@ public class MasterController {
         println("  Number:"+number);
         println("  Value:"+value);
 
-        int map = inputMap.buttonToArray().get(number);
-        if (map == 6) { //'previous quad' button pressed
+        if (SPECIAL_MAP.get("Previous_Sketch") == number) { //'previous quad' button pressed
             if (value == 127) {
                 quadCont.selectPrevQuad();
             }
         }
-        if (map == 7) { //'next quad' button pressed
+        else if (SPECIAL_MAP.get("Next_Sketch") == number) { //'next quad' button pressed
             if (value == 127) {
                 quadCont.selectNextQuad();
             }
         }
-        if (map == 8) { //'freeze quad' button pressed
+        else if (SPECIAL_MAP.get("Freeze_Quad") == number) { //'freeze quad' button pressed
             if (value == 127)
                 quadCont.fixQuad();
         }
-        if (inputMap.buttonToRotation().containsValue(number)){
+        else if (SPECIAL_MAP.containsValue(number)){
             println("Value is "+number);
             quadCont.rotationChange(number);
         }
 
-        inputControl.updateModel(number,value);
+        inputControl.updateModel(number, (float) value);
         myMidiView.lightingChange(channel, number, value);
     }
 

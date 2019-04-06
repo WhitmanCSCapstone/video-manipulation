@@ -9,7 +9,12 @@ class FFTController {
     public static final int LIVE_AUDIO = 45;
     public static final int TARGET_FREQ_MIN = 62;
     public static final int TARGET_FREQ_MAX = 61;
-    public static final int SMOOTHER = 7;
+
+    Map<Integer,Integer> INDEX_MAP;
+    Map<Integer,Integer> SOUND_MAP;
+    Map<String,Integer> SPECIAL_MAP;
+
+    private AudioSource audio;
 
     //nonLiveAudio: created from mp3 file loaded in
     private AudioPlayer nonLiveAudio;
@@ -24,18 +29,29 @@ class FFTController {
     //fft: switches off being live audio fft and prerecorded fft
     private FFT fft;
 
+    private int bands = 512;
+
     /**
     * Constructor creates minim object and loads sound file
     * @param arrayInput[] : SoundDecorator objects passed from InputController
     * @param app : used to construct minim object
     */
     FFTController(SoundDecorator arrayInput[],PApplet app) {
+
+        INDEX_MAP = inputMap.buttonToArray();
+        SOUND_MAP = inputMap.soundToInput();
+        SPECIAL_MAP = inputMap.getSpecialButtons();
         minim = new Minim(app);
         inputArray = arrayInput;
-        liveAudio = minim.getLineIn();
+        isLive = false;
+        /*
         if(liveAudio == null)
             print("No kick");
+        */
         nonLiveAudio = minim.loadFile(MP3_NAME, 1024);
+        liveAudio = minim.getLineIn(Minim.MONO);
+        audio = nonLiveAudio;
+        fft = new FFT(audio.bufferSize(),audio.sampleRate());
         setFFT();
     }
 
@@ -44,33 +60,34 @@ class FFTController {
     * @param number : which input/button is triggered
     * @param value : value of that input
     */
-    public void updateModel(int number, double value) {
+    public void updateModel(int number, float value) {
         //Handles live/non-live audio switching
-        if (number == LIVE_AUDIO) {
+        if (SPECIAL_MAP.get("Live_Audio") == number && value == inputMap.INPUT_MAX) {
             toggleLive();
         }
         //Handles FFT smoothing change
-        else if (number == SMOOTHER) {
+        else if (SPECIAL_MAP.get("FFT_Smoother") == number) {
             for (int i=0; i<inputArray.length; i++) {
                 inputArray[i].setSmoother(value);
             }
         }
+        /*
         //Handles change in target frequency min and max
         else if(number == TARGET_FREQ_MIN || number == TARGET_FREQ_MAX) {
             changeTargetFreq(number);
         }
+        */
         //Handles change in FFT listening button
-        else if(MidiMapper.buttonToKnob().get(number) != null) {
-            if (value==MidiMapper.INPUT_MAX){
-              inputArray[MidiMapper.buttonToArray().get(MidiMapper.buttonToKnob().get(number))].toggleOn();
+        else if(SOUND_MAP.get(number) != null) {
+            if (value==inputMap.INPUT_MAX){
+              inputArray[INDEX_MAP.get(SOUND_MAP.get(number))].toggleOn();
             }
         }
         //Handles normal input change
-        if (MidiMapper.buttonToArray().get(number)!=null){
-          inputArray[MidiMapper.buttonToArray().get(number)].updateVal(value);
+        if (INDEX_MAP.get(number)!=null){
+          inputArray[INDEX_MAP.get(number)].updateVal(value);
         }
     }
-
     /**
     * Returns state of program
     * @return inputArray : InputObj objects
@@ -93,11 +110,8 @@ class FFTController {
     * Advance FFT forward and update spec values in all InputObj objects
     */
     private void driveFFT(){
-        if(isLive) {
-            fft.forward(liveAudio.left);
-        }else {
-            fft.forward(nonLiveAudio.mix);
-        }
+        fft.forward(audio.left);
+
         for (int i=0; i<inputArray.length; i++){
             inputArray[i].updateFFT(fft);
         }
@@ -132,12 +146,18 @@ class FFTController {
     */
     private void setFFT(){
         if(isLive){
-            fft = new FFT(liveAudio.bufferSize(), liveAudio.sampleRate());
+            audio = liveAudio;
+            nonLiveAudio.pause();
+            liveAudio.enableMonitoring();
         }
         else {
-            nonLiveAudio.loop();
-            fft = new FFT(nonLiveAudio.bufferSize(), nonLiveAudio.sampleRate());
+            audio = nonLiveAudio;
+            liveAudio.disableMonitoring();
+            nonLiveAudio.play();
         }
+
+        fft = new FFT(audio.bufferSize(),audio.sampleRate());
+
         for (int i=0; i<inputArray.length; i++) {
             inputArray[i].updateFFT(fft);
         }

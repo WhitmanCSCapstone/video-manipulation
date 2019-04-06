@@ -1,9 +1,8 @@
 public static class MidiMapper{
 
-    final static HashMap<Integer, Integer> buttonToKnobMap;
-    final static HashMap<Integer, Integer> buttonToSliderMap;
+    final static HashMap<Integer, Integer> soundButtonToInputMap;
     final static HashMap<Integer, Integer> buttonIDtoArrayIndexMap;
-    final static HashMap<String, Integer> buttonIDtoRotationMap;
+    final static HashMap<String, Integer> specialButtonIDMap;
 
     final static float INPUT_MIN = 0;
     final static float INPUT_MAX = 127;
@@ -11,92 +10,81 @@ public static class MidiMapper{
     //Static block is run when this object is pulled into memory.
     //These blocks will initialize the mapping fields above
     static{ //Initialize "S" button ID -> knob ID mapping
-        buttonToKnobMap = new HashMap<Integer, Integer>();
-        buttonToKnobMap.put(32, 16);
-        buttonToKnobMap.put(33, 17);
-        buttonToKnobMap.put(34, 18);
-        buttonToKnobMap.put(35, 19);
-        buttonToKnobMap.put(36, 20);
-        buttonToKnobMap.put(37, 21);
-        buttonToKnobMap.put(38, 22);
-        buttonToKnobMap.put(39, 23);
+        soundButtonToInputMap = new HashMap<Integer, Integer>();
+        soundButtonToInputMap.put(32, 16);
+        soundButtonToInputMap.put(64,  0);
+        soundButtonToInputMap.put(33, 17);
+        soundButtonToInputMap.put(65,  1);
+        soundButtonToInputMap.put(34, 18);
+        soundButtonToInputMap.put(66,  2);
+        soundButtonToInputMap.put(35, 19);
+        soundButtonToInputMap.put(67,  3);
+        soundButtonToInputMap.put(36, 20);
+        soundButtonToInputMap.put(68,  4);
+        soundButtonToInputMap.put(37, 21);
+        soundButtonToInputMap.put(69,  5);
+        soundButtonToInputMap.put(38, 22);
+        soundButtonToInputMap.put(70,  6);
+        soundButtonToInputMap.put(39, 23);
+        soundButtonToInputMap.put(71,  7);
     }
-    //Initialize "R" button ID -> slider ID mapping
-    static{
-        buttonToSliderMap = new HashMap<Integer, Integer>();
-        buttonToSliderMap.put(64, 0);
-        buttonToSliderMap.put(65, 1);
-        buttonToSliderMap.put(66, 2);
-        buttonToSliderMap.put(67, 3);
-        buttonToSliderMap.put(68, 4);
-        buttonToSliderMap.put(69, 5);
-        buttonToSliderMap.put(70, 6);
-        buttonToSliderMap.put(71, 7);
-    }
+
     //initialize button ID -> array index mapping
     static{
         buttonIDtoArrayIndexMap = new HashMap<Integer, Integer>();
-        buttonIDtoArrayIndexMap.put(58, 0);
-        buttonIDtoArrayIndexMap.put(59, 1);
-        buttonIDtoArrayIndexMap.put(46, 2);
-        buttonIDtoArrayIndexMap.put(60, 3);
-        buttonIDtoArrayIndexMap.put(61, 4);
-        buttonIDtoArrayIndexMap.put(62, 5);
-        buttonIDtoArrayIndexMap.put(43, 6);
-        buttonIDtoArrayIndexMap.put(44, 7);
-        buttonIDtoArrayIndexMap.put(42, 8);
-        buttonIDtoArrayIndexMap.put(41, 9);
-        buttonIDtoArrayIndexMap.put(45, 10);
-        buttonIDtoArrayIndexMap.put(16, 11);
-        buttonIDtoArrayIndexMap.put( 0, 12);
-        buttonIDtoArrayIndexMap.put(32, 13);
-        buttonIDtoArrayIndexMap.put(48, 14);
-        buttonIDtoArrayIndexMap.put(64, 15);
-        buttonIDtoArrayIndexMap.put(17, 16);
-        buttonIDtoArrayIndexMap.put( 1, 17);
+        buttonIDtoArrayIndexMap.put(19, 0);
+        buttonIDtoArrayIndexMap.put( 3, 1);
+        buttonIDtoArrayIndexMap.put(20, 2);
+        buttonIDtoArrayIndexMap.put( 4, 3);
+        buttonIDtoArrayIndexMap.put(21, 4);
+        buttonIDtoArrayIndexMap.put( 5, 5);
+        buttonIDtoArrayIndexMap.put(22, 6);
+        buttonIDtoArrayIndexMap.put( 6, 7);
+        buttonIDtoArrayIndexMap.put(23, 8);
+        buttonIDtoArrayIndexMap.put( 7, 9);
+        buttonIDtoArrayIndexMap.put(16, 10);
+        buttonIDtoArrayIndexMap.put( 0, 11);
+        buttonIDtoArrayIndexMap.put(17, 12);
+        buttonIDtoArrayIndexMap.put( 1, 13);
+        buttonIDtoArrayIndexMap.put(18, 14);
+        buttonIDtoArrayIndexMap.put( 2, 15);
+        buttonIDtoArrayIndexMap.put(32, 16);
+        buttonIDtoArrayIndexMap.put(64, 17);
         buttonIDtoArrayIndexMap.put(33, 18);
-        buttonIDtoArrayIndexMap.put(49, 19);
-        buttonIDtoArrayIndexMap.put(65, 20);
-        buttonIDtoArrayIndexMap.put(18, 21);
-        buttonIDtoArrayIndexMap.put( 2, 22);
-        buttonIDtoArrayIndexMap.put(34, 23);
-        buttonIDtoArrayIndexMap.put(50, 24);
-        buttonIDtoArrayIndexMap.put(66, 25);
-        buttonIDtoArrayIndexMap.put(19, 26);
-        buttonIDtoArrayIndexMap.put( 3, 27);
-        buttonIDtoArrayIndexMap.put(35, 28);
-        buttonIDtoArrayIndexMap.put(51, 29);
-        buttonIDtoArrayIndexMap.put(67, 30);
-        buttonIDtoArrayIndexMap.put(20, 31);
-        buttonIDtoArrayIndexMap.put( 4, 32);
-        buttonIDtoArrayIndexMap.put(36, 33);
-        buttonIDtoArrayIndexMap.put(52, 34);
-        buttonIDtoArrayIndexMap.put(68, 35);
-        buttonIDtoArrayIndexMap.put(21, 36);
-        buttonIDtoArrayIndexMap.put( 5, 37);
-        buttonIDtoArrayIndexMap.put(37, 38);
-        buttonIDtoArrayIndexMap.put(53, 39);
-        buttonIDtoArrayIndexMap.put(69, 40);
-        buttonIDtoArrayIndexMap.put(22, 41);
-        buttonIDtoArrayIndexMap.put( 6, 42);
-        buttonIDtoArrayIndexMap.put(38, 43);
-        buttonIDtoArrayIndexMap.put(54, 44);
-        buttonIDtoArrayIndexMap.put(70, 45);
-        buttonIDtoArrayIndexMap.put(23, 46);
-        buttonIDtoArrayIndexMap.put( 7, 47);
-        buttonIDtoArrayIndexMap.put(39, 48);
-        buttonIDtoArrayIndexMap.put(55, 49);
-        buttonIDtoArrayIndexMap.put(71, 50);
+        buttonIDtoArrayIndexMap.put(65, 19);
+        buttonIDtoArrayIndexMap.put(34, 20);
+        buttonIDtoArrayIndexMap.put(66, 21);
+        buttonIDtoArrayIndexMap.put(35, 22);
+        buttonIDtoArrayIndexMap.put(67, 23);
+        buttonIDtoArrayIndexMap.put(36, 24);
+        buttonIDtoArrayIndexMap.put(68, 25);
+        buttonIDtoArrayIndexMap.put(37, 26);
+        buttonIDtoArrayIndexMap.put(69, 27);
+        buttonIDtoArrayIndexMap.put(38, 28);
+        buttonIDtoArrayIndexMap.put(70, 29);
+        buttonIDtoArrayIndexMap.put(39, 30);
+        buttonIDtoArrayIndexMap.put(71, 31);
+        buttonIDtoArrayIndexMap.put(43, 32);
+        buttonIDtoArrayIndexMap.put(44, 33);
+        buttonIDtoArrayIndexMap.put(42, 34);
+        buttonIDtoArrayIndexMap.put(41, 35);
+        buttonIDtoArrayIndexMap.put(45, 36);
     }
 
     static{
-        buttonIDtoRotationMap = new HashMap<String, Integer>();
-        buttonIDtoRotationMap.put("Fade", 16); //fade
-        buttonIDtoRotationMap.put("X_Skew", 17); //x skew
-        buttonIDtoRotationMap.put("Y_Skew", 18); //y skew
-        buttonIDtoRotationMap.put("Zoom", 0); //zoom
-        buttonIDtoRotationMap.put("X_Rotation", 1); //x rotation
-        buttonIDtoRotationMap.put("Y_Rotation", 2); //y rotation
+        specialButtonIDMap = new HashMap<String, Integer>();
+        specialButtonIDMap.put("Fade", 16); //fade
+        specialButtonIDMap.put("X_Skew", 17); //x skew
+        specialButtonIDMap.put("Y_Skew", 18); //y skew
+        specialButtonIDMap.put("Zoom", 0); //zoom
+        specialButtonIDMap.put("X_Rotation", 1); //x rotation
+        specialButtonIDMap.put("Y_Rotation", 2); //y rotation
+        specialButtonIDMap.put("FFT_Smoother", 7); //fft smoother
+        specialButtonIDMap.put("Previous_Sketch", 43); //previous sketch
+        specialButtonIDMap.put("Next_Sketch", 44); //next sketch
+        specialButtonIDMap.put("Freeze_Quad", 42); //fix sketch to 2d
+        specialButtonIDMap.put("Start_Track", 41); //start audio track
+        specialButtonIDMap.put("Live_Audio", 45); //switch to live audio.
     }
 
     /*
@@ -104,17 +92,8 @@ public static class MidiMapper{
      * Mostly used to keep track of the buttons that control FFT for knobs.
      * Mapping: "S" button ID -> knob ID
      */
-    public static Map<Integer,Integer> buttonToKnob() {
-        return buttonToKnobMap;
-    }
-
-    /*
-     * Map "R" buttons to the sliders they are closest to.
-     * Mostly used to keep track of the buttons that control FFT for sliders.
-     * Mapping: "R" button ID -> slider ID
-     */
-    public static Map<Integer,Integer> buttonToSlider() {
-        return buttonToSliderMap;
+    public static Map<Integer,Integer> soundToInput() {
+        return soundButtonToInputMap;
     }
 
     /*
@@ -126,10 +105,9 @@ public static class MidiMapper{
         return buttonIDtoArrayIndexMap;
     }
 
-    public static Map<String,Integer> buttonToRotation() {
-        return buttonIDtoRotationMap;
+    public static Map<String,Integer> getSpecialButtons() {
+        return specialButtonIDMap;
     }
-
 
 }
 
@@ -145,60 +123,42 @@ Which Midi buttons are mapped to those indices
 
 
 Array Index ID,   Index Assignment,               ButtonID, ButtonName                                    
-  00                                                58        trackleft
-  01                                                59        trackright
-  02                                                46        cycle
-  03                                                60        marker-set
-  04                                                61        marker-left
-  05                                                62        marker-right
-  06               Switch to previous sketch        43        rewind
-  07               Switch to next sketch            44        fastworward
-  08               freeze quad                      42        stop
-  09               Stop sound                       41        play
-  10                                                45        record
-  11               fade                             16        slot1-knob
-  12               zoom                             00        slot1-slider
-  13               fft toggle for 11                32        slot1-s
-  14                                                48        slot1-m
-  15               fft toggle for 12                64        slot1-r
-  16               quad x-axis skew                 17        slot2-knob
-  17               x-axis rotation speed            01        slot2-slider
-  18               fft toggle for 16                33        slot2-s
-  19                                                49        slot2-m
-  20               fft toggle for 17                65        slot2-r
-  21               quad y-axis skew                 18        slot3-knob
-  22               y-axis rotation speed            02        slot3-slider
-  23               fft toggle for 21                34        slot3-s
-  24                                                50        slot3-m
-  25               fft toggle for 22                66        slot3-r
-  26                                                19        slot4-knob
-  27                                                03        slot4-slider
-  28               fft toggle for 26                35        lot4-s
-  29                                                51        slot4-m
-  30               fft toggle for 27                67        slot4-r
-  31                                                20        slot5-knob
-  32                                                04        slot5-slider
-  33               fft toggle for 31                36        slot5-s
-  34                                                52        slot5-m
-  35               fft toggle for 32                68        slot5-r
-  36                                                21        slot6-knob
-  37                                                05        slot6-slider
-  38               fft toggle for 36                37        slot6-s
-  39                                                53        slot6-m
-  40               fft toggle for 37                69        slot6-r
-  41                                                22        slot7-knob
-  42                                                06        slot7-slider
-  43               fft toggle for 41                38        slot7-s
-  44                                                54        slot7-m
-  45               fft toggle for 42                70        slot7-r
-  46                                                23        slot8-knob
-  47                                                07        slot8-slider
-  48               fft toggle for 46                39        slot8-s
-  49                                                55        slot8-m
-  50               fft toggle for 47                71        slot8-r
-
-
-
-
+  00               sketch param 1                   19        slot4-knob
+  01               sketch param 2                   03        slot4-slider
+  02               sketch param 3                   20        slot5-knob
+  03               sketch param 4                   04        slot5-slider
+  04               sketch param 5                   21        slot6-knob
+  05               sketch param 6                   05        slot6-slider
+  06               sketch param 7                   22        slot7-knob             
+  07               sketch param 8                   06        slot7-slider
+  08               sketch param 9                   23        slot8-knob
+  09               fft smoother                     07        slot8-slider
+  10               fade                             16        slot1-knob
+  11               zoom                             00        slot1-slider
+  12               x-axis skew                      17        slot2-knob
+  13               x-axis rotation speed            01        slot2-slider
+  14               y-axis skew                      18        slot2-knob
+  15               y-axis rotation speed            02        slot2-slider
+  16               fft toggle for fade              32        slot1-s
+  17               fft toggle for zoom              64        slot1-r
+  18               fft toggle for x-axis skew       33        slot2-s
+  19               fft toggle for x rot speed       65        slot2-r
+  20               fft toggle for y-axis skew       34        slot3-s
+  21               fft toggle for y rot speed       66        slot3-r
+  22               fft toggle for 00                35        slot4-s
+  23               fft toggle for 01                67        slot4-r
+  24               fft toggle for 02                36        slot5-s
+  25               fft toggle for 03                68        slot5-r
+  26               fft toggle for 04                37        slot6-s
+  27               fft toggle for 05                69        slot6-r
+  28               fft toggle for 06                38        slot7-s
+  29               fft toggle for 07                70        slot7-r
+  30               fft toggle for 08                39        slot8-s
+  31               fft toggle for fft smoother      71        slot8-r
+  32               prev sketch                      43        rewind
+  33               next sketch                      44        fastforward
+  34               freeze quad                      42        stop
+  35               start/stop track                 41        start
+  36               live audio                       45        record
 
 */
