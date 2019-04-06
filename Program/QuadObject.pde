@@ -22,6 +22,9 @@ public abstract class QuadObject {
 	 */
 	protected PropertyHandler propHandler;
 
+	protected float inputMin = inputMap.INPUT_MIN;
+	protected float inputMax = inputMap.INPUT_MAX;
+
 	/*
 	 *Use given params to draw this object to the given buffer.
 	 * @param buffer Buffer to draw the quad contents too.

@@ -11,7 +11,7 @@ class MidiView {
 		myBus=my_Bus;
 		//Initialize sound buttons to input knobs
 		//KNOB_MAP = MidiMapper.buttonToKnob();
-		MIDIINDEX_MAP = inputMap.buttonToArray();
+		MIDIINDEX_MAP = MidiMapper.buttonToArray();
 		//SLIDER_MAP= MidiMapper.buttonToSlider();
 
 		//Initialize sound buttons off
@@ -27,7 +27,11 @@ class MidiView {
 	 */
 	void lightingChange(int channel, int number, int value) {
 		//Turn FFT buttons on or off, light up controller
-		if (MIDIINDEX_MAP.get(number) != null){
+		//refactor this conditional
+		if ((MidiMapper.soundToInput().get(number) != null) || 
+			(number == MidiMapper.getSpecialButtons().get("Freeze_Quad")) ||
+			(number == MidiMapper.getSpecialButtons().get("Live_Audio")))
+		{
 			int knobIndex = MIDIINDEX_MAP.get(number);
 			boolean isListening = midiSwitches[knobIndex]; 
 			if (value==127){

@@ -9,6 +9,8 @@ class InputController {
     private InputObj inputArray[];
     //fftController: manages sound input
     private FFTController fftController;
+
+    Map<Integer,Integer> INDEX_MAP;
     
     //soundFlag: takes sound input
     boolean soundFlag;
@@ -26,7 +28,10 @@ class InputController {
     * @param isSound : flag says if sound input decorating is on
     */
     InputController(PApplet app, boolean isMidi, boolean isSound) {
-      int inputNum = MidiMapper.buttonToArray().size();
+
+      INDEX_MAP = inputMap.buttonToArray();
+
+      int inputNum = INDEX_MAP.size();
       inputArray = new InputObj[inputNum];
 
       soundFlag = isSound;
@@ -60,11 +65,11 @@ class InputController {
     * @param number : which button/input is triggered
     * @param value : the value of that input
     */
-    public void updateModel(int number, double value) {
+    public void updateModel(int number, float value) {
       if (soundFlag) {
         fftController.updateModel(number, value);
-      } else if (MidiMapper.buttonToArray().get(number)!=null){
-        inputArray[MidiMapper.buttonToArray().get(number)].updateVal(value);
+      } else if (INDEX_MAP.get(number)!=null){
+        inputArray[INDEX_MAP.get(number)].updateVal(value);
       }
     }
     

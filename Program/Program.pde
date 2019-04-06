@@ -12,18 +12,15 @@ import java.util.*;
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 
-import processing.sound.Amplitude;
 import processing.sound.SoundFile;
-
-
 
 
 public static final MidiMapper inputMap = new MidiMapper();
 
 
 //input filenames. Change which files are used for video, audio, text, fonts, etc.
-public static final String MP3_NAME = "s.mp3";
-String RECORDED_VIDEO = "less.mp4";
+public static final String MP3_NAME = "dog.mp3";
+String RECORDED_VIDEO = "xmultiplyx.mp4";
 String[] FONT_FILES = {"Helvetica-500.vlw", "Impact-500.vlw"};
 
 
