@@ -69,8 +69,11 @@ public static class MidiMapper{
         buttonIDtoArrayIndexMap.put(42, 34);
         buttonIDtoArrayIndexMap.put(41, 35);
         buttonIDtoArrayIndexMap.put(45, 36);
+        buttonIDtoArrayIndexMap.put(61, 37);
+        buttonIDtoArrayIndexMap.put(62, 38);
     }
 
+    //initialize special button name -> button ID
     static{
         specialButtonIDMap = new HashMap<String, Integer>();
         specialButtonIDMap.put("Fade", 16); //fade
@@ -85,6 +88,9 @@ public static class MidiMapper{
         specialButtonIDMap.put("Freeze_Quad", 42); //fix sketch to 2d
         specialButtonIDMap.put("Start_Track", 41); //start audio track
         specialButtonIDMap.put("Live_Audio", 45); //switch to live audio.
+        specialButtonIDMap.put("Decrease_Target_Freq", 61); //decrease target frequency of fft
+        specialButtonIDMap.put("Increase_Target_Freq", 62); //increase target frequency of fft
+        specialButtonIDMap.put("FFT_Sensitivity", 23); //change sensitivity
     }
 
     /*
@@ -105,6 +111,11 @@ public static class MidiMapper{
         return buttonIDtoArrayIndexMap;
     }
 
+    /*
+     * Maps the button/knob ids on midi controller to their 
+     * given positions for arrays. 
+     * Mapping: Midi Button ID -> array index location ID
+     */
     public static Map<String,Integer> getSpecialButtons() {
         return specialButtonIDMap;
     }
@@ -131,7 +142,7 @@ Array Index ID,   Index Assignment,               ButtonID, ButtonName
   05               sketch param 6                   05        slot6-slider
   06               sketch param 7                   22        slot7-knob             
   07               sketch param 8                   06        slot7-slider
-  08               sketch param 9                   23        slot8-knob
+  08               fft sensitivity                  23        slot8-knob
   09               fft smoother                     07        slot8-slider
   10               fade                             16        slot1-knob
   11               zoom                             00        slot1-slider
@@ -160,5 +171,7 @@ Array Index ID,   Index Assignment,               ButtonID, ButtonName
   34               freeze quad                      42        stop
   35               start/stop track                 41        start
   36               live audio                       45        record
+  37               decrease target frequency        61        prev
+  38               increase target frequency        62        next
 
 */

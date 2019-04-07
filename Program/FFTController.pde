@@ -6,9 +6,6 @@
 
 class FFTController {
 
-    public static final int LIVE_AUDIO = 45;
-    public static final int TARGET_FREQ_MIN = 62;
-    public static final int TARGET_FREQ_MAX = 61;
 
     Map<Integer,Integer> INDEX_MAP;
     Map<Integer,Integer> SOUND_MAP;
@@ -29,7 +26,17 @@ class FFTController {
     //fft: switches off being live audio fft and prerecorded fft
     private FFT fft;
 
-    private int bands = 512;
+    private int specSize;
+    private int targetFreq; // Low is for lower frequencies
+    private int bandwidth; //Width of frequency band, larger is a smoother responce
+    private double fftAvg;
+    private boolean isOn;
+    private double smoothMapped;
+    private double[] fftSmooth;
+    private float sensitivity;
+
+    private float inputMin = inputMap.INPUT_MIN;
+    private float inputMax = inputMap.INPUT_MAX;
 
     /**
     * Constructor creates minim object and loads sound file
@@ -38,20 +45,26 @@ class FFTController {
     */
     FFTController(SoundDecorator arrayInput[],PApplet app) {
 
+
+        targetFreq = 10;
+        bandwidth = 20;
+        fftAvg = 0;
+        smoothMapped = 0.85;
+
         INDEX_MAP = inputMap.buttonToArray();
         SOUND_MAP = inputMap.soundToInput();
         SPECIAL_MAP = inputMap.getSpecialButtons();
         minim = new Minim(app);
         inputArray = arrayInput;
         isLive = false;
-        /*
-        if(liveAudio == null)
-            print("No kick");
-        */
+
         nonLiveAudio = minim.loadFile(MP3_NAME, 1024);
         liveAudio = minim.getLineIn(Minim.MONO);
         audio = nonLiveAudio;
+
         fft = new FFT(audio.bufferSize(),audio.sampleRate());
+        specSize = fft.specSize();
+        fftSmooth = new double[specSize];
         setFFT();
     }
 
@@ -62,24 +75,28 @@ class FFTController {
     */
     public void updateModel(int number, float value) {
         //Handles live/non-live audio switching
-        if (SPECIAL_MAP.get("Live_Audio") == number && value == inputMap.INPUT_MAX) {
+        if (SPECIAL_MAP.get("Live_Audio") == number && value == inputMax) {
             toggleLive();
         }
         //Handles FFT smoothing change
         else if (SPECIAL_MAP.get("FFT_Smoother") == number) {
-            for (int i=0; i<inputArray.length; i++) {
-                inputArray[i].setSmoother(value);
-            }
+            smoothMapped = (double) map(value,inputMin,inputMax,0.0,1.0);
         }
-        /*
+        
         //Handles change in target frequency min and max
-        else if(number == TARGET_FREQ_MIN || number == TARGET_FREQ_MAX) {
-            changeTargetFreq(number);
+        else if(SPECIAL_MAP.get("Decrease_Target_Freq") == number) {
+            setTargetFreq(true);
         }
-        */
+        else if(SPECIAL_MAP.get("Increase_Target_Freq") == number) {
+            setTargetFreq(false);
+        }
+        else if(SPECIAL_MAP.get("FFT_Sensitivity") == number) {
+            changeSensitivity(value);
+        }
+
         //Handles change in FFT listening button
         else if(SOUND_MAP.get(number) != null) {
-            if (value==inputMap.INPUT_MAX){
+            if (value==inputMax){
               inputArray[INDEX_MAP.get(SOUND_MAP.get(number))].toggleOn();
             }
         }
@@ -102,7 +119,7 @@ class FFTController {
     public void refresh(){
         driveFFT();
         for (int i=0; i<inputArray.length; i++){
-            inputArray[i].setDecorateVal();
+            inputArray[i].setDecorateVal((float)fftAvg,sensitivity);
         }
     }
 
@@ -112,9 +129,7 @@ class FFTController {
     private void driveFFT(){
         fft.forward(audio.left);
 
-        for (int i=0; i<inputArray.length; i++){
-            inputArray[i].updateFFT(fft);
-        }
+        getAvgFFT();
     }
 
     /**
@@ -122,6 +137,7 @@ class FFTController {
     * @param number : input/button number to determine if its min or max
     */
     private void changeTargetFreq(int number){
+        /*
         if (number==TARGET_FREQ_MIN){
             for (int i=0; i<inputArray.length; i++) {
                 inputArray[i].setTargetFreq(true);
@@ -131,6 +147,7 @@ class FFTController {
                 inputArray[i].setTargetFreq(false);
             }
         }
+        */
     }
 
     /**
@@ -157,9 +174,33 @@ class FFTController {
         }
 
         fft = new FFT(audio.bufferSize(),audio.sampleRate());
-
-        for (int i=0; i<inputArray.length; i++) {
-            inputArray[i].updateFFT(fft);
-        }
     }
+
+    private void getAvgFFT() {
+        //Controls FFT smoothing
+        for(int i = 0; i < specSize; i++) {
+            double band = fft.getBand(i);
+            fftSmooth[i] *= smoothMapped;
+            if(fftSmooth[i] < band) 
+            fftSmooth[i] = band;
+        }
+        double sum = 0;
+        for(int i = max(targetFreq - bandwidth/2,0); i <= targetFreq+bandwidth/2 || i>=specSize;i++) {
+            sum += fftSmooth[i];
+        }
+        fftAvg = sum/bandwidth;
+    }
+
+    private void setTargetFreq(boolean isMin) {
+      if (isMin){
+        targetFreq = min(500, targetFreq+10);
+      } else {
+        targetFreq = max(0,targetFreq-10);
+      }
+    }
+
+    private void changeSensitivity(float newSensitivity){
+        sensitivity = newSensitivity; 
+    }
+
 }
