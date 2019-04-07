@@ -84,8 +84,8 @@ public class SuperShapeQuad extends QuadObject {
         tempBuffer.lights();
         
         float r = 200;
-        total = round(map(polycount,inputMin,inputMax,2,128));
-
+        total = round(map(polycount,inputMin,inputMax,2,300));
+        total = min(200,total);
         for(int i = 0; i< total+1; i++){
             float lat = map( i,0, total,- HALF_PI,HALF_PI);
             float r2 = supershape(lat, m,10.0,10.0,10.0);
@@ -95,6 +95,7 @@ public class SuperShapeQuad extends QuadObject {
                 float x = r * r1 * cos(lon) * r2 * cos(lat);
                 float y = r * r1 *sin(lon) * r1 * r2 * cos(lat);
                 float z = r * r2 * sin(lat);
+                //println(i,j);
                 globe[i][j] = new PVector(x,y,z);
 
                 PVector v = PVector.random3D();
@@ -106,6 +107,7 @@ public class SuperShapeQuad extends QuadObject {
         offset+=5;
         //Swapping where i and j are used to calculate hu switches stripes
         //adding offset makes them flow in a cool way
+        tempBuffer.colorMode(HSB);
         for(int i = 0; i< total; i++){
             tempBuffer.beginShape(TRIANGLE_STRIP);
             float hu = map(i,0,total,0,255* 6);
