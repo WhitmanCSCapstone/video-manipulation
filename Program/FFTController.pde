@@ -165,11 +165,11 @@ class FFTController {
         if(isLive){
             audio = liveAudio;
             nonLiveAudio.pause();
-            liveAudio.enableMonitoring();
+            //liveAudio.enableMonitoring();
         }
         else {
             audio = nonLiveAudio;
-            liveAudio.disableMonitoring();
+            //liveAudio.disableMonitoring();
             nonLiveAudio.play();
         }
 
