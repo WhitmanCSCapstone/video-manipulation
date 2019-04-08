@@ -198,12 +198,10 @@ public class QuadContainer {
 	 */
 	public void createAllQuads(PApplet app)
 	{
-		
-		quads.add(new mercerTextQuad(app,buffer));
-		//quads.add(new SuperShapeQuad(app,buffer));
 		//quads.add(new SketchNameQuad(app,buffer));
 		// quads.add(new RealVidQuad(app, buffer));
 		// quads.add(new RecordedVideoQuad(app, buffer));
+		quads.add(new mercerTextQuad(app,buffer));
 		quads.add(new circleQuad(app,buffer));
 		quads.add(new CylinderQuad(app,buffer));
 		quads.add(new SuperShapeQuad(app,buffer));
