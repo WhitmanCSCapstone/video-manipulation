@@ -16,22 +16,29 @@ public class Button{
         bText = text;
         value = val;
     }
-
-    public void updateController(String controller){
-        if(controller == "nanoKontroller"){
-
+    /*
+     * Sets button value if it is not padding or generator.
+    */
+    public void updateValue(int number){
+        if(bText != "Padding" && bText != "Generate"){
+            value = number;
         }
-        else
-            println("Controller not supported");
     }
+
+    /*
+     * Finds mouse location and returns whether it is in the square.
+    */
     public Boolean checkCollision(){
         if(mouseX > location.x - bwidth/2 && mouseX < location.x + bwidth/2)
             if(mouseY > location.y - bheight/2 && mouseY < location.y +bheight/2)
                 return true;
         return false;
     }
+
+    /*
+     * Draws a rectangle and corresponding text of the button.
+    */
     public void display(Boolean mouseOn){
-        //point(location.x,location.y);
         strokeWeight(2);
         rectMode(CENTER);
         if (checkCollision())
@@ -45,6 +52,7 @@ public class Button{
         if(value != -1)
             text(value,location.x,location.y + 30);
     }
+    
     public void printMe(){
         println("Loc",location,"Str",bText,"val",value);
     }

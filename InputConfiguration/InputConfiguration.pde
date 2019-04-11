@@ -3,10 +3,10 @@
  * controllers. Allow for somewhat easier setup of controls
  * without much modifications.
 */
-
 import javafx.util.Pair; 
 import java.util.Queue;
 import java.util.LinkedList;
+
 nanoKontroller b;
 int buttonsToDisplay;
 int wsplit,hsplit;
@@ -17,7 +17,6 @@ String inputController = "nanoKontroller";
 void setup() {
     textAlign(CENTER);
     textSize(20);
-    
     size(1280,700);
     if (inputController == "nanoKontroller")
     {
@@ -31,16 +30,17 @@ void setup() {
     buttonList = populateButtons(locations);
 }
 
+/*
+* Calculates a reasonable partition of the screen
+* based on the number of segments needed.
+* current implementation uses 3 difference as restraint.
+*/
 Queue<PVector> partitionSpace(int containers){
-    /*
-     * Calculates a reasonable partition of the screen
-     * based on the number of segments needed.
-     * current implementation uses 3 difference as restraint.
-     */
     ArrayList<Integer> factors = new ArrayList<Integer>();
     Queue<PVector> locations = new LinkedList<PVector>();
     int target = containers;
     int h = 100, w = 0, diff = 3;
+    //Slow factoring method is not a bottleneck. 
     while(abs(h-w) >= diff){
         factors.clear();
         target++;
@@ -65,6 +65,7 @@ Queue<PVector> partitionSpace(int containers){
     }
     return locations;
 }
+
 /*
  * Fills array of buttons with their locations and the strings
  * that they display.
@@ -93,24 +94,28 @@ ArrayList<Button> populateButtons(Queue<PVector> locations){
     buttons.add(new Button("Generate",-1,tempVec,w,h));            
     return buttons;
 }
+
 void draw() {
     background(255);
     strokeWeight(40);
-    
     for(Button p : buttonList){
         p.display(true);
-        //p.printMe();
     }
-
 }
 
+/*
+ * Checks for collision and updates the button under the mouse.
+*/
 void updateButton(int number){
-    for(Button p : buttonList){
-        if (p.checkCollision()){
-            p.value = number;
-        }
-    }
+    for(Button p : buttonList)
+        if (p.checkCollision())
+            p.updateValue(number);
 }
+
+/*
+ * Produces and prints (So far) the static array to be put into
+ * the midiMapper configuration file.
+*/
 void generateOutput(){
     ArrayList<String> buffer = new ArrayList<String>();
     buffer.add("static{\n" + 
@@ -124,6 +129,10 @@ void generateOutput(){
         print(a);
     }
 }
+
+/*
+ * Checks if the mouse is on generate and generates, if so.
+*/
 void mousePressed() {
     for(Button p : buttonList)
         if (p.bText == "Generate")
@@ -131,13 +140,9 @@ void mousePressed() {
                 generateOutput();
 }
 
+/*
+ * Checks if mouse is on top of a button and updates its value.
+*/
 void keyPressed() {
-//   if (key == CODED) {
-//     if (keyCode == UP) {
-//       buttonsToDisplay++;
-//     } else if (keyCode == DOWN) {
-//       buttonsToDisplay--;
-//     } 
-//   }
     updateButton(key);
 }
