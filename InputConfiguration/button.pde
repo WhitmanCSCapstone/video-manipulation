@@ -31,6 +31,7 @@ public class Button{
         //point(location.x,location.y);
         fill(0);
         text(bText,location.x,location.y);
+        text(value,location.x,location.y + 30);
     }
     public void printMe(){
         println("Loc",location,"Str",bText,"val",value);
