@@ -25,13 +25,25 @@ public class Button{
             println("Controller not supported");
     }
     public Boolean checkCollision(){
-        return true;
+        if(mouseX > location.x - bwidth/2 && mouseX < location.x + bwidth/2)
+            if(mouseY > location.y - bheight/2 && mouseY < location.y +bheight/2)
+                return true;
+        return false;
     }
     public void display(Boolean mouseOn){
         //point(location.x,location.y);
+        strokeWeight(2);
+        rectMode(CENTER);
+        if (checkCollision())
+            fill(100,150,200);
+        else
+            fill(230,230,100);
+        rect(location.x,location.y,bwidth,bheight);
         fill(0);
-        text(bText,location.x,location.y);
-        text(value,location.x,location.y + 30);
+        if(bText != "Padding")
+            text(bText,location.x,location.y);
+        if(value != -1)
+            text(value,location.x,location.y + 30);
     }
     public void printMe(){
         println("Loc",location,"Str",bText,"val",value);

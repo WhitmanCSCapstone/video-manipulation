@@ -95,8 +95,6 @@ ArrayList<Button> populateButtons(Queue<PVector> locations){
 }
 void draw() {
     background(255);
-    
-    //populateButtons(locations);
     strokeWeight(40);
     
     for(Button p : buttonList){
@@ -106,13 +104,40 @@ void draw() {
 
 }
 
+void updateButton(int number){
+    for(Button p : buttonList){
+        if (p.checkCollision()){
+            p.value = number;
+        }
+    }
+}
+void generateOutput(){
+    ArrayList<String> buffer = new ArrayList<String>();
+    buffer.add("static{\n" + 
+               "\tspecialButtonIDMap = new HashMap<String, Integer>();\n");
+    for(Button p : buttonList){
+        if(p.bText != "Padding" && p.bText != "Generate")
+        buffer.add("\tspecialButtonIDMap.put(\"" + p.bText + "\", " + p.value + ");\n");
+    }
+    buffer.add("}\n");
+    for(String a : buffer){
+        print(a);
+    }
+}
+void mousePressed() {
+    for(Button p : buttonList)
+        if (p.bText == "Generate")
+            if(p.checkCollision())
+                generateOutput();
+}
 
 void keyPressed() {
-  if (key == CODED) {
-    if (keyCode == UP) {
-      buttonsToDisplay++;
-    } else if (keyCode == DOWN) {
-      buttonsToDisplay--;
-    } 
-  }
+//   if (key == CODED) {
+//     if (keyCode == UP) {
+//       buttonsToDisplay++;
+//     } else if (keyCode == DOWN) {
+//       buttonsToDisplay--;
+//     } 
+//   }
+    updateButton(key);
 }
