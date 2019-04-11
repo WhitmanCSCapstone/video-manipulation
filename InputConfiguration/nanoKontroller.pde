@@ -7,7 +7,8 @@ public static class nanoKontroller{
     //Stores the input pairs of strings and values
     public static HashMap<Integer,String> valToDesc = new HashMap<Integer,String>();
     public static HashMap<Integer,String> defaults;
-    
+    public static int totalButtons = 15;
+
     static{
         defaults = new HashMap<Integer,String>();
         defaults.put(16,"Fade"); //fade
