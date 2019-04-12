@@ -120,7 +120,6 @@ public class MasterController {
 
     }
 
-
     /* 
     * Handle everything neccesarry to draw the quad. Make inputs update, fetch inputs, pass to 
     * QuadContainer and have it draw with them.

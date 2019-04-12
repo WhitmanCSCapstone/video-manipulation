@@ -6,6 +6,8 @@
 import javafx.util.Pair; 
 import java.util.Queue;
 import java.util.LinkedList;
+import themidibus.*;
+MidiBus myBus;
 
 nanoKontroller b;
 int buttonsToDisplay;
@@ -20,6 +22,7 @@ void setup() {
     size(1280,700);
     if (inputController == "nanoKontroller")
     {
+        setupMidi();
         b = new nanoKontroller();
         buttonsToDisplay = b.totalButtons + 1;
     }
@@ -142,7 +145,27 @@ void mousePressed() {
 
 /*
  * Checks if mouse is on top of a button and updates its value.
+ * Deprecated in favor of doing the same with the midi.
 */
-void keyPressed() {
-    updateButton(key);
+// void keyPressed() {
+//     updateButton(key);
+// }
+
+void setupMidi() {
+    String osName = System.getProperty("os.name").toLowerCase();
+    boolean isMacOs = osName.startsWith("mac");
+    if (isMacOs) 
+    {
+        myBus = new MidiBus(this, "SLIDER/KNOB","CTRL");
+    }
+    else
+    {
+        myBus = new MidiBus(this, "nanoKONTROL2","nanoKONTROL2");
+    }
+}
+/*
+ * New controller changes update the button the mouse is over.
+*/
+public void controllerChange(int channel, int number, int value) {
+    updateButton(number);
 }

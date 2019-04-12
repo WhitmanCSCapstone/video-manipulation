@@ -16,6 +16,7 @@ public class Button{
         bText = text;
         value = val;
     }
+    
     /*
      * Sets button value if it is not padding or generator.
     */
@@ -39,6 +40,7 @@ public class Button{
      * Draws a rectangle and corresponding text of the button.
     */
     public void display(Boolean mouseOn){
+        int textSize = 40;
         strokeWeight(2);
         rectMode(CENTER);
         if (checkCollision())
@@ -47,12 +49,20 @@ public class Button{
             fill(230,230,100);
         rect(location.x,location.y,bwidth,bheight);
         fill(0);
+        textSize(textSize);
+        float textWidth = textWidth(bText);
+        while(textWidth > bwidth -50){
+            textSize(--textSize); 
+            textWidth = textWidth(bText);
+        }
+        float textHeight = textDescent() + textAscent();
+
         if(bText != "Padding")
             text(bText,location.x,location.y);
         if(value != -1)
-            text(value,location.x,location.y + 30);
+            text(value,location.x,location.y + textHeight + 5);
     }
-    
+
     public void printMe(){
         println("Loc",location,"Str",bText,"val",value);
     }
