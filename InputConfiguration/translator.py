@@ -5,7 +5,7 @@
 # Address indexing in other functions
 # Global functions
  
-#Cleanup infile
+# Cleanup infile
 # Reorganize the file 
 
 import sys
@@ -16,6 +16,7 @@ func = re.compile(r'^[ \t]*(?:(?:public|protected|private)\s+)?(?:(static|final|
 midiInput = re.compile(r'(cc)')
 javaPrimitives = {"byte", "short", "int", "long", "float", "double", "char", "boolean"}
 processingAdditions = {"PImage","PVector","Capture","Movie","String","PFont","PApplet","PGraphics"}
+typesToIgnore = {"Midi"}
 
 #Read input file to string
 infile = ""
@@ -27,24 +28,32 @@ def findMidiInput(string):
     m = midiInput.search(string)
     return m
 
-
-
 def writeGlobalComments(f):
     """
         Currently just writes the comments until code is reached.
+        Totally might break.
     """
+    inBody = False
     for line in infile:
-        if len(removeComments(line)) > 1:
+        if line.startswith("/*"):
+            f.write(line + "\n")
+            if "*/" not in line:
+                inBody = True
+            continue
+        if "*/" in line:
+            f.write(line + "\n")
+            inBody = False
+        if inBody:
+            f.write(line + "\n")
+        elif len(removeComments(line)) > 1:
             f.write("\n")
             return
         else:
             f.write(line + "\n")
     
-
 def containsFunction(string):
     m = func.search(string)
     return m
-
 
 def removeComments(string):
     lineComment = string.find("//")
@@ -184,6 +193,7 @@ def writeRunSketch(f):
     #Address indenting
     for line in runSketchBody:
         f.write("\t" + line + "\n")
+    f.write(indent() + "tempBuffer.endDraw();\n")
     indentLevel -= 1
     f.write(indent() + "}\n")
     f.write("\n")
@@ -201,14 +211,20 @@ def findGlobals():
             scope -= 1
         #Get all possible keywords/separate Midi and global structs
         if noComments.startswith(tuple(javaPrimitives.union(processingAdditions))) and scope == 0 and not containsFunction(noComments):
-            globalsToAdd.append((line.split()[0],  line.split()[1:]))
+            #if not noComments.startswith(tuple(typesToIgnore)):
+            if not "cc" in noComments:
+                globalsToAdd.append((line.split()[0],  line.split()[1:]))
     return globalsToAdd
 
 def replaceCC(IRFile):
     with open("output.pde","w") as f:
         for line in IRFile:
             if findMidiInput(line):
-                f.write("m\n") #TODO FIX THIS
+                startIndex = line.find("cc")
+                rParen = line[startIndex:].find("]")
+                indexIn = line[startIndex+3:rParen+startIndex]
+                composite = line[:startIndex] + "params.get(" + indexIn + ")" + line[rParen + startIndex + 1:]
+                f.write(composite + " // Warning - Midi Line" + "\n")
             else:
                 f.write(line + '\n')
 
@@ -220,6 +236,7 @@ def generateNewFile():
         writeClass(f)
     
     #Second pass to replace Midi cc array
+    #Totally could have used truncate
     with open("output.pde","r+") as f:
         IRFile = f.read()
         IRFile = IRFile.split("\n")

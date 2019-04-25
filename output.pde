@@ -1,5 +1,8 @@
 //TODO nested loops.
 //Another global comment
+/*Multi
+Line
+Comment*/
 
 //IMPORTS FOLLOW - Double check to make sure these are necessary!
 import processing.lib;
@@ -8,7 +11,6 @@ import themidibus.*;
 
 public class OutputQuad extends QuadObject{
 	private PVector [][] globe;
-m
 	private float f1 = 0.01;
 	private int i1 = 1;
 	private int laterGlobal = 2;
@@ -21,7 +23,7 @@ m
 	    //Comment in setup()
 	     myBus = new MidiBus(this, "SLIDER/KNOB","CTRL");  // input and output g:-- Changed from SLIDER/KNOB for windows
 	        for (int i = 16; i < 24; i++) {  // Sets only the knobs (16-23) to be reasonable @ start - will still jump
-m
+	            params.get(i) = 20; // Warning - Midi Line
 	        }
 	}
 
@@ -31,11 +33,12 @@ m
 	    /* Multi line comment in 
 	    draw
 	    */
-m
+	    float polycount = params.get(16); // Warning - Midi Line
 	    rect(mouseX,mouseY,10,10);/*Multi in one after text*/
 	    i1 = i1 + 1;//Comment with {{}
 	    //and with }}}
 	    println(i1);
+		tempBuffer.endDraw();
 	}
 
 	private int anotherfunc(){
