@@ -19,36 +19,36 @@ public class OutputQuad extends QuadObject{
 	private PGraphics fifthGlobal;
 
 	OutputQuad(PApplet app, PGraphics buffer){
-	    size(200,200);
-	    //Comment in setup()
-	     myBus = new MidiBus(this, "SLIDER/KNOB","CTRL");  // input and output g:-- Changed from SLIDER/KNOB for windows
-	        for (int i = 16; i < 24; i++) {  // Sets only the knobs (16-23) to be reasonable @ start - will still jump
-	            params.get(i) = 20; // Warning - Midi Line
-	        }
+	   size(200,200);
+	   //Comment in setup()
+	    myBus = new MidiBus(this, "SLIDER/KNOB","CTRL");  // input and output g:-- Changed from SLIDER/KNOB for windows
+	       for (int i = 16; i < 24; i++) {  // Sets only the knobs (16-23) to be reasonable @ start - will still jump
+	           params.get(i) = 20; // Warning - Midi Line
+	       }
 	}
 
 	@Override
 	protected void runSketch(Arraylist<Float> params){
 		tempBuffer.beginDraw()
-	    /* Multi line comment in 
-	    draw
-	    */
-	    float polycount = params.get(16); // Warning - Midi Line
-	    rect(mouseX,mouseY,10,10);/*Multi in one after text*/
-	    i1 = i1 + 1;//Comment with {{}
-	    //and with }}}
-	    println(i1);
+	   /* Multi line comment in 
+	   draw
+	   */
+	   float polycount = params.get(16); // Warning - Midi Line
+	   rect(mouseX,mouseY,10,10);/*Multi in one after text*/
+	   i1 = i1 + 1;//Comment with {{}
+	   //and with }}}
+	   println(i1);
 		tempBuffer.endDraw();
 	}
 
 	private int anotherfunc(){
-	    int x = 0;
-	    return x;
+	   int x = 0;
+	   return x;
 	}
 
 	private float funcWithParams(float b)
 	{//New line scope
-	    return b;
+	   return b;
 	}
 
 }

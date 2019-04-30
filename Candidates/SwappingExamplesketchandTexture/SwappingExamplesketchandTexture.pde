@@ -54,6 +54,8 @@ Supershape s;
 UCAM uc;
 CIRCLE cir;
 MIDINOISEWALK mnw;
+VIS vis;
+
 List<QUAD> quads;
 boolean pauseplay = false;
 boolean reset = false;
@@ -105,9 +107,10 @@ void setup() {
   //b = new BIT();
   //cf = new CHANGINGFONTS();
   //r = new RAINBOW();
-  s = new Supershape();
+  //s = new Supershape();
+  vis = new VIS();
   //cir = new CIRCLE();
-  uc = new UCAM();
+  //uc = new UCAM();
   //mnw = new MIDINOISEWALK();
   //We add them to the quad array to call them in the same way.
   quads = new ArrayList<QUAD>();
@@ -116,8 +119,9 @@ void setup() {
   //quads.add(cir);
   //quads.add(mnw);
   //quads.add(r);
-  quads.add(uc);
-  quads.add(s);
+  //quads.add(uc);
+  //quads.add(s);
+  quads.add(vis);
 
 
   
@@ -177,7 +181,7 @@ float doFFT(){
 
 void draw() {
   //This is where we would call the master controller
-
+  
   fftAvg = doFFT(); //Generally ranges between 1 or 2 and 20 for the song I chose
   float adjust = 0;
   float fillOpacity =  map(cc[20], 0, 127,0, 255);
@@ -232,18 +236,6 @@ void draw() {
    quads.get(1).update(vid,fftAvg);
    vid.endDraw();
   }
-  //if(s3)
-  //{
-  // vid.beginDraw();
-  // quads.get(2).update(vid,fftAvg);
-  // vid.endDraw();
-  //}
-  //if(s4)
-  //{
-  // vid.beginDraw();
-  // quads.get(3).update(vid,fftAvg);
-  // vid.endDraw();
-  //}
   texture(vid);
   if(!reset){
     //CHANGE THESE FOR A BIGGER GRAPHICS BUFFER

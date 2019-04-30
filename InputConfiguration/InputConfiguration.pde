@@ -6,7 +6,14 @@
 import javafx.util.Pair; 
 import java.util.Queue;
 import java.util.LinkedList;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import themidibus.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 MidiBus myBus;
 
 nanoKontroller b;
@@ -16,10 +23,15 @@ ArrayList<Button> buttonList;
 
 String inputController = "nanoKontroller";
 
+Path currentRelativePath = Paths.get("");
+String s = currentRelativePath.toAbsolutePath().toString();
+
+
 void setup() {
     textAlign(CENTER);
     textSize(20);
     size(1280,700);
+    println("Current relative path is: " + s);
     if (inputController == "nanoKontroller")
     {
         setupMidi();
@@ -116,21 +128,61 @@ void updateButton(int number){
 }
 
 /*
+ * Creates file for translator to map buttons from cc array to params.
+ * https://bit.ly/2IYHu9l
+*/
+void writeBufferToFile(ArrayList<String> buffer){
+    BufferedWriter bw = null;
+    String joined = String.join("", buffer);    
+    try {
+        //Specify the file name and path here
+	    File file = new File("D:\\Programming\\video-manipulation1\\InputConfiguration\\" + "Map.csv");
+
+        /* This logic will make sure that the file 
+        * gets created if it is not present at the
+        * specified location*/
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+
+        FileWriter fw = new FileWriter(file);
+        bw = new BufferedWriter(fw);
+        bw.write(joined);
+        System.out.println("File written Successfully");
+
+    } catch (IOException ioe) {
+	    ioe.printStackTrace();
+	}
+	finally
+	{ 
+	    try{
+	        if(bw!=null)
+		    bw.close();
+	    }catch(Exception ex){
+	        System.out.println("Error in closing the BufferedWriter"+ex);
+	    }
+	}
+}
+/*
  * Produces and prints (So far) the static array to be put into
  * the midiMapper configuration file.
 */
 void generateOutput(){
     ArrayList<String> buffer = new ArrayList<String>();
+    ArrayList<String> bufferToFile = new ArrayList<String>();
     buffer.add("static{\n" + 
                "\tspecialButtonIDMap = new HashMap<String, Integer>();\n");
     for(Button p : buttonList){
-        if(p.bText != "Padding" && p.bText != "Generate")
-        buffer.add("\tspecialButtonIDMap.put(\"" + p.bText + "\", " + p.value + ");\n");
+        if(p.bText != "Padding" && p.bText != "Generate"){
+            bufferToFile.add(p.bText + "," + p.value + "\n");
+            buffer.add("\tspecialButtonIDMap.put(\"" + p.bText + "\", " + p.value + ");\n");
+        }
     }
     buffer.add("}\n");
     for(String a : buffer){
         print(a);
     }
+    writeBufferToFile(bufferToFile);
 }
 
 /*
