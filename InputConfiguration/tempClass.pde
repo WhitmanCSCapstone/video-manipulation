@@ -46,64 +46,64 @@ void draw() {
   endShape();
   popMatrix();
   
-//   pushMatrix();
-//   translate(0,height *.3,0);
-//   float na = map(cc[17], 0,127,.0,.1);
-//   rotateX (rx2);
-//   rx2 = rx2 + na;
-//   beginShape();
-//   texture(cam);
-//   vertex(0, height*.2, 0, cam.height *.2);
-//   vertex(width, height *.2,cam.width, cam.height * .2);
-//   vertex(width, height * .4, cam.width, cam.height *.4);
-//   vertex(0, height * .4, 0, cam.height *.4);
-//   endShape();
-//   popMatrix();
+  pushMatrix();
+  translate(0,height *.3,0);
+  float na = map(cc[17], 0,127,.0,.1);
+  rotateX (rx2);
+  rx2 = rx2 + na;
+  beginShape();
+  texture(cam);
+  vertex(0, height*.2, 0, cam.height *.2);
+  vertex(width, height *.2,cam.width, cam.height * .2);
+  vertex(width, height * .4, cam.width, cam.height *.4);
+  vertex(0, height * .4, 0, cam.height *.4);
+  endShape();
+  popMatrix();
   
-//   pushMatrix();
-//   translate(0,height *.5,0);
-//   float oa = map(cc[18], 0,127,.0,.1);
-//   rotateX (rx3);
-//   rx3 = rx3 + oa;
-//   beginShape();
-//   texture(cam);
-//   vertex(0, height * .4,0, cam.height *.4);
-//   vertex(width, height * .4, cam.width, cam.height *.4);
-//   vertex(width, height *.6, cam.width, cam.height *.6);
-//   vertex(0, height *.6, 0,cam.height *.6);
-//   endShape();
-//   popMatrix();
+  pushMatrix();
+  translate(0,height *.5,0);
+  float oa = map(cc[18], 0,127,.0,.1);
+  rotateX (rx3);
+  rx3 = rx3 + oa;
+  beginShape();
+  texture(cam);
+  vertex(0, height * .4,0, cam.height *.4);
+  vertex(width, height * .4, cam.width, cam.height *.4);
+  vertex(width, height *.6, cam.width, cam.height *.6);
+  vertex(0, height *.6, 0,cam.height *.6);
+  endShape();
+  popMatrix();
   
-//   pushMatrix();
-//   translate(0,height *.7,0);
-//   float pa = map(cc[19], 0,127,.0,.1);
-//   rotateX (rx4);
-//   rx4 =rx4 +pa;
-//   beginShape();
-//   texture(cam);
-//   vertex(0, height *.6, 0, cam.height * .6);
-//   vertex(width, height * .6, cam.width, cam.height * .6);
-//   vertex(width, height * .8, cam.width, cam.height * .8);
-//   vertex(0, height * .8, 0, cam.height * .8);
-//   endShape();
-//   popMatrix();
+  pushMatrix();
+  translate(0,height *.7,0);
+  float pa = map(cc[19], 0,127,.0,.1);
+  rotateX (rx4);
+  rx4 =rx4 +pa;
+  beginShape();
+  texture(cam);
+  vertex(0, height *.6, 0, cam.height * .6);
+  vertex(width, height * .6, cam.width, cam.height * .6);
+  vertex(width, height * .8, cam.width, cam.height * .8);
+  vertex(0, height * .8, 0, cam.height * .8);
+  endShape();
+  popMatrix();
   
-//   pushMatrix();
-//   translate(0,height *.9,0);
-//   float qa = map(cc[20], 0,127,.0,.1);
-//   rotateX (rx5);
-//   rx5 =rx5 +qa;
-//   beginShape();
-//   texture(cam);
-//   vertex(0, height *.8, 0, cam.height * .8);
-//   vertex(width, height * .8, cam.width, cam.height * .8);
-//   vertex(width, height , cam.width, cam.height );
-//   vertex(0, height, 0, cam.height );
-//   endShape();
-//   popMatrix();
+  pushMatrix();
+  translate(0,height *.9,0);
+  float qa = map(cc[20], 0,127,.0,.1);
+  rotateX (rx5);
+  rx5 =rx5 +qa;
+  beginShape();
+  texture(cam);
+  vertex(0, height *.8, 0, cam.height * .8);
+  vertex(width, height * .8, cam.width, cam.height * .8);
+  vertex(width, height , cam.width, cam.height );
+  vertex(0, height, 0, cam.height );
+  endShape();
+  popMatrix();
   
-  // Preview the whole image
-  //image(cam, 0, 0, cam.width/8, cam.height/8);
+  //Preview the whole image
+  image(cam, 0, 0, cam.width/8, cam.height/8);
 }
 
 void controllerChange(int channel, int number, int value) {
