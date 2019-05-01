@@ -7,6 +7,16 @@
 # conversion from cc[] to correct mappin - 
 # Translated from midi lines - 
 
+#Added absolute path
+#Processing writes to map.csv
+# Args input
+# global variables
+# better multiline in global comments
+# writebufferlines
+# added the midi hashmap
+# removed drawing in setup
+# fixed finding cc arrays and replacing with params
+
 import sys
 import re
 import os
@@ -20,6 +30,8 @@ midiInput = re.compile(r'(cc)')
 javaPrimitives = {"byte", "short", "int", "long", "float", "double", "char", "boolean"}
 processingAdditions = {"PImage","PVector","Capture","Movie","String","PFont","PApplet","PGraphics","Array","ArrayList","DoubleDict","DoubleList","HashMap","IntDict","IntList","Table","TableRow","BufferedReader","PrintWriter","PShader","PFont"}
 typesToIgnore = {"Midi"}
+validPrePrimitive = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.-*+_~"
+
 with open("processingPrimitives.txt",'r') as f:
     read = f.read()
 processingPrimitives = set(read.split("\n"))
@@ -225,17 +237,44 @@ def getDraw():
             drawLines.append(line)
     return drawLines
 
+def findAll(line,substring):
+    indexes = []
+    lastIndex = 0
+    while lastIndex != -1:
+        lastIndex = line.find(substring,lastIndex,len(line))
+        if lastIndex == -1:
+            break
+        indexes.append(lastIndex)
+        lastIndex += 1
+    return indexes
+
 def writeBufferline(f,line):
     rc = removeComments(line)
-    matches = [x for x in processingPrimitives if x in rc]
-    newstr = line[:]
+    matches = [(x,findAll(rc,x)) for x in processingPrimitives if x in rc]
+    newstr = rc[:]
+    
     for m in matches:
-        #" " seems to match all whitespace unlike "\s"
-        #might need to revisit
-        if newstr.find(" " + m) == -1:
-            continue
-        index = newstr.find(m)
-        newstr = newstr[:index] + "tempBuffer." + newstr[index:]
+        # print(newstr)
+        match = m[0]
+        indexes = m[1]
+        # print(match)
+        # print(indexes)
+        for i in indexes:
+            print("LINE", newstr)
+            print(newstr[i-1])
+            if newstr[i-1] in validPrePrimitive:
+                # print(line)
+                continue
+            newstr = newstr[:i] + "tempBuffer." + newstr[i:]
+            #print(newstr)
+            # print(indexes)
+            print(matches)
+            for m in matches:
+                for i,z in enumerate(m[1]):
+                    if(z > i):
+                        m[1][i] = z + len("tempBuffer.")
+            print(matches,"121212")
+    print(newstr)
     f.write("\t" + newstr + "\n")
 
 def writeRunSketch(f):

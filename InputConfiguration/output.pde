@@ -1,108 +1,112 @@
 /*
-  ColorMidi3DSupershapeTempStop: Generates a 3D image using midi controller. 
-  This is aparams.get()ccomplished by mapping a whole bunch of values to the arrays.  // Replaced:   This is accomplished by mapping a whole bunch of values to the arrays. 
-  Visualization is done with peasycam. 
-  There is a lot of room for optimizing and fine tuning.
-  Ask Justin where he got this code. It would be cool for sliders to control camera.
-  https://www.youtube.com/watch?v=akM4wMZIBWg
+  keeptryingrotatingslats: First four midi knobs control the speed of rotating slats.
+  They correspond top to bottom, first to last knob.
 */
 
 //IMPORTS FOLLOW - Double check to make sure these are necessary!
 import themidibus.*;
+import processing.video.*;
 
 public class OutputQuad extends QuadObject{
 	private HashMap<String, Integer> map = MidiMapper.getSpecialButtons();
-	private PVector [][] globe;
-	private int total = 200;
-	private float m = 0.0;
-	private float mchange = 0.0;
-	private float sm = 0.0;
-	private float l = 0.0;
-	private float offset = 0;
-	private float xoffset = 400;
-	private float yoffset = 400;
-	private float a = 1;
-	private float b = 1;
+	private float rx1 = 0.0;
+	private float rx2 = 0.0;
+	private float rx3 = 0.0;
+	private float rx4 = 0.0;
+	private float rx5 = 0.0;
+	private Movie cam;
 
 	OutputQuad(PApplet app, PGraphics buffer){
+	  //size(1280, 800, P2D);
 	  MidiBus.list();  // Shows controllers in the console
 		//Deleted new Midi initialization
 	  
-	  for (int i = 16; i < 24; i++) {  // Sets only the knobs (16-23) to be reasonable @ start - will still jump
-	    params.get(i) = 20; // Replaced: 	    cc[i] = 20;
+	  for (int i = 16; i < 24; i++) {  // Sets only the knobs (16-23) to be max @ start
+	    params.get(i) = 127/2; // Replaced: 	    cc[i] = 127/2;
 	  }
-	  // cam = new PeasyCam(this,1000); //room for optimizing camera location
-	  globe = new PVector[total+ 1][total+ 1];
+	  cam = new Movie(this,"xxx.mov");
+	  cam.loop();
 	}
 
 	@Override
 	protected void runSketch(Arraylist<Float> params){
 		tempBuffer.beginDraw()
-	  //g: for all sketches, save cc to variables for clarity before doing stuff on them
-	  
-	  //Identify variables:
-	  float polycount = params.get(map.get("Fade")); // Replaced: 	  float polycount = cc[16];
-	  float vibrations = params.get(map.get("X_Skew")); // Replaced: 	  float vibrations = cc[17];
-	  float period = params.get(map.get("Y_Skew")); // Replaced: 	  float period = cc[18];
-	  float timestep = params.get(19); // Replaced: 	  float timestep = cc[19];
-	  
-	  l = map(timestep,0,127,1,127);
-	  m = map(sin(mchange),-1,1,0,l);
-	  sm = map(period,0,127,0.0, 0.009);
-	  
-	  //timestep
-	  mchange += sm;
-	  tempBuffer.background(0);
-	  tempBuffer.noStroke();
-	  //Generates shadows underfolds of polygons
-	  tempBuffer.lights();
-	  
-	  float r = 200;
-	  total = round(map(polycount,0,127,2,128));
-	
-	  for(int i = 0; i< toatal+1; i++){
-	      float lat = map( i,0, total,- HALF_PI,HALF_PI);
-	      float r2 = supershape(lat, m,10.0,10.0,10.0);
-	      for(int j = 0; j< total + 1; j++){
-	        float lon = map( j,0, total, - PI, PI);
-	        float r1 = supershape(lon,m,60.0,100.0,30.0);
-	        float x = r * r1 * cos(lon) * r2 * cos(lat);
-	        float y = r * r1 *sin(lon) * r1 * r2 * cos(lat);
-	        float z = r * r2 * sin(lat);
-	        globe[i][j] = new PVector(x,y,z);
-	
-	        PVector v = PVector.random3D();
-	        int u = round(map(vibrations,0,127,0,127));
-	        v.mult(u);
-	        globe[i][j].add(v);
-	       }
-	    }
-	    offset+=5;
-	    //Swapping where i and j are used to calculate hu switches stripes
-	    //adding offset makes them flow in a cool way
-	  for(int i = 0; i< total; i++){
-	    tempBuffer.beginShape(TRIANGLE_STRIP);
-	    float hu = map(i,0,total,0,255* 6);
-	    tempBuffer.fill((hu+offset) % 255,255,255);
-	    for(int j = 0; j < total+ 1; j++){
-	      PVector v1 = globe[i][j];
-	      tempBuffer.vertex(v1.x+xoffset,v1.y+yoffset,v1.z);
-	      PVector v2 = globe[i+1][j];
-	      tempBuffer.vertex(v2.x+xoffset,v2.y+yoffset,v2.z);
-	    }
-	    tempBuffer.endShape();
+	  if (cam.available() == true) {
+	    cam.read();
 	  }
+	  tempBuffer.pushMatrix();
+	  translate(0,tempBuffer.height *.1,0);
+	  float ma = map(params.get(map.get("Fade")), 0,127,.0,.1); // Replaced: 	  float ma = map(cc[16], 0,127,.0,.1);
+	  tempBuffer.rotateX (rx1);
+	  rx1 = rx1 + ma;
+	  tempBuffer.beginShape();
+	  tempBuffer.texture(cam);
+	  tempBuffer.vertex(0, 0, 0, 0);
+	  tempBuffer.vertex(tempBuffer.width, 0, cam.width,0);
+	  vertex(width, tempBuffer.height*.2, cam.width, cam.height*.2);
+	  vertex(0, tempBuffer.height *.2, 0, cam.height* .2);
+	  tempBuffer.endShape();
+	  tempBuffer.popMatrix();
+	  
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	  
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	  
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	  
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	  
+	  
+	  
 		tempBuffer.endDraw();
-	}
-
-	private float supershape(float theta, float m, float n1, float n2, float n3){
-	  float t1 = abs((1/a) * cos( m * theta /4));
-	  t1 = pow(t1,n2);
-	  float t2 = abs((1/b)*sin(m * theta/4));
-	  t2 = pow(t2,n3);
-	  float t3 = t1 + t2;
-	  float r = pow(t3, -1/ n1);
-	  return r;
 	}
 
 }
