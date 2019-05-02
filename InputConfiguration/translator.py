@@ -203,7 +203,7 @@ def getSetup():
 # Ensure that no drawing is happening in setup!
 # It is bad for many reasons, but it will crash our main program
 # regardless of what this code does. 
-ignoreInSetup = ["fullScreen","noStroke","colorMode","size"]      
+ignoreInSetup = ["fullScreen","noStroke","colorMode","size","background"]      
 def writeConstructor(f):
     f.write(indent() + "OutputQuad(PApplet app, PGraphics buffer){\n")
     constructorBody = getSetup()
@@ -264,6 +264,9 @@ def updateLine(line):
                     if not newLine[index-1] in validPrePrimitive:
                         newLine = newLine[:index] + "tempBuffer." + newLine[index:] 
                         index+=10
+                else:
+                    newLine = newLine[:index] + "tempBuffer." + newLine[index:] 
+                    index+=10
         index+=1
     return newLine
 
@@ -295,10 +298,10 @@ def findGlobals():
     globalsToAdd = []
     for line in infile:
         noComments = removeComments(line)
-        noComments = noComments.strip()
-        if "\{" in noComments:
-            scope += 1
-        if "\}" in noComments:
+        noComments = noComments.lstrip()
+        if "{" in noComments:
+            scope+=1
+        if "}" in noComments:
             scope -= 1
         #Get all possible keywords/separate Midi and global structs
         if isGlobalVariable(noComments,scope):
