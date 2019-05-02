@@ -295,6 +295,7 @@ def findGlobals():
     globalsToAdd = []
     for line in infile:
         noComments = removeComments(line)
+        noComments = noComments.strip()
         if "\{" in noComments:
             scope += 1
         if "\}" in noComments:
