@@ -6,13 +6,11 @@
 import javafx.util.Pair; 
 import java.util.Queue;
 import java.util.LinkedList;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import themidibus.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 
 MidiBus myBus;
 
@@ -95,7 +93,7 @@ ArrayList<Button> populateButtons(Queue<PVector> locations){
     for (int key : b.valToDesc.keySet()) {
         pairs.add(new Pair<Integer,String>(key,b.valToDesc.get(key)));
     }
-    while(locations.size()!=1){
+    while(locations.size()!=2){
         tempVec = locations.remove();
         if(pairs.size()!=0){
             Pair<Integer,String> tempPair = pairs.remove();
@@ -107,6 +105,7 @@ ArrayList<Button> populateButtons(Queue<PVector> locations){
     }
     tempVec = locations.remove();
     buttons.add(new Button("Generate",-1,tempVec,w,h));            
+    buttons.add(new Button("Run Translator",-1,tempVec,w,h));            
     return buttons;
 }
 
@@ -194,14 +193,37 @@ void mousePressed() {
             if(p.checkCollision())
                 generateOutput();
 }
+/*
+ * Runs the attached python translator.
+ */
+void runTranslator()throws IOException{
+    
+    String path = sketchPath() +"\\translator.py";
+    Process p = Runtime.getRuntime().exec("python " + path);
+    println(path);
+    // retrieve output from python script
+    BufferedReader bfr = new BufferedReader(new InputStreamReader(p.getInputStream()));
+    String line = "";
+    while((line = bfr.readLine()) != null) {
+    // display each output line form python script
+    System.out.println(line);
+    }
+}
 
 /*
  * Checks if mouse is on top of a button and updates its value.
  * Deprecated in favor of doing the same with the midi.
 */
-// void keyPressed() {
-//     updateButton(key);
-// }
+void keyPressed() {
+    //updateButton(key);
+    try{
+      runTranslator();
+    }
+    catch(Exception IOException){
+      println("translator Failed");
+    }
+    
+}
 
 void setupMidi() {
     String osName = System.getProperty("os.name").toLowerCase();

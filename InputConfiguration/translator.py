@@ -7,8 +7,8 @@
 # conversion from cc[] to correct mappin - 
 # Translated from midi lines - 
 
-#Added absolute path
-#Processing writes to map.csv
+# Added absolute path
+# Processing writes to map.csv
 # Args input
 # global variables
 # better multiline in global comments
@@ -16,6 +16,8 @@
 # added the midi hashmap
 # removed drawing in setup
 # fixed finding cc arrays and replacing with params
+
+# If code is in controllerChange it will be ignored - Oh well.
 
 import sys
 import re
@@ -28,7 +30,7 @@ mypath = Path().absolute()
 func = re.compile(r'^[ \t]*(?:(?:public|protected|private)\s+)?(?:(static|final|native|synchronized|abstract|threadsafe|transient|(?:<[?\w\[\] ,&]+>)|(?:<[^<]*<[?\w\[\] ,&]+>[^>]*>)|(?:<[^<]*<[^<]*<[?\w\[\] ,&]+>[^>]*>[^>]*>))\s+){0,}(?!return)\b([\w.]+)\b(?:|(?:<[?\w\[\] ,&]+>)|(?:<[^<]*<[?\w\[\] ,&]+>[^>]*>)|(?:<[^<]*<[^<]*<[?\w\[\] ,&]+>[^>]*>[^>]*>))((?:\[\]){0,})\s+\b\w+\b\s*\(\s*(?:\b([\w.]+)\b(?:|(?:<[?\w\[\] ,&]+>)|(?:<[^<]*<[?\w\[\] ,&]+>[^>]*>)|(?:<[^<]*<[^<]*<[?\w\[\] ,&]+>[^>]*>[^>]*>))((?:\[\]){0,})(\.\.\.)?\s+(\w+)\b(?![>\[])\s*(?:,\s+\b([\w.]+)\b(?:|(?:<[?\w\[\] ,&]+>)|(?:<[^<]*<[?\w\[\] ,&]+>[^>]*>)|(?:<[^<]*<[^<]*<[?\w\[\] ,&]+>[^>]*>[^>]*>))((?:\[\]){0,})(\.\.\.)?\s+(\w+)\b(?![>\[])\s*){0,})?\s*\)(?:\s*throws [\w.]+(\s*,\s*[\w.]+))?')
 midiInput = re.compile(r'(cc)')
 javaPrimitives = {"byte", "short", "int", "long", "float", "double", "char", "boolean"}
-processingAdditions = {"PImage","PVector","Capture","Movie","String","PFont","PApplet","PGraphics","Array","ArrayList","DoubleDict","DoubleList","HashMap","IntDict","IntList","Table","TableRow","BufferedReader","PrintWriter","PShader","PFont"}
+processingAdditions = {"PImage","PVector","Capture","Movie","String","PFont","PApplet","PGraphics","Array","ArrayList","DoubleDict","DoubleList","HashMap","IntDict","IntList","Table","TableRow","BufferedReader","PrintWriter","PShader","PFont","AudioIn","Amplitude"}
 typesToIgnore = {"Midi"}
 validPrePrimitive = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.-*+_~"
 
@@ -199,10 +201,28 @@ def getSetup():
             setupLines.append(line)
     return setupLines
 
+def replaceThis(line):
+    index = 0
+    newLine = line[:]
+    while index < len(newLine):
+        split = newLine[index:]
+        if split.startswith("//"):
+            return newLine
+        elif split.startswith("this"):
+            #Check last character
+            if index > 0: #Reverse flow protection
+                if not newLine[index-1] in validPrePrimitive:
+                    newLine = newLine[:index] + "app" + newLine[index+4:] 
+                    index+=10
+            else:
+                newLine = newLine[:index] + "app" + newLine[index+4:] 
+                index+=2
+        index+=1
+    return newLine
 
 # Ensure that no drawing is happening in setup!
 # It is bad for many reasons, but it will crash our main program
-# regardless of what this code does. 
+# regardless of what this code does. Also overwrites "this" with "app"
 ignoreInSetup = ["fullScreen","noStroke","colorMode","size","background"]      
 def writeConstructor(f):
     f.write(indent() + "OutputQuad(PApplet app, PGraphics buffer){\n")
@@ -211,6 +231,8 @@ def writeConstructor(f):
         rc = removeComments(line)
         if any(ignore in rc for ignore in ignoreInSetup):
             continue
+        if "this" in rc:
+            line = replaceThis(rc)
         f.write(indent() + line + "\n")
     f.write(indent() + "}\n")
     f.write("\n")
@@ -273,7 +295,7 @@ def updateLine(line):
 
 def writeBufferline(f,line):
     rc = removeComments(line)
-    matches = [(x,findAll(rc,x)) for x in processingPrimitives if x in rc]
+    #matches = [(x,findAll(rc,x)) for x in processingPrimitives if x in rc]
     newstr = updateLine(line)
     f.write("\t" + newstr + "\n")
 
@@ -282,7 +304,7 @@ def writeRunSketch(f):
     f.write(indent() + "@Override\n")
     f.write(indent() + "protected void runSketch(Arraylist<Float> params){\n")
     indentLevel += 1
-    f.write(indent() + "tempBuffer.beginDraw()\n")
+    f.write(indent() + "tempBuffer.beginDraw();\n")
     runSketchBody = getDraw()
     #Address indenting
     for line in runSketchBody:
