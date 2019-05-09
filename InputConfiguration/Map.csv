@@ -1,0 +1,15 @@
+Zoom,0
+X_Rotation,1
+Y_Rotation,2
+FFT_Smoother,7
+Start_Track,41
+Freeze_Quad,42
+Previous_Sketch,43
+Next_Sketch,44
+Live_Audio,45
+Fade,16
+X_Skew,17
+Y_Skew,18
+FFT_Sensitivity,23
+Decrease_Target_Freq,61
+Increase_Target_Freq,62
